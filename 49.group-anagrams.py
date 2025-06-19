@@ -96,12 +96,9 @@ from collections import defaultdict
 class Solution:
     def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
         anagrams = defaultdict(list)
-        
         for word in strs:
-            # Sort the word and use it as the key
             key = ''.join(sorted(word))
             anagrams[key].append(word)
-        
         return list(anagrams.values())
 
 sol = Solution()
