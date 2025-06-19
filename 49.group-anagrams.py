@@ -63,34 +63,46 @@
 #
 
 # @lc code=start
+#class Solution:
+#    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+#        listy = []
+#        mau = []
+#        result = []
+#        for i in range(len(strs)):
+#            char_count = {}
+#            for char in str(strs[i]):
+#                char_count[char] = char_count.get(char, 0) + 1
+#            listy.append(char_count)
+#        for i in range(len(listy)):
+#            answer = []
+#            for j in range(i+1,len(listy)):
+#                if listy[i] == listy[j]:
+#                    if strs[i] not in result:
+#                        answer.append(strs[i])
+#                        result.append(strs[i])
+#                        answer.append(strs[j])
+#                        result.append(strs[j])
+#                    elif strs[j] not in result:
+#                        answer.append(strs[j])
+#                        result.append(strs[j])
+#            if strs[i] not in result:
+#                result.append(strs[i])
+#                answer.append(strs[i])
+#            if answer != []:
+#                mau.append(answer)
+#        return mau
+
+from collections import defaultdict
 class Solution:
     def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
-        listy = []
-        mau = []
-        result = []
-        for i in range(len(strs)):
-            char_count = {}
-            for char in str(strs[i]):
-                char_count[char] = char_count.get(char, 0) + 1
-            listy.append(char_count)
-        for i in range(len(listy)):
-            answer = []
-            for j in range(i+1,len(listy)):
-                if listy[i] == listy[j]:
-                    if strs[i] not in result:
-                        answer.append(strs[i])
-                        result.append(strs[i])
-                        answer.append(strs[j])
-                        result.append(strs[j])
-                    elif strs[j] not in result:
-                        answer.append(strs[j])
-                        result.append(strs[j])
-            if strs[i] not in result:
-                result.append(strs[i])
-                answer.append(strs[i])
-            if answer != []:
-                mau.append(answer)
-        return mau
+        anagrams = defaultdict(list)
+        
+        for word in strs:
+            # Sort the word and use it as the key
+            key = ''.join(sorted(word))
+            anagrams[key].append(word)
+        
+        return list(anagrams.values())
 
 sol = Solution()
 print(sol.groupAnagrams(["act","pots","tops","cat","stop","hat"]))
