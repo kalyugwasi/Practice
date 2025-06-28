@@ -5,7 +5,6 @@
 #
 
 # @lc code=start
-
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -13,27 +12,18 @@
 #         self.next = next
 
 class Solution:
-    def reorderList(self, head: Optional[ListNode]) -> None:
-        slow ,fast = head , head.next
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
-        second = slow.next
-        prev = None
-        slow.next = None
-    
-        while second:
-            temp = second.next
-            second.next = prev
-            prev = second
-            second = temp
-        #merge
-        first ,second = head , prev
-        while second:
-            temp1, temp2 = first.next , second.next
-            first.next = second
-            second.next = temp1
-            first , second = temp1 , temp2
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        left = dummy
+        right = head
+        while n>0 and right:
+            right = right.next
+            n -= 1
+        while right:
+            left = left.next
+            right = right.next
+        left.next = left.next.next
+        return dummy.next
         
 # @lc code=end
 
