@@ -24,10 +24,6 @@ class Solution:
             right = right.next
         left.next = left.next.next
         return dummy.next
-        
-        
-        
 
-        
 # @lc code=end
 
