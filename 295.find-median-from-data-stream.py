@@ -8,12 +8,18 @@
 class MedianFinder:
 
     def __init__(self):
+        self.minHeap = []
+        heapq.heapify(self.minHeap)
         
-
     def addNum(self, num: int) -> None:
-        
+        heapq.heappush(self.minHeap,num)
+        return None
 
     def findMedian(self) -> float:
+        if len(self.minHeap) > 1:
+            return float((self.minHeap[0] + self.minHeap[-1])/2)
+        else:
+            return self.minHeap[0]
         
 
 
