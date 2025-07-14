@@ -6,20 +6,28 @@
 
 # @lc code=start
 class MedianFinder:
-
     def __init__(self):
-        self.minHeap = []
-        heapq.heapify(self.minHeap)
+        self.small = []
+        self.large = []
+        heapq.heapify(self.small)
+        heapq.heapify(self.large)
         
     def addNum(self, num: int) -> None:
-        heapq.heappush(self.minHeap,num)
-        return None
-
-    def findMedian(self) -> float:
-        if len(self.minHeap) > 1:
-            return float((self.minHeap[0] + self.minHeap[-1])/2)
+        if len(self.small) == 0 or num < -self.small[0]:
+            heapq.heappush(self.small, -num)
         else:
-            return self.minHeap[0]
+            heapq.heappush(self.large, num)
+        
+        if len(self.small) > len(self.large) + 1:
+            heapq.heappush(self.large, -heapq.heappop(self.small))
+        elif len(self.large) > len(self.small):
+            heapq.heappush(self.small, -heapq.heappop(self.large))
+    
+    def findMedian(self) -> float:
+        if len(self.small) > len(self.large):
+            return float(-self.small[0])
+        else:
+            return (-self.small[0] + self.large[0]) / 2.0
 
         
 
