@@ -20,6 +20,7 @@ class MedianFinder:
             return float((self.minHeap[0] + self.minHeap[-1])/2)
         else:
             return self.minHeap[0]
+
         
 
 
