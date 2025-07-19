@@ -19,11 +19,8 @@ class Solution:
             possible = maps[digits[index]]
             for char in possible:
                 backtrack(index+1,path+char)
-        
         backtrack(0,"")
         return res
-        
-        
         
 # @lc code=end
 
