@@ -5,29 +5,40 @@
 #
 
 # @lc code=start
+class UnionFind:
+    def __init__(self, n):
+        self.par, self.rank = defaultdict(int), defaultdict(int)
+        for i in range(n):
+            self.par[i] = i
+            self.rank[i] = 0
+
+    def find(self, n1):
+        p = self.par[n1]
+        while p != self.par[p]:
+            self.par[p] = self.par[self.par[p]]
+            p = self.par[p]
+        return p
+
+    def union(self, n1, n2):
+        p1, p2 = self.find(n1), self.find(n2)
+        if p1 == p2:
+            return False
+        if self.rank[p1] > self.rank[p2]:
+            self.par[p2] = p1
+        elif self.rank[p2] > self.rank[p1]:
+            self.par[p1] = p2
+        else:
+            self.par[p1] = p2
+            self.rank[p2] += 1
+        return True
+
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
-        n =len(edges)
-        par = [i for i in range(n+1)]
-        rank = [1]*(n+1)
-        def find(n):
-            if n != par[n]:
-                par[n] = find(par[n])
-            return par[n]
-        def union(n1,n2):
-            p1,p2 = find(n1),find(n2)
-            if p1==p2:
-                return False
-            if rank[p1]>rank[p2]:
-                par[p2] = p1
-                rank[p1] += rank[p2]
-            else:
-                par[p1] = p2
-                rank[p2] += rank[p1]
-            return True
-        for n1,n2 in edges:
-            if not union(n1,n2):
-                return [n1,n2]
+        n = len(edges)
+        unionfind = UnionFind(n)
+        for u, v in edges:
+            if not unionfind.union(u, v):
+                return [u, v]
         
         
 # @lc code=end
