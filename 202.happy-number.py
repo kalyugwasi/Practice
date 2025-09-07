@@ -5,16 +5,18 @@
 #
 
 # @lc code=start
+seen = set()
 class Solution:
     def isHappy(self, n: int) -> bool:
-        seen = set()
-        while True:
-            if n == 1:
-                return True
-            elif n in seen:
-                return False
-            else:
-                seen.add(n)
-                n = sum(int(i)**2 for i in str(n))
+        if n in seen:
+            return False
+        seen.add(n)
+        s = sum(int(i)**2 for i in str(n))
+        if s == 1:
+            return True
+        else:
+            return self.isHappy(s)
+s = Solution()
+print(s.isHappy(10))
 # @lc code=end
 
