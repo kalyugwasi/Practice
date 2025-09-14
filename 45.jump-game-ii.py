@@ -8,14 +8,15 @@
 class Solution:
     def jump(self, nums: List[int]) -> int:
         n = len(nums)
-        if n == 1:
-            return 0
-        dp = [n+1]*n
-        dp[0] = 0
-        for i in range(n):
-            for j in range(i+1,min(i+nums[i]+1,len(nums))):
-                dp[j] = min(dp[i]+1,dp[j])
-        return dp[-1]
+        res=l=r=0
+        while r<n-1:
+            far=0
+            for i in range(l,r+1):
+                far = max(far,i+nums[i])
+            l=r+1
+            r=far
+            res+=1    
+        return res        
 
         
 # @lc code=end
