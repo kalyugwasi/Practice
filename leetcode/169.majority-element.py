@@ -7,7 +7,7 @@
 # @lc code=start
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
-        res = Counter(nums)
-        return max(res,key=res.get)
+        nums.sort()
+        return nums[len(nums)//2]
 # @lc code=end
 
