@@ -7,6 +7,8 @@
 # @lc code=start
 class Solution:
     def isPalindrome(self, x: int) -> bool:
+        if x<0:
+            return False
         x= str(x)
         l,r=0,len(x)-1
         while l <r:
