@@ -1,0 +1,4 @@
+{
+    "aws.telemetry": false,
+    "python.analysis.typeCheckingMode": "strict"
+}
