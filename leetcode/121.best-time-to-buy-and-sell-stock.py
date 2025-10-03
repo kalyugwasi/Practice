@@ -6,15 +6,17 @@
 
 # @lc code=start
 class Solution:
-    def maxProfit(self, prices: list[int]) -> int:
-        profit = 0
-        l , r = 0 ,1
-        while r < len(prices):
-            if prices[r] < prices[l]:
-                l += 1
-            else:
-                profit = max(profit ,prices[r] - prices[l])
-                r += 1
-        return profit
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices: return 0
+        small = bigg = prices[0]
+        deals =[0]
+        for v in prices:
+            if v<small:
+                small = v
+                bigg = 0
+            elif v > bigg:
+                bigg = v
+                deals.append(v-small)
+        return max(deals)
 # @lc code=end
 
