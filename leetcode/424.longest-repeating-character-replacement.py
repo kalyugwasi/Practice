@@ -7,17 +7,20 @@
 # @lc code=start
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
-        count = {}
-        res , l = 0 , 0
-        maxf = 0
-        for r in range(len(s)):
-            count[s[r]] = 1 + count.get(s[r],0)
-            maxf = max(maxf , count[s[r]])
-            while (r-l+1) - maxf >k:
-                count[s[l]] -= 1
+        counter = defaultdict(int)
+
+        l = changes = max_freq = 0
+
+        for c in s:
+            counter[c]+=1
+            if counter[c] > max_freq:
+                max_freq = counter[c]
+            elif changes == k:
+                counter[s[l]] -= 1
                 l += 1
-            res = max(res, r-l+1)
-        return res
+            else:
+                changes += 1
+        return max_freq + changes
         
 # @lc code=end
 
