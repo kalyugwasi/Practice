@@ -10,11 +10,12 @@ class Solution:
         m, n = len(s) , len(t)
         have , need = 0 , n
         window , tchar = {} , {}
+        if n>m or not s or not t or s == "" or t == "":
+            return ""
         res , resl = [-1,-1], float("infinity")
         l = 0
         for char in t:
             tchar[char] = tchar.get(char,0) + 1
-        if t == "": return ""
         for r in range(len(s)):
             c = s[r]
             window[c] = window.get(c,0) + 1
