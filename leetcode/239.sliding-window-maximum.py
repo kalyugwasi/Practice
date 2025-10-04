@@ -15,24 +15,28 @@
 #            l += 1
 #            r += 1
 #        return res
+from typing import List
+from collections import deque
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         if not nums or k == 0:
             return []
-        if k > len(nums):
-            return [max(nums)]
-        
-        dq = deque()
-        res = []
-        for i in range(len(nums)):
-            if dq and dq[0] <= i - k:
-                dq.popleft()
-            while dq and nums[dq[-1]] < nums[i]:
+        if k==1:
+            return nums
+        dq,res = deque(),[]
+        l=r=0
+        while r < len(nums):
+            while dq and nums[dq[-1]] < nums[r]:
                 dq.pop()
-            dq.append(i)
-            if i >= k - 1:
+            dq.append(r)
+            if l > dq[0]:
+                dq.popleft()
+            if (r+1) >= k:
                 res.append(nums[dq[0]])
-
+                l += 1
+            r += 1
         return res
+sol = Solution()
+print(sol.maxSlidingWindow([1,3,-1,-3,5,3,6,7],3))
         
 # @lc code=end 
