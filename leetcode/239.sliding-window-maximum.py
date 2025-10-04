@@ -34,6 +34,7 @@ class Solution:
                 res.append(nums[dq[0]])
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         return res
 
@@ -41,6 +42,9 @@ class Solution:
 =======
 >>>>>>> 66bc3ecb5466a999ac146f04b9e79a3e3c5e23dc
 
+=======
+
+>>>>>>> 66bc3ecb5466a999ac146f04b9e79a3e3c5e23dc
 =======
 
 >>>>>>> 66bc3ecb5466a999ac146f04b9e79a3e3c5e23dc
