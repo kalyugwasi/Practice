@@ -33,6 +33,4 @@ class Solution:
             if i >= k - 1:
                 res.append(nums[dq[0]])
 
-        return res
-        
 # @lc code=end 

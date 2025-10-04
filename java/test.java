@@ -1,5 +1,3 @@
-package java;
-
 public class test {
     private int roll;
     private String name;

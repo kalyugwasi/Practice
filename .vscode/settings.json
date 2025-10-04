@@ -1,4 +1,5 @@
 {
     "aws.telemetry": false,
-    "python.analysis.typeCheckingMode": "strict"
+    "python.analysis.typeCheckingMode": "strict",
+    "java.debug.settings.onBuildFailureProceed": true
 }
