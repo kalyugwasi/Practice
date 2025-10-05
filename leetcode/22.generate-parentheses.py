@@ -6,24 +6,18 @@
 
 # @lc code=start
 class Solution:
-    def generateParenthesis(self, n: int) -> list[str]:
-        stack = []
-        res = []
-
-        def backtrack(openN,closedN):
-            if openN == closedN == n:
-                res.append("".join(stack))
+    def generateParenthesis(self, n: int) -> List[str]:
+        def dfs(l, r, t):
+            if l > n or r > n or l < r:
                 return
-            if openN < n:
-                stack.append("(")
-                backtrack(openN+1,closedN)
-                stack.pop()
-            if closedN < openN:
-                stack.append(")")
-                backtrack(openN,closedN+1)
-                stack.pop()
-        backtrack(0,0)
-        return res
+            if l == n == r:
+                ans.append(t)
+                return
+            dfs(l + 1, r, t + '(')
+            dfs(l, r + 1, t + ')')
+        ans = []
+        dfs(0, 0, '')
+        return ans
         
 # @lc code=end
 
