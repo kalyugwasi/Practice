@@ -6,15 +6,20 @@
 
 # @lc code=start
 class Solution:
-    def dailyTemperatures(self, temperatures: list[int]) -> list[int]:
-        res = [0] * len(temperatures)
-        stack = []
-        for i,temp in enumerate(temperatures):
-            while stack and temperatures[i] > temperatures[stack[-1]]:
-                prev_index = stack.pop()
-                res[prev_index] = i - prev_index
-            stack.append(i)
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        n = len(temperatures)
+        res = [0] * n
+        warmest = 0
+        for i in range(n-1,-1,-1):
+            if (t:=temperatures[i]) >= warmest:
+                warmest = t
+                continue
+            d = 1
+            while temperatures[i+d] <= t:
+                d += res[i+d]
+            res[i] = d
         return res
+
 
 # @lc code=end
 
