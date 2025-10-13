@@ -5,35 +5,25 @@
 #
 
 # @lc code=start
-
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-
 class Solution:
     def reorderList(self, head: Optional[ListNode]) -> None:
-        slow ,fast = head , head.next
+        slow = fast = head
         while fast and fast.next:
             slow = slow.next
             fast = fast.next.next
-        second = slow.next
         prev = None
-        slow.next = None
-    
-        while second:
-            temp = second.next
-            second.next = prev
-            prev = second
-            second = temp
-        #merge
-        first ,second = head , prev
-        while second:
-            temp1, temp2 = first.next , second.next
-            first.next = second
-            second.next = temp1
-            first , second = temp1 , temp2
+        cur = slow
+        while cur:
+            temp = cur.next
+            cur.next = prev
+            prev = cur
+            cur = temp
+        p1,p2 = head,prev
+        while p2.next:
+            temp1, temp2 = p1.next , p2.next
+            p1.next = p2
+            p2.next = temp1
+            p1 , p2 = temp1 , temp2
         
 # @lc code=end
 
