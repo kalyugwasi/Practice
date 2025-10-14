@@ -5,30 +5,26 @@
 #
 
 # @lc code=start
-"""
-# Definition for a Node.
 class Node:
     def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
         self.val = int(x)
         self.next = next
         self.random = random
-"""
-
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        oldtocopy = {None:None}
-        curr = head
-        while curr:
-            copy = Node(curr.val)
-            oldtocopy[curr] = copy
-            curr = curr.next
-        curr = head
-        while curr:
-            copy = oldtocopy[curr]
-            copy.next = oldtocopy[curr.next]
-            copy.random = oldtocopy[curr.random]
-            curr = curr.next
-        return oldtocopy[head]
+        if not head:
+            return None
+        dc = {}
+        cur = head
+        while cur:
+            dc[cur] = Node(cur.val)
+            cur = cur.next
+        cur = head
+        while cur:
+            dc[cur].next = dc.get(cur.next)
+            dc[cur].random = dc.get(cur.random)
+            cur = cur.next
+        return dc[head]
         
         
 # @lc code=end
