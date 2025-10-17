@@ -5,33 +5,54 @@
 #
 
 # @lc code=start
+class ListNode:
+    def __init__(self,prev,val,next):
+        self.prev,self.val,self.next = prev,val,next 
+
 class MyCircularQueue:
     def __init__(self, k: int):
-        self.queue = deque()
-        self.coun = k
+        self.space = k
+        self.left = ListNode(None,0,None)
+        self.right = ListNode(self.left,0,None)        
+        self.left.next = self.right
+
     def enQueue(self, value: int) -> bool:
-        if self.coun > 0:
-            self.coun -= 1
-            self.queue.append(value)
-            return True
-        else:
+        if self.isFull():
             return False
+        else:
+            cur = ListNode(self.right.prev,value,self.right)
+            self.right.prev.next = cur
+            self.right.prev = cur
+            self.space -= 1
+            return True
+
     def deQueue(self) -> bool:
-        if self.isEmpty() == True:
+        if self.isEmpty():
             return False
         else:
-            self.coun += 1
-            self.queue.popleft()
+            self.left.next = self.left.next.next
+            self.left.next.prev = self.left
+            self.space +=1
             return True
+
     def Front(self) -> int:
-        return self.queue[0] if not self.isEmpty() else -1
-    def Rear(self) -> int:
-        return self.queue[-1] if not self.isEmpty() else -1
-    def isEmpty(self) -> bool:
-        return len(self.queue) == 0
-    def isFull(self) -> bool:
-        return True if self.coun == 0 else False
+        if self.isEmpty():
+            return -1
+        else:
+            return self.left.next.val
         
+    def Rear(self) -> int:
+        if self.isEmpty():
+            return -1
+        else:
+            return self.right.prev.val
+
+    def isEmpty(self) -> bool:
+        return self.left.next == self.right
+
+    def isFull(self) -> bool:
+        return self.space == 0
+
 
 # Your MyCircularQueue object will be instantiated and called as such:
 # obj = MyCircularQueue(k)
@@ -41,6 +62,5 @@ class MyCircularQueue:
 # param_4 = obj.Rear()
 # param_5 = obj.isEmpty()
 # param_6 = obj.isFull()
-
 # @lc code=end
 
