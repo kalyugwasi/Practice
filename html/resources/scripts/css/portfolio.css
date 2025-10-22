@@ -1,0 +1,14 @@
+body{
+    background-color: burlywood;
+}
+header {
+    color: black;
+    text-align: center;
+}
+img {
+    padding: 20px;
+    align-items: left;
+    height:auto;
+    width:auto;
+    align-items:self-start;
+}
