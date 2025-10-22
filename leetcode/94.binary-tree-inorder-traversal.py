@@ -18,9 +18,8 @@ class Solution:
             if not root:
                 return None
             dfs(root.left)
-            visit.append(root.val)
             dfs(root.right)
-        dfs(root)
-        return visit
+            visit.append(root.val)
+        dfs
 # @lc code=end
 
