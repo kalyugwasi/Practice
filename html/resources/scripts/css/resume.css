@@ -1,25 +1,53 @@
 body{
-    padding: 0%;
-    height:5000px;
+    width: 700px;
+    margin:auto;
     background-repeat: no-repeat;
+    background-color: white;
 }
 h1 {
     color: black;
-    text-align: center;
-    text-size-adjust: 5%;
+    text-align: left;
     text-shadow: aqua;
     font-size: 28px;
     font-weight: bolder;
     font-style: oblique;
 }
-.intro {
-        position: ;
+header {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0; /* Set to stick at the top of the viewport */
+    background-color: white;
+    color: white;
+    line-height: 1.5;
+    width: 100%;
 }
-img {
+.intro {
+        position: sticky;
+        position: -webkit-sticky;
+        list-style-type: none;       
+        display: inline-flex;
+        margin:0;
+        padding: 0px 0px 0px 0px;
+}
+.introtext{
+    color: black;
+    width: 460px;
+    padding: 10px;
+    text-align: left;
+    align-content: flex-start;
+}
+.introimg {
+    align-content: right;
+    width: 210px;
+    padding:10px 0px 10px 20px;
+    align-content: flex-end;
+}
+.intro img {
     background-color: yellow;
+    background-image: url('https://edube.org/uploads/media/default/0001/04/red-flower.png');
+    background-size: cover;
     height:200px;
     width:200px;
-    z-index: inherit;
     border-radius: 20%;
     box-shadow:5px 10px 15px rgba(0, 0, 0, 0.5);
 }
@@ -27,25 +55,54 @@ img {
   border-style: solid;
   border-color: lightblue;
 }
-ul {
+#conul {
 line-height: 1.7;
   list-style-image: url('https://edube.org/uploads/media/default/0001/04/oedg_icon_regular.png');
   border: 1px solid #ddd;
   background-color:rgb(217, 224, 107);
 }
-li {
+#conli {
     border: 1px solid #ddd;
     padding: 2px 4px;
     background-color: beige;
 }
-a:hover {
+.personal-info{
+    margin-bottom: 60px;
+}
+.personal-info a:hover {
     color: #FF0000; /* Changes color to red */
   background-color: #F0F0F0; /* Adds a light gray background */
   text-decoration: none;
 }
-a:focus{
+.personal-info a:focus{
     color:aquamarine
 }
-a:active{
+.personal-info a:active{
     color: black;
+}
+.personal-info li:hover {
+    color:hotpink;
+}
+footer {
+    background-color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    height: 60px;
+    width: 700px;
+    padding: 0;
+}
+.contact{
+        display: inline-flex;
+        list-style-type: none;
+}
+.contact li{
+    padding: 0px 20px;
+}
+.contact img{
+    height: 30px;
+    width: 30px;
+}
+.contact img:hover{
+    color: aqua;
 }
