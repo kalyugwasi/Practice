@@ -1,8 +1,10 @@
 body{
     width: 700px;
     margin:auto;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
     background-repeat: no-repeat;
     background-color: white;
+    line-height: inherit;
 }
 h1 {
     color: black;
@@ -10,7 +12,6 @@ h1 {
     text-shadow: aqua;
     font-size: 28px;
     font-weight: bolder;
-    font-style: oblique;
 }
 header {
     position: -webkit-sticky; /* Safari */
