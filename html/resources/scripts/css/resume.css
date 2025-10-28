@@ -3,7 +3,7 @@ body{
     margin:auto;
     font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
     background-repeat: no-repeat;
-    background-color: white;
+    background-color: aliceblue;
     line-height: inherit;
 }
 h1 {
@@ -21,6 +21,7 @@ header {
     color: white;
     line-height: 1.5;
     width: 100%;
+    background-color: aliceblue;
 }
 .intro {
         position: sticky;
@@ -42,6 +43,9 @@ header {
     width: 210px;
     padding:10px 0px 10px 20px;
     align-content: flex-end;
+    position: relative;
+    color: white;
+    border-radius: 5px;
 }
 .intro img {
     background-color: yellow;
