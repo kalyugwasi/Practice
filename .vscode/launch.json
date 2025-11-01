@@ -1,0 +1,39 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "awdpractice",
+            "request": "launch",
+            "mainClass": "awdpractice",
+            "projectName": "Practice_87bbb6db"
+        },
+        {
+            "type": "java",
+            "name": "awd2",
+            "request": "launch",
+            "mainClass": "awd2",
+            "projectName": "Practice_87bbb6db"
+        },
+        {
+            "type": "java",
+            "name": "awd",
+            "request": "launch",
+            "mainClass": "awd",
+            "projectName": "Practice_87bbb6db"
+        },
+        {
+            "type": "java",
+            "name": "Serialization",
+            "request": "launch",
+            "mainClass": "Serialization",
+            "projectName": "Practice_87bbb6db"
+        },
+        {
+            "type": "java",
+            "name": "serialization",
+            "request": "launch",
+            "mainClass": "serialization",
+            "projectName": "Practice_87bbb6db"
+        }
+    ]
+}
