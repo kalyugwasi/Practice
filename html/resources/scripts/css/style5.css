@@ -1,10 +1,16 @@
 .flex-container {
     display: flex;
-    background: #e3e3e3;
+    flex-flow: row wrap;
+    align-items: center;
     padding: 10px;
+    height: 300px;
     border: 1px solid #cccccc;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .flex-container > div{
-    border:2px solid grey;
+    flex: 1 1 20px;
+    text-align: center;
+    margin: 5px;
+    padding: 10px;
+    background: #4CAF50;
 }
