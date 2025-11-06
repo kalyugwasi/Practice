@@ -14,3 +14,15 @@
     padding: 10px;
     background: #4CAF50;
 }
+.footer {
+    display: flex;
+    justify-content: space-between; /* Distribute space evenly between the items */
+    background-color: lightblue;
+    padding: 10px;
+    bottom: 0px;
+}
+
+.footer-item {
+    padding: 5px;
+    margin: 5px;
+}
