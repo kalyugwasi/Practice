@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "insem2",
+            "request": "launch",
+            "mainClass": "insem2",
+            "projectName": "Practice_87bbb6db"
+        },
+        {
+            "type": "java",
             "name": "awdpractice",
             "request": "launch",
             "mainClass": "awdpractice",
