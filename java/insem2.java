@@ -1,36 +1,29 @@
 import java.io.*;
-import java.util.*;
+
+class EmptyFileException extends Exception {
+    EmptyFileException(String message) {
+        super(message);
+    }
+}
 
 public class insem2 {
     public static void main(String[] args) {
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("Enter your data:");
-            String data = sc.nextLine();
-            sc.close();
-
-            // Write to file
-            try (FileOutputStream fw = new FileOutputStream("java\\bbb.txt")) {
-                fw.write(data.getBytes());
-                fw.close();
+            System.out.println("------Programe Started------");
+        try (FileInputStream file = new FileInputStream("java\\bbb.txt")){
+            if (file.available() == 0){
+                throw new EmptyFileException("File is empty!");
+            }else{
+                System.out.println("File has content.");
             }
-            System.out.println("Data successfully written to bbb.txt");
-
-            // Read from file
-            try (FileReader fr = new FileReader("java\\bbb.txt")) {
-                StringBuilder numericLine = new StringBuilder();
-                StringBuilder charLine = new StringBuilder();
-
-                int ch;
-                while ((ch = fr.read()) != -1) {
-                    numericLine.append(ch).append(" ");
-                    charLine.append((char) ch);
-                }
-                fr.close();
-                System.out.println(numericLine.toString());
-                System.out.println(charLine.toString());
-            } // <-- you forgot this closing brace
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage() + " file");
+        } 
+        catch (EmptyFileException e) {
+            System.out.println("Exception caught: " + e.getMessage());
+        } 
+        catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        } 
+        finally {
+            System.out.println("Program ended.");
         }
     }
 }
