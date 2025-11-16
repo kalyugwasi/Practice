@@ -1,28 +1,72 @@
-.flex-container {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
-    padding: 10px;
-    height: 300px;
-    border: 1px solid #cccccc;
-    justify-content: space-around;
+body{
+    background-color: bisque;
 }
-.flex-container > div{
-    flex: 1 1 20px;
-    text-align: center;
-    margin: 5px;
-    padding: 10px;
-    background: #4CAF50;
-}
-.footer {
+.product-container {
     display: flex;
-    justify-content: space-between; /* Distribute space evenly between the items */
-    background-color: lightblue;
-    padding: 10px;
-    bottom: 0px;
+    flex-wrap: wrap; /* Allow multiple lines of product cards */
+    gap: 20px; /* Space between product cards */
+    background-color: bisque;
+}
+.product-card {
+    flex: 1; /* Allow cards to grow and fill the space */
+    min-width: 200px; /* Minimum width of a card */
+    display: flex;
+    flex-direction: column; /* Stack card content vertically */
+    justify-content: space-between; /* Distribute space evenly between content */
+    padding: 20px;
+    border: 1px solid lightgrey;
+    background-color: lightskyblue;
 }
 
-.footer-item {
-    padding: 5px;
-    margin: 5px;
+.product-card img {
+    border-radius: 80%;
+    max-width: 100%; /* Make the image responsive */
+    height: auto;
+}
+
+.product-card h2 {
+    margin: 10px 0;
+}
+
+.product-card p {
+    flex-grow: 1; /* Allow description to take up available space */
+}
+
+.product-card button {
+    align-self: center; /* Center the button horizontally */
+    padding: 10px 20px;
+    background-color:#B0FC38 ;
+}
+.product-card button:hover{
+    background-color:#028A0F ;
+}
+.testimonial-container{
+    display:flex;
+    flex-wrap: wrap;
+    gap:20px;
+    background-color: bisque;
+    padding: 20px;
+}
+.testimonial{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border:1px solid #eee;
+    background-color: white;
+}
+.testimonial img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+.testimonial p{
+    flex-grow: 1;
+    text-align: center;
+}
+.testimonial .name{
+    font-weight: bolder;
+    margin-top: 20px;
 }
