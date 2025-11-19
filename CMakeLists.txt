@@ -3,7 +3,7 @@ project(Practice)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Practice cpp/drawing.cpp)
+add_executable(Practice )
 
 # Add include/lib paths (only needed if CLion can't auto-detect them)
 include_directories("D:/Clion 2025.2.2/bin/mingw/include")
