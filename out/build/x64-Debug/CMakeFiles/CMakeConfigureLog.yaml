@@ -75,7 +75,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -92,6 +91,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -122,11 +124,11 @@ events:
       
       The output was:
       0
-      Microsoft (R) C/C++ Optimizing Compiler Version 19.50.35717 for x64
+      Microsoft (R) C/C++ Optimizing Compiler Version 19.50.35718 for x64
       Copyright (C) Microsoft Corporation.  All rights reserved.
       
       CMakeCCompilerId.c
-      Microsoft (R) Incremental Linker Version 14.50.35717.0
+      Microsoft (R) Incremental Linker Version 14.50.35718.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
       
       /out:CMakeCCompilerId.exe 
@@ -215,7 +217,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -229,6 +230,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -279,7 +283,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -296,6 +299,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -364,7 +370,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -378,6 +383,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -504,9 +512,6 @@ events:
       - "C:/Program Files/Azure Data Studio/bin/lld-link.com"
       - "C:/Program Files/Azure Data Studio/bin/lld-link.exe"
       - "C:/Program Files/Azure Data Studio/bin/lld-link"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.com"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.exe"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link"
       - "C:/Users/himan/.dotnet/tools/lld-link.com"
       - "C:/Users/himan/.dotnet/tools/lld-link.exe"
       - "C:/Users/himan/.dotnet/tools/lld-link"
@@ -546,6 +551,15 @@ events:
       - "C:/MinGW/bin/lld-link.com"
       - "C:/MinGW/bin/lld-link.exe"
       - "C:/MinGW/bin/lld-link"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.com"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.exe"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link"
+      - "C:/mingw64/bin/lld-link.com"
+      - "C:/mingw64/bin/lld-link.exe"
+      - "C:/mingw64/bin/lld-link"
+      - "C:/Users/himan/mingw64/lld-link.com"
+      - "C:/Users/himan/mingw64/lld-link.exe"
+      - "C:/Users/himan/mingw64/lld-link"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -604,7 +618,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -621,6 +634,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -687,7 +703,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -701,6 +716,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -751,7 +769,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -768,6 +785,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -834,7 +854,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -848,6 +867,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -925,7 +947,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -942,6 +963,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1008,7 +1032,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -1022,6 +1045,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -1072,7 +1098,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -1089,6 +1114,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1162,7 +1190,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -1179,6 +1206,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1209,11 +1239,11 @@ events:
       
       The output was:
       0
-      Microsoft (R) C/C++ Optimizing Compiler Version 19.50.35717 for x64
+      Microsoft (R) C/C++ Optimizing Compiler Version 19.50.35718 for x64
       Copyright (C) Microsoft Corporation.  All rights reserved.
       
       CMakeCXXCompilerId.cpp
-      Microsoft (R) Incremental Linker Version 14.50.35717.0
+      Microsoft (R) Incremental Linker Version 14.50.35718.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
       
       /out:CMakeCXXCompilerId.exe 
@@ -1302,7 +1332,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -1316,6 +1345,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -1442,9 +1474,6 @@ events:
       - "C:/Program Files/Azure Data Studio/bin/lld-link.com"
       - "C:/Program Files/Azure Data Studio/bin/lld-link.exe"
       - "C:/Program Files/Azure Data Studio/bin/lld-link"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.com"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.exe"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link"
       - "C:/Users/himan/.dotnet/tools/lld-link.com"
       - "C:/Users/himan/.dotnet/tools/lld-link.exe"
       - "C:/Users/himan/.dotnet/tools/lld-link"
@@ -1484,6 +1513,15 @@ events:
       - "C:/MinGW/bin/lld-link.com"
       - "C:/MinGW/bin/lld-link.exe"
       - "C:/MinGW/bin/lld-link"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.com"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link.exe"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/lld-link"
+      - "C:/mingw64/bin/lld-link.com"
+      - "C:/mingw64/bin/lld-link.exe"
+      - "C:/mingw64/bin/lld-link"
+      - "C:/Users/himan/mingw64/lld-link.com"
+      - "C:/Users/himan/mingw64/lld-link.exe"
+      - "C:/Users/himan/mingw64/lld-link"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.com"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link.exe"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/lld-link"
@@ -1542,7 +1580,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -1559,6 +1596,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1628,7 +1668,6 @@ events:
       - "C:/Users/himan/AppData/Local/Microsoft/WindowsApps/"
       - "C:/Users/himan/AppData/Local/GitHubDesktop/bin/"
       - "C:/Program Files/Azure Data Studio/bin/"
-      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
       - "C:/Users/himan/.dotnet/tools/"
       - "C:/Users/himan/AppData/Local/Programs/Ollama/"
       - "C:/Users/himan/AppData/Local/Packages/PythonSoftwareFoundation.Pyth/"
@@ -1642,6 +1681,9 @@ events:
       - "C:/Users/himan/AppData/Local/JetBrains/Toolbox/scripts/"
       - "C:/msys64/ucrt64/bin/"
       - "C:/MinGW/bin/"
+      - "C:/Users/himan/AppData/Local/Programs/Microsoft VS Code/bin/"
+      - "C:/mingw64/bin/"
+      - "C:/Users/himan/mingw64/"
       - "D:/vsc/Common7/IDE/PrivateAssemblies/runtimes/win-x64/native/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/"
       - "D:/vsc/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/"
@@ -1731,7 +1773,6 @@ events:
         - "C:\\Users\\himan\\AppData\\Local\\Microsoft\\WindowsApps"
         - "C:\\Users\\himan\\AppData\\Local\\GitHubDesktop\\bin"
         - "C:\\Program Files\\Azure Data Studio\\bin"
-        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
         - "C:\\Users\\himan\\AppData\\Local\\Programs\\Ollama"
         - "C:\\Users\\himan\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Pyth"
@@ -1748,6 +1789,9 @@ events:
         - "C:\\msys64\\ucrt64\\bin"
         - "C:\\MinGW\\bin"
         - "C:\\Users\\himan\\.dotnet\\tools"
+        - "C:\\Users\\himan\\AppData\\Local\\Programs\\Microsoft VS Code\\bin"
+        - "C:\\mingw64\\bin"
+        - "C:\\Users\\himan\\mingw64"
         - "D:\\vsc\\Common7\\IDE\\PrivateAssemblies\\runtimes\\win-x64\\native"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin"
         - "D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
@@ -1768,8 +1812,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-3nw0lf"
-      binary: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-3nw0lf"
+      source: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-71o8ix"
+      binary: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-71o8ix"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
       CMAKE_C_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -1778,11 +1822,11 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-3nw0lf'
+        Change Dir: 'C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-71o8ix'
         
-        Run Build Command(s): D:\\VSC\\COMMON7\\IDE\\COMMONEXTENSIONS\\MICROSOFT\\CMAKE\\Ninja\\ninja.exe -v cmTC_60bd9
-        [1/2] D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_60bd9.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_60bd9.dir\\ /FS -c D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCCompilerABI.c
-        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_60bd9.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_60bd9.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_60bd9.exe /implib:cmTC_60bd9.lib /pdb:cmTC_60bd9.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): D:\\VSC\\COMMON7\\IDE\\COMMONEXTENSIONS\\MICROSOFT\\CMAKE\\Ninja\\ninja.exe -v cmTC_d34a7
+        [1/2] D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo   /DWIN32 /D_WINDOWS  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_d34a7.dir\\CMakeCCompilerABI.c.obj /FdCMakeFiles\\cmTC_d34a7.dir\\ /FS -c D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCCompilerABI.c
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_d34a7.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_d34a7.dir\\CMakeCCompilerABI.c.obj  /out:cmTC_d34a7.exe /implib:cmTC_d34a7.lib /pdb:cmTC_d34a7.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -1811,7 +1855,7 @@ events:
       - "CMakeLists.txt:2 (project)"
     message: |
       Running the C compiler's linker: "D:/vsc/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/link.exe" "-v"
-      Microsoft (R) Incremental Linker Version 14.50.35717.0
+      Microsoft (R) Incremental Linker Version 14.50.35718.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
   -
     kind: "try_compile-v1"
@@ -1822,8 +1866,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-8rvf66"
-      binary: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-8rvf66"
+      source: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-51tg4r"
+      binary: "C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-51tg4r"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Ob0 /Od /RTC1"
@@ -1833,11 +1877,11 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-8rvf66'
+        Change Dir: 'C:/Users/himan/Documents/GitHub/Practice/out/build/x64-Debug/CMakeFiles/CMakeScratch/TryCompile-51tg4r'
         
-        Run Build Command(s): D:\\VSC\\COMMON7\\IDE\\COMMONEXTENSIONS\\MICROSOFT\\CMAKE\\Ninja\\ninja.exe -v cmTC_fcca8
-        [1/2] D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_fcca8.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_fcca8.dir\\ /FS -c D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp
-        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_fcca8.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_fcca8.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_fcca8.exe /implib:cmTC_fcca8.lib /pdb:cmTC_fcca8.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
+        Run Build Command(s): D:\\VSC\\COMMON7\\IDE\\COMMONEXTENSIONS\\MICROSOFT\\CMAKE\\Ninja\\ninja.exe -v cmTC_9e84e
+        [1/2] D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP   /DWIN32 /D_WINDOWS /EHsc  /Ob0 /Od /RTC1 -MDd -Zi /showIncludes /FoCMakeFiles\\cmTC_9e84e.dir\\CMakeCXXCompilerABI.cpp.obj /FdCMakeFiles\\cmTC_9e84e.dir\\ /FS -c D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-4.1\\Modules\\CMakeCXXCompilerABI.cpp
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && D:\\vsc\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_9e84e.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests  -- D:\\vsc\\VC\\Tools\\MSVC\\14.50.35717\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_9e84e.dir\\CMakeCXXCompilerABI.cpp.obj  /out:cmTC_9e84e.exe /implib:cmTC_9e84e.lib /pdb:cmTC_9e84e.pdb /version:0.0 /machine:x64  /debug /INCREMENTAL /subsystem:console  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib && cd ."
         
       exitCode: 0
   -
@@ -1866,6 +1910,6 @@ events:
       - "CMakeLists.txt:2 (project)"
     message: |
       Running the CXX compiler's linker: "D:/vsc/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/link.exe" "-v"
-      Microsoft (R) Incremental Linker Version 14.50.35717.0
+      Microsoft (R) Incremental Linker Version 14.50.35718.0
       Copyright (C) Microsoft Corporation.  All rights reserved.
 ...

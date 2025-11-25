@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\himan\\Documents\\GitHub\\Practice\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\himan\\Documents\\GitHub\\Practice\\html\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:html\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\himan\\Documents\\GitHub\\Practice\\cpp\\stars.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:cpp\\stars.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
@@ -27,19 +23,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "index.html",
-              "DocumentMoniker": "C:\\Users\\himan\\Documents\\GitHub\\Practice\\html\\index.html",
-              "RelativeDocumentMoniker": "html\\index.html",
-              "ToolTip": "C:\\Users\\himan\\Documents\\GitHub\\Practice\\html\\index.html",
-              "RelativeToolTip": "html\\index.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-11-23T06:42:10.133Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "stars.cpp",
               "DocumentMoniker": "C:\\Users\\himan\\Documents\\GitHub\\Practice\\cpp\\stars.cpp",
               "RelativeDocumentMoniker": "cpp\\stars.cpp",

@@ -5,7 +5,7 @@ int main(){
     cout<<"Enter number of elements: ";
     cin>>n;
     cout<<"Enter "<<n<<" Numbers: ";
-    for (int i=1;i<n;i++){
+    for (int i=0;i<n;i++){
         cin>>arr[i];
     }
     for (int i=1;i<n;i++){
@@ -19,4 +19,5 @@ int main(){
     for (int i=0;i<n;i++){
         cout<<arr[i]<<" ";
     }
+    return 0;
 }
