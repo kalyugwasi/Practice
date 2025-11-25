@@ -2,7 +2,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run C++ Program",
+            "name": "Run Normal C++",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\.bin\\${fileBasenameNoExtension}.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:\\mingw64\\bin\\gdb.exe",
+            "preLaunchTask": "Build Normal C++"
+        },
+        {
+            "name": "Run Graphics C++",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}\\.bin\\${fileBasenameNoExtension}.exe",
@@ -12,18 +25,7 @@
             "externalConsole": true,
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\mingw64\\bin\\gdb.exe",
-            "preLaunchTask": "${input:chooseBuild}"
-        }
-    ],
-    "inputs": [
-        {
-            "id": "chooseBuild",
-            "type": "pickString",
-            "description": "Choose build type",
-            "options": [
-                "Build Normal C++",
-                "Build Graphics C++"
-            ]
+            "preLaunchTask": "Build Graphics C++"
         }
     ]
 }
