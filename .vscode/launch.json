@@ -2,29 +2,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}"
-            ],
-            "name": "Launch Extension",
-            "outFiles": [
-                "${workspaceFolder}/out/**/*.js"
-            ],
-            "preLaunchTask": "npm",
-            "request": "launch",
-            "type": "extensionHost"
-        },
-        {
-            "name": "g++ - Debug Active File",
+            "name": "Run C++ Program",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}\\.bin\\${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
+            "cwd": "${workspaceFolder}",
             "externalConsole": true,
             "MIMode": "gdb",
-            "preLaunchTask": "C/C++: g++ build active file"
+            "miDebuggerPath": "C:\\mingw64\\bin\\gdb.exe",
+            "preLaunchTask": "${input:chooseBuild}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "chooseBuild",
+            "type": "pickString",
+            "description": "Choose build type",
+            "options": [
+                "Build Normal C++",
+                "Build Graphics C++"
+            ]
         }
     ]
 }

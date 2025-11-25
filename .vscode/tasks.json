@@ -2,22 +2,38 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "C/C++: g++ build active file",
+            "label": "Build Normal C++",
             "type": "shell",
             "command": "g++",
             "args": [
+                "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}/${fileBasenameNoExtension}.exe"
+                "${workspaceFolder}\\.bin\\${fileBasenameNoExtension}.exe"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            "problemMatcher": ["$gcc"],
+            "group": "build"
+        },
+        {
+            "label": "Build Graphics C++",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}\\.bin\\${fileBasenameNoExtension}.exe",
+                "-lbgi",
+                "-lgdi32",
+                "-lcomdlg32",
+                "-luuid",
+                "-loleaut32",
+                "-lole32"
+            ],
+            "problemMatcher": ["$gcc"],
+            "group": "build"
         }
     ]
 }
