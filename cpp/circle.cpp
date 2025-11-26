@@ -4,7 +4,7 @@
 int main() {
     int gd = DETECT, gm;
     initgraph(&gd, &gm, "");
-    circle(200, 300, 100);
+    circle(200, 200, 100);
     getch();
     closegraph();
     return 0;
