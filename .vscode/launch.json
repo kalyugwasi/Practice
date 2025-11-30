@@ -10,7 +10,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/cpp",
             "environment": [],
-            "console": "externalTerminal", 
+            "console": "internalTerminal", 
             "MIMode": "gdb",
             "miDebuggerPath": "C:/mingw64/bin/gdb.exe",
             "preLaunchTask": "Build Normal C++"
