@@ -48,6 +48,12 @@ int main() {
     }
     
     // Display result
+    for (int i = 0; i < rows1; i++) {
+        for (int j = 0; j < cols2; j++) {
+            cout << matrix1[i][j] << " ";
+        }
+        cout << endl;
+    }
     cout << "Result matrix:" << endl;
     for (int i = 0; i < rows1; i++) {
         for (int j = 0; j < cols2; j++) {
