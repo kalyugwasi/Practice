@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "C:/mingw64/bin/g++.exe",
             "args": [
-                "${workspaceFolder}/Examples/${fileBasename}",
+                "${workspaceFolder}/cpp/normal/${fileBasename}",
                 "-I", "C:/mingw64/include",
                 "-L", "C:/mingw64/lib",
                 "-o",
@@ -20,7 +20,7 @@
             "type": "shell",
             "command": "C:/mingw64/bin/g++.exe",
             "args": [
-                "${workspaceFolder}/Examples/${fileBasename}",
+                "${workspaceFolder}/cpp/graphics/${fileBasename}",
                 "-I", "C:/mingw64/include",
                 "-L", "C:/mingw64/lib",
                 "-o",
