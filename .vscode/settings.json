@@ -1,5 +1,8 @@
 {
     "aws.telemetry": false,
     "python.analysis.typeCheckingMode": "strict",
-    "java.debug.settings.onBuildFailureProceed": true
+    "java.debug.settings.onBuildFailureProceed": true,
+    "files.associations": {
+        "cmath": "c"
+    }
 }
