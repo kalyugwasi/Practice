@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 public class awdButton extends Frame {
     
-    awdButton() {  // constructor name must match the class name
+    awdButton() { 
         Button btn = new Button("Jecrc");
         btn.setBounds(100, 100, 100, 50);
         add(btn);
