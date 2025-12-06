@@ -10,7 +10,7 @@ int main()
     int gd = DETECT, gm;
 
     // location of left, top, right, bottom
-    int left = 150, top = 150;
+    int left = 150, top = 50;
     int right = 450, bottom = 450;
 
     // initgraph initializes the graphics system

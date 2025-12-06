@@ -24,7 +24,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/cpp/graphics",
             "environment": [],
-            "console": "externalTerminal",
+            "console": "internalTerminal",
             "MIMode": "gdb",
             "miDebuggerPath": "C:/mingw64/bin/gdb.exe",
             "preLaunchTask": "Build Graphics C++"
