@@ -2,13 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "first",
-            "request": "launch",
-            "mainClass": "first",
-            "projectName": "Practice_87bbb6db"
-        },
-        {
             "name": "Run Normal C++",
             "type": "cppdbg",
             "request": "launch",

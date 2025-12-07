@@ -2,9 +2,11 @@ body{
     width: 700px;
     margin:auto;
     font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
-    background-repeat: no-repeat;
-    background-color: aliceblue;
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-image: url('/html//resources/img/background.png');
     line-height: inherit;
+    background-attachment:scroll;
 }
 h1 {
     color: black;
@@ -13,15 +15,17 @@ h1 {
     font-size: 28px;
     font-weight: bolder;
 }
+h2,p,div,li,main,section{
+    background-color: #DEDBD9;
+}
 header {
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0; /* Set to stick at the top of the viewport */
-    background-color: white;
+    background-color: #DEDBD9 ;
     color: white;
     line-height: 1.5;
     width: 100%;
-    background-color: aliceblue;
 }
 .intro {
         position: sticky;
@@ -87,7 +91,7 @@ line-height: 1.7;
     color:hotpink;
 }
 footer {
-    background-color: white;
+    background-color: #DEDBD9;
     text-align: center;
     position: fixed;
     bottom: 0;
