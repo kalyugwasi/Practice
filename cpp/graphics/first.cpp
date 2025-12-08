@@ -12,6 +12,7 @@ void circlepoint(int x, int y, int xc, int yc) {
     putpixel(-y + xc, -x + yc, WHITE);
     putpixel(x + xc, -y + yc, WHITE);
     putpixel(y + xc, -x + yc, WHITE);
+    delay(5);
 }
 
 int main() {
