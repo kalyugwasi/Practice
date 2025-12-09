@@ -1,0 +1,36 @@
+body{
+    background-color: bisque;
+    /*background-image: url("/html/resources/img/background.png");*/
+    margin:auto
+}
+header,p,h1,img,section,main,h2,div,ul,li,footer{
+    border: 2px dotted black;
+    border-radius: 15px;
+    margin:10px;
+    padding 5px;
+}
+header h1{
+    text-align: center;
+    font-size: 40px;
+}
+header div{
+    justify-content: space-between;
+    display: flex;
+}
+header p{
+    font-size: 20px;
+    width: 400px;
+}
+header img{
+    background-color: lightcoral;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    height:200px;
+    width:200px;
+}
+main{
+    bottom: 20px;
+}
+footer{
+    width: auto;
+    text-align: center;
+}
