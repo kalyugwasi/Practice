@@ -2,7 +2,7 @@
 using namespace std;
 
 int main() {
-    int delimiter = 3;
+    int delimiter = 5;
 
     for (int i = 0; i < delimiter; i++) {
         for (int j = 0; j < delimiter; j++) {

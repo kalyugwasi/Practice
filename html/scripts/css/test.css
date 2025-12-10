@@ -1,13 +1,18 @@
 body{
-    background-color: bisque;
-    /*background-image: url("/html/resources/img/background.png");*/
-    margin:auto
+    width: 800px;
+    background-image: url("/html/resources/img/background.png");
+    margin:auto;
+    background-size: cover;
 }
-header,p,h1,img,section,main,h2,div,ul,li,footer{
+header,p,h1,h3,img,section,main,div,ul,li,footer{
     border: 2px dotted black;
     border-radius: 15px;
     margin:10px;
     padding 5px;
+    background-color: #f9f9f9;
+}
+header{
+    background-color: wheat;
 }
 header h1{
     text-align: center;
@@ -20,12 +25,22 @@ header div{
 header p{
     font-size: 20px;
     width: 400px;
+    text-align: center;
+    padding: 20px;
 }
 header img{
-    background-color: lightcoral;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
     height:200px;
     width:200px;
+}
+h2{
+    border-radius: 15px;
+    margin:0px;
+    padding: 5px;
+    font-size: 24px;
+    background-color: #1481B8;
+    color: white;
+    text-transform: capitalize;
 }
 main{
     bottom: 20px;
@@ -34,3 +49,50 @@ footer{
     width: auto;
     text-align: center;
 }
+@media screen and (max-width: 800px) {
+    body{
+        width: auto;
+    }
+    header img{
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+}
+@media screen and (max-width: 400px) {
+    body{
+        width: 100%;
+        background-size: cover;
+    }
+    header,main,footer,section{
+        margin: 0;
+        border-radius: 0px;
+    }
+    header p{
+        text-align: justify;
+    }
+    header img{
+        float: right;
+        height: 50px;
+        width: 50px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+}
+@media screen and (max-width: 520px) {
+    body{
+        width: 100%;
+        background-size: cover;
+    }
+    header,main,footer,section{
+        margin: 0;
+        border-radius: 0px;
+    }
+    header img{
+        align-self: center;
+        float: right;
+        height: 50px;
+        width: 50px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    }
+    header p{
+        text-align: justify;
+    }
+}flex
