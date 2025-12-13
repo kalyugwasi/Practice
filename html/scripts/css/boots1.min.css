@@ -1,0 +1,18 @@
+@import url("/boots/css/bootstrap.min.css");
+@import url("/boots/css/bootstrap.css.map");
+@import url("/boots/css/bootstrap.min.css.map");
+
+.header img{
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 20%;
+}
+.btn{
+    border-radius: 15px;
+}
+.btn:hover{ background-color: indigo; }
+body{
+    background: linear-gradient(rgb(6, 8, 66) 0%,
+                rgb(71, 66, 128) 50%,
+                rgb(57, 106, 145) 100%);
+}
