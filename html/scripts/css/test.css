@@ -3,6 +3,9 @@ body{
     background-image: url("/html/resources/img/background.png");
     margin:auto;
     background-size: cover;
+    background: linear-gradient(rgb(6, 8, 66) 0%,
+                rgb(71, 66, 128) 50%,
+                rgb(57, 106, 145) 100%);
 }
 header,p,h1,h3,img,section,main,div,ul,li,footer{
     border: 2px dotted black;
@@ -95,4 +98,21 @@ footer{
     header p{
         text-align: justify;
     }
-}flex
+}
+.glass-container {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    background: rgba(255, 255, 255, 0.10);
+    /* glass */
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 25px;
+    padding: 5px;
+}
+
+.glass-inner {
+    background: rgba(230, 225, 252, 0.85);
+    /* inner pane */
+    border-radius: 10px;
+    padding: 20px;
+}
