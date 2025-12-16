@@ -1,33 +1,33 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Run Normal C++",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/.bin/${fileBasenameNoExtension}.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/cpp/normal",
-            "environment": [],
-            "console": "internalTerminal",
-            "MIMode": "gdb",
-            "miDebuggerPath": "C:/mingw64/bin/gdb.exe",
-            "preLaunchTask": "Build Normal C++"
-        },
-        {
-            "name": "Run Graphics C++",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/.bin/${fileBasenameNoExtension}.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/cpp/graphics",
-            "environment": [],
-            "console": "internalTerminal",
-            "MIMode": "gdb",
-            "miDebuggerPath": "C:/mingw64/bin/gdb.exe",
-            "preLaunchTask": "Build Graphics C++"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Normal C++",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/.bin/${fileBasenameNoExtension}.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/cpp/normal",
+      "environment": [],
+      "console": "internalTerminal",
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/mingw64/bin/gdb.exe",
+      "preLaunchTask": "Build Normal C++"
+    },
+    {
+      "name": "Run Graphics C++",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/.bin/${fileBasenameNoExtension}.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/cpp/graphics",
+      "environment": [],
+      "console": "internalTerminal",
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/mingw64/bin/gdb.exe",
+      "preLaunchTask": "Build Graphics C++"
+    }
+  ]
 }
