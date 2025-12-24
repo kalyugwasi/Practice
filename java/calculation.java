@@ -1,6 +1,6 @@
-import Calculation.Calculator;  // import from the package
+import Calculation.Calculator; // import from the package
 
-public class  Calculation {
+public class Calculation {
     public static void main(String[] args) {
         Calculator calc = new Calculator();
 
