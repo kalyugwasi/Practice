@@ -1,6 +1,10 @@
 #
 # @lc app=leetcode id=752 lang=python3
 # @lc code=start
+import pysnooper
+from collections import deque
+from typing import List
+@pysnooper.snoop()
 class Solution:
     def openLock(self, deadends: List[str], target: str) -> int:
         if "0000" in deadends:
@@ -25,5 +29,8 @@ class Solution:
                     visit.add(child)
                     q.append([child,turns+1])
         return -1
+sol = Solution()
+print(sol.openLock(["0201","0101","0102","1212","2002"],"0202"))
+
 # @lc code=end
 
