@@ -3,8 +3,7 @@ using namespace std;
 int main(){
     ios::sync_with_stdio(0);
     cin.tie(0);
-    int a = 123, b = 678578789456;
-    string x ="monkey",s;
+    long long int a = 1423, b = 57856;
+    string x ="monkey";
     cout << a << " " << b << " " << "\n" << x;
-    getline(cin,s);
 }
