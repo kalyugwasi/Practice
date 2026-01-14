@@ -13,7 +13,5 @@ class Solution:
             if n not in res:
                 res[n] = i
         return [res[n] for n in nums]
-            
-
 # @lc code=end
 
