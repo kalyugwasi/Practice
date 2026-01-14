@@ -1,3 +1,8 @@
+#define F first
+#define S second
+#define PB push_back
+#define MP make_pair
+#define REP(i,a,b) for (int i=a;i<b;i++)
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -6,8 +11,13 @@ int main() {
     cin.tie(nullptr);
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
-    
-    double x = 0.3*3+0.1;
-    printf("%.55f\n",x);
+    typedef vector<int> vi;
+    vi array = {-1,2,4,-3,5,2,-5,2};
+    int best=0,sum=0,n = array.size();
+    REP(k,0,n){
+        sum = max(array[k],sum+array[k]);
+        best = max(best,sum);
+    }
+    cout<< best << "\n";
     return 0;
 }
