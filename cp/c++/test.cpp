@@ -2,7 +2,7 @@
 #define S second
 #define PB push_back
 #define MP make_pair
-#define REP(i,a,b) for (int i=a;i<b;i++)
+#define REP(i,a,b) for (auto i=a;i!=b;i++)
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -12,12 +12,10 @@ int main() {
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     typedef vector<int> vi;
-    vi array = {-1,2,4,-3,5,2,-5,2};
-    int best=0,sum=0,n = array.size();
-    REP(k,0,n){
-        sum = max(array[k],sum+array[k]);
-        best = max(best,sum);
+    typedef set<int> si;
+    si s = {-1,2,4,-3,5,2,-5,2};
+    REP(it,s.begin(),s.end()){
+        cout<< *it <<"\n";
     }
-    cout<< best << "\n";
     return 0;
 }
