@@ -1,7 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void print(priority_queue<int> s) {
+typedef priority_queue<int> pq;
+
+void print(pq s) {
+    if (s.empty()) {
+        cout << "[ ]\n";
+        return;
+    }
+
     cout << "[ ";
     while (!s.empty()) {
         cout << s.top() << ' ';
@@ -14,7 +21,6 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     freopen("output.txt", "w", stdout);
-    typedef priority_queue<int> pq; 
     pq s;
     s.push(3); print(s);
     s.push(2); print(s);
@@ -22,6 +28,7 @@ int main() {
     s.push(9); print(s);
     s.push(4); print(s);
     s.push(4); print(s);
+    s.pop(); print(s);
     s.pop(); print(s);
     s.pop(); print(s);
     s.pop(); print(s);
