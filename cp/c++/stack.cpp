@@ -1,12 +1,5 @@
-#define PB push_back
-#define PF push_front
-#define PopB pop_back
-#define PopF pop_front
-#define MP make_pair
-#define REP(i,a,b) for (auto i=a;i!=b;i++)
 #include <bits/stdc++.h>
 using namespace std;
-
 void print(stack<int> s) {
     cout << "[ ";
     while (!s.empty()) {
