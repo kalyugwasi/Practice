@@ -32,11 +32,11 @@ t = int(input())
 for _ in range(t):
     n = int(input())
     a = list(map(int, input().split()))
-    print(sum(a))
+    print(sum(a)+9)
 
 # ================== SOLUTION END ==================
 
 if LOCAL:
     sys.stdout.flush()
-#python cfjudge.py
-#python test.py
+#cfjudge
+#python run.py
