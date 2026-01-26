@@ -28,20 +28,7 @@ input = sys.stdin.readline
 t = int(input())
 for _ in range(t):
     n = int(input())
-    b = [(int(x)) for x in input().split()]
-    a = [b[0]]
-    for i in range(1,len(b)):
-        if b[i] >= a[-1]:
-            a.append(b[i])
-            continue
-        else:
-            p = b[i]
-            while p > a[-1] or p > b[i]:
-                p -= 1
-            a.append(p)
-            a.append(b[i])
-    print(len(a))
-    print(*a)
+    a = [(int(x)) for x in input().split()]
     
 # ================== SOLUTION END ==================
 
