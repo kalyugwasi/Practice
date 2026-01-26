@@ -89,3 +89,23 @@ with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
     f.write(final_output)
 
 # All print statements have been removed for a silent terminal experience.
+# ... (rest of your existing code above)
+
+with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
+    f.write(final_output)
+
+# --- NEW SECTION: SAVE SUCCESSFUL SOLUTION ---
+if all_passed:
+    # Define the destination directory
+    # Adjust "800" if the difficulty rating needs to be dynamic
+    dest_dir = os.path.join(BASE_DIR, "problems", "800")
+    
+    # Create the directory if it doesn't exist
+    os.makedirs(dest_dir, exist_ok=True)
+    
+    # Define the destination file path (e.g., problems/800/1890A.py)
+    dest_file = os.path.join(dest_dir, f"{problem_name}.py")
+    
+    # Copy test.py to the new location
+    shutil.copyfile(SOLUTION_FILE, dest_file)
+# ---------------------------------------------

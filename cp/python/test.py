@@ -36,6 +36,7 @@ for _ in range(t):
         print("No")
     else:
         print("Yes")
+        
 # ================== SOLUTION END ==================
 
 if LOCAL:
