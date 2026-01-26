@@ -38,3 +38,5 @@ for _ in range(t):
 
 if LOCAL:
     sys.stdout.flush()
+#python cfjudge.py
+#python test.py
