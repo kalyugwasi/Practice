@@ -24,23 +24,20 @@ LOCAL = setup_io()
 input = sys.stdin.readline
 
 # ================== SOLUTION START ==================
-
+def check(s,x):
+    return s in x
 t = int(input())
 for _ in range(t):
-    a = [0]*10
-    res = 0
-    for i in range(10):
-        a[i] = list(input().strip())
-    for i in range(10):
-        for j in range(10):
-            m = min(i,j) 
-            if m < 5 and a[i][j] == "X":
-                res += m+1
-            elif m > 4 and a[i][j] == "X":
-                res += 8-m
-    print(res)
-    
-                
+    n,m = map(int,input().split())
+    x = str(input().strip())
+    s = str(input().strip())
+    o1 = -1
+    for i in range(7):
+        if o1 == -1 and check(s,x):
+            o1 = i
+        x += x
+    print(o1)
+        
 # ================== SOLUTION END ==================
 
 if LOCAL:

@@ -27,20 +27,10 @@ input = sys.stdin.readline
 
 t = int(input())
 for _ in range(t):
-    a = [0]*10
-    res = 0
-    for i in range(10):
-        a[i] = list(input().strip())
-    for i in range(10):
-        for j in range(10):
-            m = min(i,j) 
-            if m < 5 and a[i][j] == "X":
-                res += m+1
-            elif m > 4 and a[i][j] == "X":
-                res += 8-m
-    print(res)
+    n = int(input())
+    a = list(map(int,input().split()))
+    print(-1*sum(a))
     
-                
 # ================== SOLUTION END ==================
 
 if LOCAL:

@@ -2,6 +2,7 @@ import os
 import subprocess
 import shutil
 import sys
+import re
 
 # ----------------------- PATHS -----------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -49,7 +50,7 @@ for i in range(1, test_count + 1):
     
     shutil.copyfile(input_file, INPUT_TXT)
     
-    # Run the solution silently (redirect stdout/stderr to DEVNULL)
+    # Run the solution silently
     subprocess.run(
         [sys.executable, SOLUTION_FILE], 
         cwd=BASE_DIR,
@@ -88,24 +89,30 @@ final_output = "\n".join(results_log)
 with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
     f.write(final_output)
 
-# All print statements have been removed for a silent terminal experience.
-# ... (rest of your existing code above)
-
-with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
-    f.write(final_output)
-
-# --- NEW SECTION: SAVE SUCCESSFUL SOLUTION ---
+# --- CODEFORCES-TOOLBOX INTEGRATION ---
+# --- FINAL CODEFORCES-TOOLBOX SUBMISSION LOGIC ---
 if all_passed:
-    # Define the destination directory
-    # Adjust "800" if the difficulty rating needs to be dynamic
+    # 1. Archive the code (your requested problems/800 folder)
     dest_dir = os.path.join(BASE_DIR, "problems", "800")
-    
-    # Create the directory if it doesn't exist
     os.makedirs(dest_dir, exist_ok=True)
-    
-    # Define the destination file path (e.g., problems/800/1890A.py)
     dest_file = os.path.join(dest_dir, f"{problem_name}.py")
-    
-    # Copy test.py to the new location
     shutil.copyfile(SOLUTION_FILE, dest_file)
+
+    # 2. Fix for cft: The tool requires a file named exactly after the problem
+    # Example: 1881A.py. Without this, cft's internal lookup returns None.
+    cft_working_file = os.path.join(BASE_DIR, f"{problem_name}.py")
+    shutil.copyfile(SOLUTION_FILE, cft_working_file)
+    
+    print(f"🚀 Attempting cft submission for {problem_name}...")
+    try:
+        # We run the command from BASE_DIR where {problem_name}.py now exists
+        # This ensures the tool finds the file and doesn't hit a NoneType crash
+        subprocess.run(["cft", "submit", problem_name], cwd=BASE_DIR, check=True)
+        print("✅ Submission successful!")
+    except Exception as e:
+        print(f"⚠️ Submission failed. Check if 'cft login' is required: {e}")
+    finally:
+        # 3. Clean up the temporary file to keep the directory tidy
+        if os.path.exists(cft_working_file):
+            os.remove(cft_working_file)
 # ---------------------------------------------
