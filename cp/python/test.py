@@ -1,18 +1,40 @@
-import sys,heapq
+import sys
+import os
 
-if "input.txt" in sys.argv:
-    sys.stdin = open("input.txt","r")
-    sys.stdout = open("output.txt", "w")
+def setup_io():
+    """
+    If running locally with judge folder, redirect I/O.
+    Otherwise (Codeforces), do nothing.
+    """
+    try:
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        judge_dir = os.path.join(base_dir, "..", "judge")
 
+        input_path = os.path.join(judge_dir, "input.txt")
+        output_path = os.path.join(judge_dir, "output.txt")
+
+        if os.path.exists(input_path):
+            sys.stdin = open(input_path, "r")
+            sys.stdout = open(output_path, "w")
+            return True   # local mode
+    except:
+        pass
+
+    return False          # CF mode
+
+
+LOCAL = setup_io()
 input = sys.stdin.readline
+
+# ================== SOLUTION START ==================
 
 t = int(input())
 for _ in range(t):
     n = int(input())
-    a = list(map(int,input().split()))
-    # x,y,z = map(int,input().split())
-    # p = list(map(str,input().strip()))
-    if a[0] == 1:
-        print("Yes")
-    else:
-        print("No")
+    a = list(map(int, input().split()))
+    print(sum(a))
+
+# ================== SOLUTION END ==================
+
+if LOCAL:
+    sys.stdout.flush()
