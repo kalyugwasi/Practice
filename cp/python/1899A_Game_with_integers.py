@@ -9,10 +9,11 @@ input = sys.stdin.readline
 t = int(input())
 for _ in range(t):
     n = int(input())
-    a = list(map(int,input().split()))
     # x,y,z = map(int,input().split())
+    # s = list(map(int,input().split()))
     # p = list(map(str,input().strip()))
-    if a[0] == 1:
-        print("Yes")
+    moves = 10
+    if (n-1)%3==0 or (n+1)%3==0:
+        print("First")
     else:
-        print("No")
+        print("Second")

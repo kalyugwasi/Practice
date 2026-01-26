@@ -12,7 +12,4 @@ for _ in range(t):
     a = list(map(int,input().split()))
     # x,y,z = map(int,input().split())
     # p = list(map(str,input().strip()))
-    if a[0] == 1:
-        print("Yes")
-    else:
-        print("No")
+    
