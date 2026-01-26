@@ -38,14 +38,11 @@ if not os.path.exists(html_path):
         if response.status_code == 200:
             with open(html_path, "w", encoding="utf-8") as f:
                 f.write(response.text)
-            print("✅ problem.html saved (Method: requests)")
         else:
             raise Exception(f"Status code: {response.status_code}")
             
     except Exception as e:
-        print(f"⚠️  requests method failed: {e}")
-        print("🔄 Trying Selenium...")
-        
+                
         # Try Method 2: Selenium
         try:
             from selenium import webdriver
@@ -74,7 +71,6 @@ if not os.path.exists(html_path):
             with open(html_path, "w", encoding="utf-8") as f:
                 f.write(page_source)
             
-            print("✅ problem.html saved (Method: Selenium)")
             
         except Exception as e2:
             print(f"❌ Both methods failed: {e2}")
@@ -107,8 +103,6 @@ if not inputs or not outputs:
     print(f"💡 Check the HTML file at: {html_path}")
     exit(1)
 
-print(f"📦 Found {len(inputs)} test case(s)")
-
 # ---------- Save test cases ----------
 for i, (inp, out) in enumerate(zip(inputs, outputs), 1):
     in_file = os.path.join(problem_folder, f"input{i}.txt")
@@ -126,10 +120,10 @@ for i, (inp, out) in enumerate(zip(inputs, outputs), 1):
 first_input = os.path.join(problem_folder, f"input1.txt")
 if os.path.exists(first_input):
     shutil.copyfile(first_input, INPUT_TXT)
-    print(f"\n📝 Copied input1.txt to judge/input.txt")
-    print("🚀 Ready to solve! Run 'python test.py' to execute your solution")
-    print("🔍 Run 'python cfcheck.py' to test against all cases")
 else:
     print("❌ Could not copy input1.txt")
 
 print(f"\n📁 Test cases saved in: {problem_folder}")
+
+if os.path.exists(html_path):
+    os.remove(html_path)
