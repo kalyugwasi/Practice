@@ -3,6 +3,7 @@ def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
         judge_dir = os.path.join(base_dir, "..", "judge")
+
         input_path = os.path.join(judge_dir, "input.txt")
         output_path = os.path.join(judge_dir, "output.txt")
 
@@ -12,24 +13,32 @@ def setup_io():
             return True
     except:
         pass
+
     return False
 LOCAL = setup_io()
-if not LOCAL:
-    sys.stdin = open(0, 'rb')
-    input = lambda: sys.stdin.readline().decode().rstrip()
-else:
-    input = sys.stdin.readline
+input = sys.stdin.readline
 int1 = lambda: int(input())
-str1 = lambda: input()
-inp = lambda: map(int, input().split())
-ints = lambda: list(map(int, input().split()))
-strs = lambda: input().split()
+str1 = lambda: input().strip()
+def inp(): return map(int, input().split())
+def ints(): return list(map(int, input().split()))
+def strs(): return list(map(str,str1()))
 
 # ================== SOLUTION START ==================
 
 t = int1()
 for _ in range(t):
     n,k = ints()
+    if n%2==0 or (n-k)%2==0:
+        print("YES")
+    else:
+        print("NO")
+    
+        
     
 
 # ================== SOLUTION END ==================
+
+if LOCAL:
+    sys.stdout.flush()
+#cfjudge
+#python run.py
