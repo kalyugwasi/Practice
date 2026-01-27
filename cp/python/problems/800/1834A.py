@@ -1,4 +1,5 @@
 import sys,os
+from collections import Counter
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,15 +30,19 @@ t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    cnt = 0
-    l = 0
-    for r in range(n):
-        if a[r] == 0:
-            cnt = max(cnt, r - l + 1)
-        else:
-            l = r + 1
-    print(cnt)
-            
+    k,l=0,0
+    for i in range(n):
+        if a[i] == 1:
+            k += 1
+        else: l += 1
+    oop =  0
+    while k<l or l%2==1:
+        k += 1
+        l -= 1
+        oop += 1
+    print(oop)
+    
+    
         
     
 
