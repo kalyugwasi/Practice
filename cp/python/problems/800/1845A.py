@@ -1,6 +1,5 @@
 import sys
 import os
-
 def setup_io():
     """
     If running locally with judge folder, redirect I/O.
@@ -28,15 +27,35 @@ def ints(): return list(map(int, input().split()))
 def int1(): return int(input())
 def str1(): return input().strip()
 
+
 # ================== SOLUTION START ==================
 
-t = int(input())
+t = int1()
 for _ in range(t):
-    n = int(input())
-    a = list(map(int, input().split()))
-    
-
+    trg,k,x = inp()
+    if x!= 1:
+        print("YES")
+        print(trg)
+        print(*[1]*trg)
+    else:
+        if k==1:
+            print("NO")
+        else:
+            if trg%2==0:
+                print("YES")
+                print(trg//2)
+                print(*[2]*(trg//2))
+            else:
+                if k>3:
+                    print("YES")
+                    print((trg-3)//2+1)
+                    print(3,*([2]*((n-3)//2)))
+                else:
+                    print("NO")
+        
 # ================== SOLUTION END ==================
 
 if LOCAL:
     sys.stdout.flush()
+#cfjudge
+#python run.py

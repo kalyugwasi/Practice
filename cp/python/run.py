@@ -50,6 +50,10 @@ for i in range(1, test_count + 1):
     
     shutil.copyfile(input_file, INPUT_TXT)
     
+    # Clear output file before running
+    if os.path.exists(OUTPUT_TXT):
+        os.remove(OUTPUT_TXT)
+    
     # Run the solution silently
     subprocess.run(
         [sys.executable, SOLUTION_FILE], 
@@ -89,30 +93,10 @@ final_output = "\n".join(results_log)
 with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
     f.write(final_output)
 
-# --- CODEFORCES-TOOLBOX INTEGRATION ---
-# --- FINAL CODEFORCES-TOOLBOX SUBMISSION LOGIC ---
+# Archive the code if all tests passed
 if all_passed:
-    # 1. Archive the code (your requested problems/800 folder)
     dest_dir = os.path.join(BASE_DIR, "problems", "800")
     os.makedirs(dest_dir, exist_ok=True)
     dest_file = os.path.join(dest_dir, f"{problem_name}.py")
     shutil.copyfile(SOLUTION_FILE, dest_file)
-
-    # 2. Fix for cft: The tool requires a file named exactly after the problem
-    # Example: 1881A.py. Without this, cft's internal lookup returns None.
-    cft_working_file = os.path.join(BASE_DIR, f"{problem_name}.py")
-    shutil.copyfile(SOLUTION_FILE, cft_working_file)
-    
-    print(f"🚀 Attempting cft submission for {problem_name}...")
-    try:
-        # We run the command from BASE_DIR where {problem_name}.py now exists
-        # This ensures the tool finds the file and doesn't hit a NoneType crash
-        subprocess.run(["cft", "submit", problem_name], cwd=BASE_DIR, check=True)
-        print("✅ Submission successful!")
-    except Exception as e:
-        print(f"⚠️ Submission failed. Check if 'cft login' is required: {e}")
-    finally:
-        # 3. Clean up the temporary file to keep the directory tidy
-        if os.path.exists(cft_working_file):
-            os.remove(cft_working_file)
-# ---------------------------------------------
+    print(f"✅ Solution archived to problems/800/{problem_name}.py")

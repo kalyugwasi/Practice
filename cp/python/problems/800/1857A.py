@@ -1,6 +1,5 @@
 import sys
 import os
-
 def setup_io():
     """
     If running locally with judge folder, redirect I/O.
@@ -23,20 +22,24 @@ def setup_io():
     return False          # CF mode
 LOCAL = setup_io()
 input = sys.stdin.readline
-def inp(): return map(int, input().split())
-def ints(): return list(map(int, input().split()))
-def int1(): return int(input())
-def str1(): return input().strip()
 
 # ================== SOLUTION START ==================
 
 t = int(input())
 for _ in range(t):
     n = int(input())
-    a = list(map(int, input().split()))
-    
-
+    a = list(map(int,input().split()))
+    cnt = 0
+    for i in a:
+        if i%2!=0:
+            cnt += 1
+    if cnt%2==0:
+        print("YES")
+    else:
+        print("NO")  
 # ================== SOLUTION END ==================
 
 if LOCAL:
     sys.stdout.flush()
+#cfjudge
+#python run.py
