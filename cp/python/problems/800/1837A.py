@@ -27,9 +27,13 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    a = ints()
-    
+    x,k = inp()
+    if x%k==0:
+        print(2)
+        print(1,x-1)
+    else:
+        print(1)
+        print(x)
 
 # ================== SOLUTION END ==================
 

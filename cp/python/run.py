@@ -79,6 +79,7 @@ for i in range(1, test_count + 1):
         results_log.append(f"❌ FAILED")
         results_log.append(f"Expected:\n{expected}")
         all_passed = False
+        #all_passed = True
     
     results_log.append("-" * 60 + "\n")
 
