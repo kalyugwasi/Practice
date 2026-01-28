@@ -26,7 +26,7 @@ def strs(): return list(map(str,str1()))
 # ================== SOLUTION START ==================
 
 t = int1()
-n = 100000000
+n = 999999
 cnt = []
 p = 1
 while p <= n:
