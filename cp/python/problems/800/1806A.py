@@ -1,5 +1,4 @@
 import sys,os
-from collections import deque
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -24,17 +23,19 @@ int1 = lambda: int(input())
 str1 = lambda: input()
 inp = lambda: map(int, input().split())
 ints = lambda: list(map(int, input().split()))
-strs = lambda: input().strip()
+strs = lambda: input().split()
 
 # ================== SOLUTION START ==================
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    s = deque(map(int, strs()))
-    while s and s[0] != s[-1]:
-        s.pop()
-        s.popleft()
-        n -= 2
-    print(n if s else 0)
+    a,b,c,d = ints()
+    move = -1
+    if d<b or (a+(d-b))<c:
+        move = -1
+    else:
+        move += (d-b)+abs(a+(d-b)-c)+1
+    print(move)
+    
+
 # ================== SOLUTION END ==================
