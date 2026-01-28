@@ -26,13 +26,25 @@ def strs(): return list(map(str,str1()))
 # ================== SOLUTION START ==================
 
 t = int1()
+dx = [-1,1,-1,1]
+dy = [-1,-1,1,1]
 for _ in range(t):
     a,b = inp()
     xk,yk = inp()
     xq,yq = inp()
-    print(a,b,xk,yk,xq,yq)
-    
-    
+    king,queen=set(),set()
+    cnt = 0
+    for j in range(4):
+        king.add((xk+dx[j]*a,yk+dy[j]*b))
+        king.add((xq+dx[j]*b,yq+dy[j]*a))
+        queen.add((xq+dx[j]*a,yq+dy[j]*b))
+        queen.add((xq+dx[j]*b,yq+dy[j]*a))
+    for pos in king:
+        if pos in queen:
+            cnt += 1
+    print(cnt) 
+
+
 
 # ================== SOLUTION END ==================
 
