@@ -27,12 +27,8 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    a,b = inp()
-    xk,yk = inp()
-    xq,yq = inp()
-    print(a,b,xk,yk,xq,yq)
-    
-    
+    n,a,b = inp()
+    print("Yes" if ((a+b+2)<=n or (a==b==n)) else "No")
 
 # ================== SOLUTION END ==================
 
