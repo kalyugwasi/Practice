@@ -29,11 +29,27 @@ strs = lambda: input().strip()
 # ================== SOLUTION START ==================
 
 t = int1()
-results = []
 for _ in range(t):
     n = int1()
     a = ints()
-    
+    s = Counter(a)
+    if s[2]%2!=0:
+        print(-1)
+    else:
+        i = s[2]//2
+        if i==0:
+            print(1)
+        else:
+            for p in range(n):
+                if a[p] ==2:
+                    i -= 1
+                if i == 0:
+                    print(p+1)
+                    break
             
+            
+
+            
+
 
 # ================== SOLUTION END ==================

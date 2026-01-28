@@ -1,5 +1,5 @@
 import sys,os,math
-from collections import deque,heapq,Counter
+from collections import deque
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,11 +29,22 @@ strs = lambda: input().strip()
 # ================== SOLUTION START ==================
 
 t = int1()
-results = []
 for _ in range(t):
     n = int1()
     a = ints()
-    
+    ans = False
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if math.gcd(a[i], a[j]) <= 2:
+                ans = True
+                break
+        if ans:
+            break
+
+    print("Yes" if ans else "No")
+
             
+
 
 # ================== SOLUTION END ==================
