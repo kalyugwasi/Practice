@@ -28,9 +28,18 @@ def strs(): return list(map(str,str1()))
 t = int1()
 for _ in range(t):
     n = int1()
-    cnt = 0
+    a = ints()
+    changes = 0
+    cur= "o"
     for i in range(n):
-        
+        if a[i]%2==0:
+            cur = "e"
+        else:
+            cur = "o"
+        if i!=0 and prev == cur:
+            changes += 1
+        prev = cur
+    print(changes)        
 
 # ================== SOLUTION END ==================
 

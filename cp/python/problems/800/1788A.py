@@ -1,9 +1,10 @@
-import sys,os,math
-from collections import deque,heapq,Counter
+import sys,os
+from collections import Counter
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
         judge_dir = os.path.join(base_dir, "..", "judge")
+
         input_path = os.path.join(judge_dir, "input.txt")
         output_path = os.path.join(judge_dir, "output.txt")
 
@@ -13,18 +14,15 @@ def setup_io():
             return True
     except:
         pass
+
     return False
 LOCAL = setup_io()
-if not LOCAL:
-    sys.stdin = open(0, 'rb')
-    input = lambda: sys.stdin.readline().decode().rstrip()
-else:
-    input = sys.stdin.readline
+input = sys.stdin.readline
 int1 = lambda: int(input())
-str1 = lambda: input()
-inp = lambda: map(int, input().split())
-ints = lambda: list(map(int, input().split()))
-strs = lambda: input().strip()
+str1 = lambda: input().strip()
+def inp(): return map(int, input().split())
+def ints(): return list(map(int, input().split()))
+def strs(): return list(map(str,str1()))
 
 # ================== SOLUTION START ==================
 
@@ -46,10 +44,10 @@ for _ in range(t):
                 if i == 0:
                     print(p+1)
                     break
-            
-            
-
-            
-
 
 # ================== SOLUTION END ==================
+
+if LOCAL:
+    sys.stdout.flush()
+#cfjudge
+#python run.py

@@ -26,11 +26,17 @@ def strs(): return list(map(str,str1()))
 # ================== SOLUTION START ==================
 
 t = int1()
+results = []
 for _ in range(t):
     n = int1()
-    cnt = 0
-    for i in range(n):
-        
+    a = sorted(ints())
+    mina,maxa = a[0],a[-1]
+    if mina == maxa:
+        print("NO")
+    else:
+        print("YES")
+        a = [a[-1]] + a[:-1]
+        print(*a)
 
 # ================== SOLUTION END ==================
 
