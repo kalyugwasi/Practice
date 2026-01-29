@@ -1,19 +1,9 @@
-Testing 1878C with 1 test case(s)
+Testing 1875A with 1 test case(s)
 ============================================================
 
 Test 1:
-YES
-NO
-YES
-YES
-NO
-NO
-YES
-NO
-NO
-NO
-YES
-YES
+9
+21
 
 ✅ PASSED
 ------------------------------------------------------------
