@@ -1,5 +1,4 @@
 import sys,os
-from collections import deque
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,18 +27,9 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    a,b,n = inp()
-    x = deque(ints())
-    time = 0
-    while b:
-        c = b
-        if c == 1 and x:
-            c += x.popleft()
-        c = min(c,a)
-        time += c-1
-        b = (1 if c != 1 else 0)
-    print(time+1)
-
+    n = int1()
+    a = ints()
+    
 
 # ================== SOLUTION END ==================
 
