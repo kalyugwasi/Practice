@@ -26,11 +26,24 @@ def strs(): return list(map(str,str1()))
 # ================== SOLUTION START ==================
 
 t = int1()
+dx = [-1,1,-1,1]
+dy = [-1,-1,1,1]
 for _ in range(t):
-    n,k,x = inp()
-    msum = k*(k+1)//2
-    xsum = n*(n+1)//2-(n-k)*(n-k+1)//2
-    print("YES" if msum<=x<=xsum else "NO")
+    a,b = inp()
+    xk,yk = inp()
+    xq,yq = inp()
+    king,queen=set(),set()
+    cnt = 0
+    for j in range(4):
+        king.add((xk+dx[j]*a,yk+dy[j]*b))
+        queen.add((xq+dx[j]*a,yq+dy[j]*b))
+        king.add((xk+dx[j]*b,yk+dy[j]*a))
+        queen.add((xq+dx[j]*b,yq+dy[j]*a))
+    for pos in king:
+        if pos in queen:
+            cnt += 1
+    print(cnt) 
+
 
 # ================== SOLUTION END ==================
 

@@ -1,4 +1,5 @@
 import sys,os
+from collections import Counter
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,10 +28,20 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n,k,x = inp()
-    msum = k*(k+1)//2
-    xsum = n*(n+1)//2-(n-k)*(n-k+1)//2
-    print("YES" if msum<=x<=xsum else "NO")
+    n,k = inp()
+    s = strs()
+    cnt = Counter(s)
+    li = list(i for i in cnt)
+    odd,even = 0,0
+    for i in range(len(li)):
+        if cnt[li[i]]%2!=0:
+            odd += 1
+        else:
+            even += 1
+    if odd > k+1:
+        print("NO")
+    else:
+        print("YES")
 
 # ================== SOLUTION END ==================
 
