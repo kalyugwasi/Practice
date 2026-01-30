@@ -29,12 +29,12 @@ def strs(): return list(map(str,str1()))
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
-    g = 0
-    for i in range(n):
-        diff = abs(a[i] - (i + 1))
-        g = math.gcd(g, diff)
-    print(g)
+    i = 1
+    while n%i==0:
+        i += 1
+    print(i-1)
+        
+
 # ================== SOLUTION END ==================
 
 if LOCAL:

@@ -1,5 +1,4 @@
 import sys,os
-import math
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,12 +28,19 @@ def strs(): return list(map(str,str1()))
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
-    g = 0
-    for i in range(n):
-        diff = abs(a[i] - (i + 1))
-        g = math.gcd(g, diff)
-    print(g)
+    s = str1()
+    mx = cur = 1
+    for i in range(1, n):
+        if s[i] == s[i-1]:
+            cur += 1
+        else:
+            cur = 1
+        mx = max(mx, cur)
+    print(mx + 1)
+
+
+
+
 # ================== SOLUTION END ==================
 
 if LOCAL:

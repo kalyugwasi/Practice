@@ -30,11 +30,13 @@ t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    g = 0
+    res = []
     for i in range(n):
-        diff = abs(a[i] - (i + 1))
-        g = math.gcd(g, diff)
-    print(g)
+        h = abs(math.gcd(a[i]-(i+1)))
+        if h != 0:
+            res.append(h) 
+    print(min(res))   
+
 # ================== SOLUTION END ==================
 
 if LOCAL:
