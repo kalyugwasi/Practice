@@ -1,26 +1,50 @@
-#include<stdio.h>
-#include<conio.h>
-#include<ctype.h>
-void main()
+#include <stdio.h>
+#include <ctype.h>
+
+int countTokens(char *fname)
 {
-    char a[10];
-    int flag, i=1;
-    printf("\n Enter an identifier:");
-    gets(a);
-    if(isalpha(a[0]))
-        flag=1;
-    else
-        printf("\n Not a valid identifier");
-    while(a[i]!='\0')
+    FILE *fp;
+    char ch;
+    int tokens = 0;
+
+    fp = fopen(fname, "r");
+    if (fp == NULL)
     {
-        if(!isdigit(a[i])&&!isalpha(a[i]))
-        {
-            flag=0;
-            break;
-        }
-        i++;
+        printf("Cannot open %s\n", fname);
+        return 0;
     }
-    if(flag==1)
-        printf("\n Valid identifier");
-    getch();
+
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        if (isalnum(ch) || ch == '_')
+        {
+            tokens++;
+            while (isalnum(ch) || ch == '_')
+                ch = fgetc(fp);
+        }
+        else if (ch == '"')
+        {
+            tokens++;
+            while ((ch = fgetc(fp)) != '"');
+        }
+        else if (!isspace(ch))
+        {
+            tokens++;
+        }
+    }
+
+    fclose(fp);
+    return tokens;
+}
+
+int main()
+{
+    int t1, t2;
+    t1 = countTokens("source1.c");
+    t2 = countTokens("source2.c");
+
+    printf("Tokens in source1.c = %d\n", t1);
+    printf("Tokens in source2.c = %d\n", t2);
+
+    return 0;
 }
