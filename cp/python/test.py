@@ -27,23 +27,8 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n = strs()
-    possible_values = ["00", "25", "50", "75"]
-    res = float('inf')
-    for possible_value in possible_values:
-        p = n.copy()
-        operations = 0
-        checker_index = len(possible_value) - 1
-        for i in range(len(p) - 1, -1, -1):
-            if checker_index >= 0 and p[i] == possible_value[checker_index]:
-                checker_index -= 1
-                if checker_index < 0:
-                    break
-            else:
-                operations += 1
-        if checker_index < 0:
-            res = min(res, operations)
-    print(res)
+    n = int1()
+    a = ints()
     
 
 # ================== SOLUTION END ==================
