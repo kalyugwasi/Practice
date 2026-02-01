@@ -27,27 +27,17 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    x,n = inp()
-    m = n%4
-    if m==0:pos = 0
-    elif m==1:pos = -n
-    elif m==2:pos = 1
-    else:pos = n + 1
-    if x%2==0:
-        print(x+pos)
-    else:
-        print(x-pos)
-
-
-
-    '''
-    for i in range(n):
-        if x%2!=0:
-            x += (i+1)
-        else:
-            x -= (i+1)
-    print(x)
-    '''
+    a,b,c = inp()
+    am,bm,cm = (2*b)-c,(a+c)/2,(2*b)-a
+    ans = "NO"
+    if am/a>0 and am%a==0:
+        ans = "YES"
+    if bm/b>0 and bm%b==0 and (c-a)%2==0:
+        ans = "YES"
+    if cm/c>0 and cm%c==0:
+        ans = "YES"
+    print(ans)
+    
 
 # ================== SOLUTION END ==================
 
