@@ -1,19 +1,14 @@
-Testing 1606A with 1 test case(s)
+Testing 1593B with 1 test case(s)
 ============================================================
 
 Test 1:
-b
-aabbbabaa
-bbbb
-bbbaab
+0
+3
+1
+3
+2
 
-❌ FAILED
-Expected:
-b
-aabbbabaa
-bbbb
-abbaaa
-
+✅ PASSED
 ------------------------------------------------------------
 
 ============================================================
