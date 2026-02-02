@@ -27,19 +27,15 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n = int1()
+    n,k = inp()
     a = ints()
-    found = False
-    for j in range(1, n-1):
-        if a[j-1] < a[j] > a[j+1]:
-            print("YES")
-            print(j, j+1, j+2)
-            found = True
-            break
+    res = 0
+    prt = n*k
+    for _ in range(k):
+        prt -= (n//2+1)
+        res += a[prt]
+    print(res)
     
-    if not found:
-        print("NO")
-
 
 # ================== SOLUTION END ==================
 
