@@ -27,17 +27,16 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n,x = inp()
-    a = ints()
-    mx,mn = 0,0
-    for i in a:
-        mx += math.ceil(i/x)
-        mn += i
-    mn = math.ceil(mn/x)
-    print(mn,mx)   
-
-
-
+    a,b = inp()
+    gcd = 0
+    if a==b :
+        print(gcd ,0)
+    else:
+        gcd = abs(a-b)
+        print(gcd,min(b%gcd,gcd-(b%gcd)))
+        
+        
+    
 
 # ================== SOLUTION END ==================
 

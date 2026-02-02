@@ -1,4 +1,4 @@
-import sys,os,math
+import sys,os
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,17 +27,12 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n,x = inp()
+    n = int1()
     a = ints()
-    mx,mn = 0,0
-    for i in a:
-        mx += math.ceil(i/x)
-        mn += i
-    mn = math.ceil(mn/x)
-    print(mn,mx)   
-
-
-
+    tot = a[0]
+    for i in range(1,n):
+        tot &= a[i]
+    print(tot)
 
 # ================== SOLUTION END ==================
 

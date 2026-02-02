@@ -1,4 +1,4 @@
-import sys,os,math
+import sys,os
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -27,18 +27,17 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n,x = inp()
+    n = int1()
     a = ints()
-    mx,mn = 0,0
+    cnt = {1:0,0:0}
     for i in a:
-        mx += math.ceil(i/x)
-        mn += i
-    mn = math.ceil(mn/x)
-    print(mn,mx)   
-
-
-
-
+        if i == 1:
+            cnt[1] += 1
+        elif i == 0:
+            cnt[0] += 1
+    poss = 0
+    tot = (2**(cnt[0]))*cnt[1]
+    print(tot)
 # ================== SOLUTION END ==================
 
 if LOCAL:
