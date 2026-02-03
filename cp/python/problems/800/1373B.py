@@ -27,8 +27,17 @@ def strs(): return list(map(str,str1()))
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    
+    n = strs()
+    res = {0:0,1:0}
+    for i in n:
+        if i == "0":
+            res[0] += 1
+        else:
+            res[1] += 1
+    if min(res[0],res[1])%2==0:
+        print("NET")
+    else:
+        print("DA")
 
 # ================== SOLUTION END ==================
 
