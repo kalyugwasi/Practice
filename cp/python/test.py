@@ -1,5 +1,4 @@
 import sys,os
-from collections import Counter
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -25,23 +24,20 @@ def inp(): return map(int, input().split()) #mainly for multiple known variables
 def ints(): return list(map(int, input().split())) #for numerical lists
 def strs(): return list(map(str,str1())) #for string list
 
-# ================== SOLUTION START ==================
+# ================== SOLUTION START =================
 
 t = int1()
 for _ in range(t):
-    n = ints1()
-    freq = Counter(n)
-    res = 0
-    for i in n:
-        if i == 0 and freq[1] > 0:
-           res += 1
-           freq[1] -= 1
-        elif i == 1 and freq[0] >0:
-            res+= 1
-            freq[0] -= 1
+    n,k = inp()
+    a = ints()
+    mi = float("inf")
+    for i in a:
+        if i%k==0:
+            break
         else:
-            break;
-    print(len(n)-res)
+            mi = min(mi,k-i//k if i>k else k-i)
+    print(mi)
+    
 
 # ================== SOLUTION END ==================
 
