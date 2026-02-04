@@ -1,5 +1,4 @@
-import sys,os
-from itertools import groupby
+import sys,os,heapq
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -29,13 +28,27 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,k,q = inp()
-    a = [1 if a<=q else 0 for a in ints()]
-    res = [len(list(group)) for zero,group in groupby(a,key=lambda x: x==0) if not zero]
-    if sum(res) >= k:
-        diff = sum(res) - k + 1
-        ways = (diff * (diff + 1)) // 2
-    print(ways)
+    n,k = inp()
+    a = ints()
+    hp = [[k,i+1] if a[i]%k==0 else [a[i]%k,i+1] for i in range(n)]
+    hp.sort(key=lambda x:(-x[0],x[1]))
+    print(*[idx for _,idx in hp])
+    
+    '''
+    a = [[-val,0,idx+1] for idx,val in enumerate(ints())]
+    res = []
+    heapq.heapify(a)
+    while a:
+        val,_,idx = heapq.heappop(a)
+        val = -val
+        if val>0:
+            val -= k
+            if val>0:
+                heapq.heappush(a,[-val,0,idx])
+            else:
+                res.append(idx)
+    print(*res)
+    ''' 
     
 
 # ================== SOLUTION END ==================
