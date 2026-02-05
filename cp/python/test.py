@@ -25,18 +25,8 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,x = inp()
-    a = ints()
-    seg = [[a[i]-x,a[i]+x] for i in range(n)]
-    res = 0
-    l,r = seg[0]
-    for i in range(1,n):
-        l = max(l,seg[i][0])
-        r = min(r,seg[i][1])
-        if (l>r):
-            res += 1
-            l,r = seg[i]
-    print(res)
+    n = int1()
+    s = ints()
     
 
 # ================== SOLUTION END ==================
