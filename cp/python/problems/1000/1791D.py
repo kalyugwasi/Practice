@@ -28,26 +28,21 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,c = str1().split()
-    n = int(n)
-    s = str1()
-    gos = [i for i in range(n) if s[i] =="g"]
-    if c=='g' or not gos:
-        print(0)
-        continue
-    mx = 0
+    n = int1()
+    s = strs()
+    st = set()
+    prefix,suffix = [0]*(n+1),[0]*(n+1)
+    for i in range(1,n):
+        st.add(s[i-1])
+        prefix[i] = len(st)
+    st.clear()
+    for i in range(n,0,-1):
+        st.add(s[i-1])
+        suffix[i] = len(st)
+    res = 0
     for i in range(n):
-        if s[i] == c:
-            mi = float('inf')
-            for g in gos:
-                if g >= i:
-                    mi = min(mi,g-i)
-                else:
-                    mi = min(mi,n-i+g)
-            mx = max(mx,mi)
-    print(mx)
-        
-    
+        res = max(res,prefix[i]+suffix[i+1])
+    print(res)
 
 # ================== SOLUTION END ==================
 

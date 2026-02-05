@@ -25,28 +25,31 @@ def ints(): return list(map(int, input().split())) #for numerical lists
 def strs(): return list(map(str,str1())) #for string list
 
 # ================== SOLUTION START =================
-
+def cnt(a):
+    n = len(a)
+    counts = {}
+    i = 0
+    while i <n:
+        val = a[i]
+        cnt = 1
+        while i+cnt<n and a[i+cnt]==val:
+            cnt += 1
+        counts[val] = max(counts.get(val,0),cnt)
+        i += cnt
+    return counts
 t = int1()
 for _ in range(t):
-    n,c = str1().split()
-    n = int(n)
-    s = str1()
-    gos = [i for i in range(n) if s[i] =="g"]
-    if c=='g' or not gos:
-        print(0)
-        continue
+    n = int1()
+    a,b = ints(),ints()
+    cnta,cntb = cnt(a),cnt(b)
+    num = set(cnta.keys()) | set(cntb.keys())
     mx = 0
-    for i in range(n):
-        if s[i] == c:
-            mi = float('inf')
-            for g in gos:
-                if g >= i:
-                    mi = min(mi,g-i)
-                else:
-                    mi = min(mi,n-i+g)
-            mx = max(mx,mi)
+    for i in num:
+        total = cnta.get(i,0) + cntb.get(i,0)
+        mx = max(mx,total)
     print(mx)
-        
+
+    
     
 
 # ================== SOLUTION END ==================

@@ -1,4 +1,5 @@
 import sys,os
+from itertools import groupby
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,25 +29,14 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,c = str1().split()
-    n = int(n)
-    s = str1()
-    gos = [i for i in range(n) if s[i] =="g"]
-    if c=='g' or not gos:
-        print(0)
-        continue
-    mx = 0
-    for i in range(n):
-        if s[i] == c:
-            mi = float('inf')
-            for g in gos:
-                if g >= i:
-                    mi = min(mi,g-i)
-                else:
-                    mi = min(mi,n-i+g)
-            mx = max(mx,mi)
-    print(mx)
-        
+    n,k,q = inp()
+    a = [1 if a<=q else 0 for a in ints()]
+    res = [len(list(group)) for zero,group in groupby(a,key=lambda x: x==0) if not zero]
+    out = 0
+    for i in res:
+        if i>=k:
+            out += (i-k+1)*(i-k+2)//2
+    print(out)
     
 
 # ================== SOLUTION END ==================

@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,math
 def setup_io():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,26 +28,25 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,c = str1().split()
-    n = int(n)
-    s = str1()
-    gos = [i for i in range(n) if s[i] =="g"]
-    if c=='g' or not gos:
-        print(0)
-        continue
-    mx = 0
-    for i in range(n):
-        if s[i] == c:
-            mi = float('inf')
-            for g in gos:
-                if g >= i:
-                    mi = min(mi,g-i)
-                else:
-                    mi = min(mi,n-i+g)
-            mx = max(mx,mi)
-    print(mx)
-        
+    n = int1()
+
+    aa,ab = 1,n-1
+    for i in range(2,int(math.sqrt(n))+1):
+        if n%i == 0:
+            aa = n//i
+            ab = n-aa
+            break
+    print(aa,ab)            
     
+    
+    '''
+    res = []
+    for i in range(n//2):
+        res.append([math.lcm(i+1,n-i-1),i+1,n-i-1])
+    res.sort()
+    _,a,b = res[0]
+    print(a,b)
+    '''
 
 # ================== SOLUTION END ==================
 
