@@ -1,16 +1,19 @@
 import sys,os
 def setup_io():
     try:
-        base = os.path.dirname(os.path.abspath(__file__))
-        judge = os.path.join(base,"..","judge")
-        inpth = os.path.join(judge,"input.txt")
-        outpth = os.path.join(judge,"output.txt")
-        if os.path.exists(inpth):
-            sys.stdin = open(inpth,"r")
-            sys.stdout = open(outpth,"w")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        judge_dir = os.path.join(base_dir, "..", "judge")
+
+        input_path = os.path.join(judge_dir, "input.txt")
+        output_path = os.path.join(judge_dir, "output.txt")
+
+        if os.path.exists(input_path):
+            sys.stdin = open(input_path, "r")
+            sys.stdout = open(output_path, "w")
             return True
     except:
         pass
+
     return False
 LOCAL = setup_io()
 input = sys.stdin.readline
@@ -25,19 +28,27 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,x = inp()
-    a = ints()
-    seg = [[a[i]-x,a[i]+x] for i in range(n)]
-    res = 0
-    l,r = seg[0]
-    for i in range(1,n):
-        l = max(l,seg[i][0])
-        r = min(r,seg[i][1])
-        if (l>r):
-            res += 1
-            l,r = seg[i]
-    print(res)
-    
+    n,k,b,s = inp()
+    l = k*b
+    if s < l or s > l + (k - 1) * n:
+        print(-1)
+        continue    
+    li = [0] * n
+    li[0] = l
+    s -= l
+    i = 0
+
+    while s > 0 and i < n:
+        o = min(k - 1, s)
+        li[i] += o
+        s -= o
+        i += 1
+    if s > 0:
+        print(-1)
+    else:
+        print(*li)
+
+
 
 # ================== SOLUTION END ==================
 

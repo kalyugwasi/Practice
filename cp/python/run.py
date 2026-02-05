@@ -100,4 +100,4 @@ if all_passed:
     os.makedirs(dest_dir, exist_ok=True)
     dest_file = os.path.join(dest_dir, f"{problem_name}.py")
     shutil.copyfile(SOLUTION_FILE, dest_file)
-    print(f"✅ Solution archived to problems/800/{problem_name}.py")
+    print(f"✅ Solution archived to problems/1000/{problem_name}.py")
