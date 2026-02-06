@@ -1,11 +1,21 @@
-Testing 1690D with 1 test case(s)
+Testing 1659A with 2 test case(s)
 ============================================================
 
 Test 1:
-1
-2
-0
-1
+RBRBRBR
+RRRBRR
+RRBRRBRRBRRBRRBRRBR
+
+✅ PASSED
+------------------------------------------------------------
+
+Test 2:
+RBR
+RRBRBRBRBR
+RBRBRBRBRBR
+RRRRRBRRRR
+RRRBRRRBRR
+RRRBRRRBRRR
 
 ✅ PASSED
 ------------------------------------------------------------
