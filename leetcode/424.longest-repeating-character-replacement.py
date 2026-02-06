@@ -1,3 +1,4 @@
+.\count
 #
 # @lc app=leetcode id=424 lang=python3
 #

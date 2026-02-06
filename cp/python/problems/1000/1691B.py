@@ -1,4 +1,5 @@
 import sys,os
+from collections import Counter
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,9 +26,21 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,r,b = inp()
-    
-    
+    n = int1()
+    s = ints()
+    o = [i+1 for i in range(n)]
+    h = Counter(s)
+    if 1 in h.values():
+        print(-1)
+        continue
+    i = 0
+    while i<n:
+        j = i
+        while j<n and s[j]==s[i]:
+            j += 1
+        o[i:j] = [o[j-1]] + o[i:j-1]
+        i = j
+    print(*o)
 
 # ================== SOLUTION END ==================
 

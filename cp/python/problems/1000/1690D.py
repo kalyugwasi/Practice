@@ -25,9 +25,17 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,r,b = inp()
-    
-    
+    n,k = inp()
+    s = strs()
+    cnt = 0
+    pre = [0]*(n+1)
+    for i in range(n):
+	    pre[i+1] = pre[i]+(1 if s[i] == 'W' else 0)
+    res = float("inf")
+    for i in range(n-k+1):
+        diff = pre[i+k] - pre[i]
+        res = min(res,diff)
+    print(res)
 
 # ================== SOLUTION END ==================
 
