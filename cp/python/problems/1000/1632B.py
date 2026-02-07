@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,12 +25,20 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    w,h = inp()
-    res = [0]*4 #mb,mt,ml,mr
-    for i in range(4):
-        xs = ints()
-        res[i] = xs[-1]-xs[1]
-    print(res,max(max(res[0],res[1])*h,max(res[2],res[3])*w))
+    n = int1()-1
+    s = [i for i in range(n)]
+    msb = int(math.log2(n))
+    print(msb)
+    res = []
+    num = (1 << msb)-1
+    while num>=0:
+        res.append(num)
+        num -= 1
+    num = 1 << msb
+    while num <= n:
+        res.append(num)
+        num += 1
+    print(*res)
     
 
 # ================== SOLUTION END ==================

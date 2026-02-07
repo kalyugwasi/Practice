@@ -30,7 +30,7 @@ for _ in range(t):
     for i in range(4):
         xs = ints()
         res[i] = xs[-1]-xs[1]
-    print(res,max(max(res[0],res[1])*h,max(res[2],res[3])*w))
+    print(max(max(res[0],res[1])*h,max(res[2],res[3])*w))
     
 
 # ================== SOLUTION END ==================

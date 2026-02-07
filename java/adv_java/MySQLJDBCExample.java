@@ -1,24 +1,22 @@
 import java.sql.*;
 
 public class MySQLJDBCExample {
-    // Database credentials
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/registration";
+
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/registration";
     private static final String USER = "haider";
     private static final String PASS = "haider";
 
     public static void main(String[] args) throws Exception{
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-             Statement stmt = conn.createStatement()) {
-            
-            String sql = "CREATE TABLE IF NOT EXISTS students ( id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100),enroll_no VARCHAR(50),section VARCHAR(10),semester VARCHAR(20),course VARCHAR(100),subject VARCHAR(100),aadhar_no VARCHAR(20))";
-            stmt.executeUpdate(sql);
-            System.out.println("table created");
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
+        String sql = "DESCRIBE students";
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
 }
+}
+
+
 /*
 class Test extends Frame {
     Test() {
@@ -84,3 +82,4 @@ class Test extends Frame {
     }
 }
 */
+
