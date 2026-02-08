@@ -1,20 +1,27 @@
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 public class MySQLJDBCExample {
-
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/registration";
-    private static final String USER = "haider";
+    private static final String DB_URL ="jdbc:mysql://localhost:3306/?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root";
     private static final String PASS = "haider";
-
-    public static void main(String[] args) throws Exception{
-
-        String sql = "DESCRIBE students";
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
+    public static void main(String[] args) {
+        try {
+            // Load MySQL JDBC Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // Connect
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                 Statement stmt = conn.createStatement()) {
+                String sql = "CREATE DATABASE registration";
+                stmt.executeUpdate(sql);
+                System.out.println("Database created successfully!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
-}
+
 
 
 /*

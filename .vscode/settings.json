@@ -7,6 +7,7 @@
     },
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "c:\\mysql-enterprise-9.6.0_winx64_bundle\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-9.6.0.jar"
+        "c:\\mysql-enterprise-9.6.0_winx64_bundle\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-9.6.0.jar",
+        "d:\\MySQL96\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-9.6.0.jar"
     ]
 }
