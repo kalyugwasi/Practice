@@ -22,21 +22,27 @@ def ints(): return list(map(int, input().split())) #for numerical lists
 def strs(): return list(map(str,str1())) #for string list
 
 # ================== SOLUTION START =================
-
+def xor(n):
+    a = n%4
+    if a==0:
+        return n
+    elif a==1:
+        return 1
+    elif a==2:
+        return n+1
+    else:
+        return 0
 t = int1()
 for _ in range(t):
-    a = str1()
-    b = str1()
-    n,m = len(a),len(b)
-    lcs = 0
-    for l in range(1,min(n,m)+1):
-        for i in range(n-l+1):
-            for j in range(m-l+1):
-                eA = a[i:i+l]
-                eB = b[j:j+l]
-                if eA == eB:
-                    lcs = max(lcs,l)
-    print(n+m-2*lcs)
+    a,b = inp()
+    ar = xor(a-1)
+    if ar == b:
+        print(a)
+    elif (ar^b) != a:
+        print(a+1)
+    else:
+        print(a+2)
+    
 
 # ================== SOLUTION END ==================
 

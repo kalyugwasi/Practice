@@ -1,4 +1,5 @@
 import sys,os
+from collections import deque
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,18 +26,20 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    a = str1()
-    b = str1()
-    n,m = len(a),len(b)
-    lcs = 0
-    for l in range(1,min(n,m)+1):
-        for i in range(n-l+1):
-            for j in range(m-l+1):
-                eA = a[i:i+l]
-                eB = b[j:j+l]
-                if eA == eB:
-                    lcs = max(lcs,l)
-    print(n+m-2*lcs)
+    n = int1()
+    a = [(val,key) for key,val in enumerate(ints())]
+    a.sort(reverse=True,key=lambda x:x[0])
+    res = [0]*(n+1)
+    sol,cord = 0,1
+    for i in range(n):
+        res[a[i][1]+1] = cord
+        sol += (2*abs(cord)*a[i][0])
+        if cord < 0:
+            cord = abs(cord) + 1
+        else:
+            cord = -cord
+    print(sol)
+    print(*res)
 
 # ================== SOLUTION END ==================
 
