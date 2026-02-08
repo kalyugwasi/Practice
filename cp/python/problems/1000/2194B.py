@@ -25,12 +25,13 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,k = inp()
-    s = []
-    for _ in range(k):
-        s.append(str1())
-    
-        
+    n,x,y = inp()
+    a = ints()
+    temp = sum((i//x)*y for i in a)
+    res = 0
+    for h in range(n):
+        res = max(res,a[h]+temp - (a[h]//x)*y)
+    print(res) 
     
 
 # ================== SOLUTION END ==================

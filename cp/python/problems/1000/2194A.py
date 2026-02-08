@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,13 +25,9 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n,k = inp()
-    s = []
-    for _ in range(k):
-        s.append(str1())
-    
-        
-    
+    n,w = inp()
+    h = math.floor(n/w)
+    print(n-h)  
 
 # ================== SOLUTION END ==================
 

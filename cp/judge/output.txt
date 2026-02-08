@@ -1,16 +1,18 @@
-Testing 1485A with 1 test case(s)
+Testing 2194C with 1 test case(s)
 ============================================================
 
 Test 1:
-4
-9
-2
-12
-3
-1
+['abc', 'baa']
+['iiinnnfff', 'nnfiffinn']
+['acbd', 'bdac']
 
-✅ PASSED
+❌ FAILED
+Expected:
+aaa
+infinfinf
+acac
+
 ------------------------------------------------------------
 
 ============================================================
-🎉 ALL TESTS PASSED!
+💥 SOME TESTS FAILED
