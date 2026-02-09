@@ -1,4 +1,4 @@
-import sys,os,math
+import sys,os
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -21,18 +21,20 @@ def inp(): return map(int, input().split()) #mainly for multiple known variables
 def ints(): return list(map(int, input().split())) #for numerical lists
 def strs(): return list(map(str,str1())) #for string list
 
-# ================= SOLUTION START =================
-def ceil_div(a,b):
-    return (a+b-1)//b
+# ================== SOLUTION START =================
+
 t = int1()
 for _ in range(t):
-    x,y,k = inp() 
-    op = 0 #25*12-(11*12) = 300 - 132 = 168
-    need = k*y+(k-1)
-    t = x-1
-    op = ceil_div(need,t)+k
-    print(op)
-
+    n = int1()
+    a = ints()
+    res = set()
+    co = False
+    for i in range(n):
+        if a[i] in res:
+            co = True
+            break
+        res.add(a[i])
+    print("YES" if co else "NO")
 # ================== SOLUTION END ==================
 
 if LOCAL:
