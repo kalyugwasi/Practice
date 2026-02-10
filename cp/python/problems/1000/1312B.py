@@ -27,7 +27,7 @@ t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    
+    print(*sorted(a,reverse=True))
 
 # ================== SOLUTION END ==================
 

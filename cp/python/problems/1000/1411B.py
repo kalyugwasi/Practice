@@ -22,11 +22,22 @@ def ints(): return list(map(int, input().split())) #for numerical lists
 def strs(): return list(map(str,str1())) #for string list
 
 # ================= SOLUTION START =================
-
+def check(n):
+    num = n
+    while num!=0:
+        x = num%10
+        if x!=0 and n%x!=0:
+            return False
+        num //= 10
+    return True
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
+    while not check(n):
+        n += 1
+    print(n)
+
+    
     
 
 # ================== SOLUTION END ==================

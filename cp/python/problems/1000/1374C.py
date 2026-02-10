@@ -26,7 +26,18 @@ def strs(): return list(map(str,str1())) #for string list
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
+    a = str1()
+    s =0
+    ops = 0
+    for i in a:
+        if s <0:
+            ops  += 1
+            s = 0
+        if i == ")":
+            s -= 1
+        else:
+            s += 1
+    print(ops)
     
 
 # ================== SOLUTION END ==================

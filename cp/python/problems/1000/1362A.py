@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,8 +25,22 @@ def strs(): return list(map(str,str1())) #for string list
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    a = ints()
+    a,b = inp()
+    ra,rb = a,b
+    while ra%2==0:
+        ra//=2
+    while rb%2==0:
+        rb//=2
+    if ra!=rb:
+        print(-1)
+    else:
+        a//=ra
+        b//=rb
+        a = int(math.log2(a))
+        b = int(math.log2(b))
+        res = math.ceil(abs(a-b)/3)
+        print(res)
+        
     
 
 # ================== SOLUTION END ==================
