@@ -96,8 +96,8 @@ with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
 
 # Archive the code if all tests passed
 if all_passed:
-    dest_dir = os.path.join(BASE_DIR, "problems", "1000")
+    dest_dir = os.path.join(BASE_DIR, "problems", "1100")
     os.makedirs(dest_dir, exist_ok=True)
     dest_file = os.path.join(dest_dir, f"{problem_name}.py")
     shutil.copyfile(SOLUTION_FILE, dest_file)
-    print(f"✅ Solution archived to problems/1000/{problem_name}.py")
+    print(f"✅ Solution archived to {dest_file}")

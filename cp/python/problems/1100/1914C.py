@@ -20,16 +20,21 @@ ints1 = lambda: list(map(int,str1()))
 def inp(): return map(int, input().split())
 def ints(): return list(map(int, input().split()))
 def strs(): return list(map(str,str1()))
-def mint(): return map(int, input().split())
-def grid(n): return [ints() for _ in range(n)]
-def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
 
 t = int1()
 for _ in range(t):
-    n = int1()
+    n,k = inp()
     a = ints()
+    b = ints()
+    exp = 0
+    mx,s = 0,0
+    for i in range(min(n,k)):
+        s += a[i]
+        mx = max(mx,b[i])
+        exp = max(exp,s+(k-(i+1))*mx)
+    print(exp)
     
 
 # ================== SOLUTION END ==================

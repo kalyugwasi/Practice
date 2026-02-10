@@ -1,4 +1,5 @@
 import sys,os
+from bisect import bisect_left
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -29,8 +30,26 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
-    
+    a = [(v,i) for i,v in enumerate(ints())]
+    a.sort()
+    res = [0]*n
+    pre = res.copy()
+    pre[0] = a[0][0]
+    for i in range(1,n):
+        pre[i] = pre[i-1]+a[i][0]
+    for i in range(n):
+        j = i
+        found = i
+        while j<n:
+            temp = (pre[j]+1,float('-inf'))
+            idx = bisect_left(a,temp)
+            idx -= 1
+            if idx == j:
+                break
+            found +=idx-j
+            j = idx
+        res[a[i][1]]= found
+    print(*res)
 
 # ================== SOLUTION END ==================
 

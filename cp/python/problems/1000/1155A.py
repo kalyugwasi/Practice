@@ -14,25 +14,33 @@ def setup_io():
     return False
 LOCAL = setup_io()
 input = sys.stdin.readline
-int1 = lambda: int(input())
-str1 = lambda: input().strip()
-ints1 = lambda: list(map(int,str1()))
-def inp(): return map(int, input().split())
-def ints(): return list(map(int, input().split()))
-def strs(): return list(map(str,str1()))
-def mint(): return map(int, input().split())
-def grid(n): return [ints() for _ in range(n)]
-def sgrid(n): return [input() for _ in range(n)]
+int1 = lambda: int(input()) #for reading a single number
+str1 = lambda: input().strip() #for spliting a char in parts
+ints1 = lambda: list(map(int,str1())) #mostly for 0,1
+def inp(): return map(int, input().split()) #mainly for multiple known variables
+def ints(): return list(map(int, input().split())) #for numerical lists
+def strs(): return list(map(str,str1())) #for string list
 
 # ================= SOLUTION START =================
 
-t = int1()
-for _ in range(t):
-    n = int1()
-    a = ints()
-    
+
+n = int1()
+s = strs()
+flag = False
+for i in range(len(s)-1):
+    if s[i] > s[i+1]:
+        flag = True
+        break
+if flag:
+    print("YES")
+    print(i+1,i+2)
+else: print("NO")
+        
+
 
 # ================== SOLUTION END ==================
 
 if LOCAL:
     sys.stdout.flush()
+#cfjudge
+#python run.py

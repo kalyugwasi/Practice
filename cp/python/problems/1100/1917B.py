@@ -20,18 +20,28 @@ ints1 = lambda: list(map(int,str1()))
 def inp(): return map(int, input().split())
 def ints(): return list(map(int, input().split()))
 def strs(): return list(map(str,str1()))
-def mint(): return map(int, input().split())
-def grid(n): return [ints() for _ in range(n)]
-def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
+
 
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
-    
-
+    s = str1()
+    feq = {}
+    cnt =  0
+    dis = [0]*n
+    for i in range(n):
+        cur = s[i]
+        if cur in feq:
+            feq[cur] += 1
+        else:
+            feq[cur] = 1
+        if feq[cur] == 1:
+            cnt += 1
+        dis[i] = cnt
+    print(sum(dis))
+        
 # ================== SOLUTION END ==================
 
 if LOCAL:
