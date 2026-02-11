@@ -28,17 +28,11 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    a = ints()
-    b = 0
-    for i in range(n):
-        s = a[i]
-        j=i+s
-        while j<n:
-            if a[i]*a[j]==j-i:
-                b += 1
-            j += s
-    print(b)
+    p,q= inp()
+    if p % 2 == 0 and q % 2 == 0 and p != q:
+        print("Bob")
+    else:
+        print("Alice")
 
 # ================== SOLUTION END ==================
 

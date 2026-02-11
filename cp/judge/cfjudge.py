@@ -17,7 +17,7 @@ if not os.path.exists(html_path):
     print("🌐 Downloading problem HTML...")
     urls = [
         f"https://codeforces.com/problemset/problem/{contest}/{problem}",
-        f"https://codeforces.com/contest/{contest}/problem/{problem}#"
+        f"https://codeforces.com/contest/{contest}/problem"
     ]
     success = False
     try:

@@ -36,8 +36,13 @@ for _ in range(t):
         if p[i] == a[i]:
             res[i] = p[i]
             continue
-        elif p[i-1] == a[i] or res[i-1]==a[i] or  p[i+1] == a[i] or res[i+1]==a[i]:
-                res[i] = a[i]
+        l = r = False
+        if i+1<n and (p[i+1]==a[i] or res[i+1]==a[i]):
+            l = True
+        if i-1>=0 and p[i-1]==a[i]:
+            r = True
+        if l or r:
+            res[i] = a[i]
         else:
             break
     if res == a:
