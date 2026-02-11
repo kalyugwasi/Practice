@@ -25,7 +25,6 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
-
 def check(mid, heights, x):
 	units = 0
 	n = len(heights)  
@@ -47,9 +46,7 @@ for _ in range(t):
             ei = mid - 1
     print(ans)
         
-    
-        
-    
+
 # ================== SOLUTION END ==================
 
 if LOCAL:
