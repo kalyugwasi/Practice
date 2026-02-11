@@ -26,27 +26,17 @@ def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
 
+def dy(n):
+    return sum(int(i) for i in str(n))
 t = int1()
 for _ in range(t):
-    n = int1()
-    p = ints()
-    res = [float("inf")]*n
-    a = ints()
-    for i in range(n-1,-1,-1):
-        if p[i] == a[i]:
-            res[i] = p[i]
-            continue
-        elif p[i-1] == a[i] or res[i-1]==a[i] or  p[i+1] == a[i] or res[i+1]==a[i]:
-                res[i] = a[i]
-        else:
-            break
-    if res == a:
-        print("YES")
-    else:
-        print("NO")
-            
-        
-    
+    x = int1()
+    cnt = 0
+    for i in range(x,x+500):
+        if i-dy(i)==x:
+            cnt += 1
+    print(cnt)
+
 
 # ================== SOLUTION END ==================
 

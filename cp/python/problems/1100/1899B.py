@@ -29,24 +29,24 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    p = ints()
-    res = [float("inf")]*n
     a = ints()
-    for i in range(n-1,-1,-1):
-        if p[i] == a[i]:
-            res[i] = p[i]
+    pre = [a[0]]*n
+    res = 0
+    for i in range(1,n):
+        pre[i] = a[i]+pre[i-1]
+    for k in range(1,n+1):
+        if n%k!=0:
             continue
-        elif p[i-1] == a[i] or res[i-1]==a[i] or  p[i+1] == a[i] or res[i+1]==a[i]:
-                res[i] = a[i]
-        else:
-            break
-    if res == a:
-        print("YES")
-    else:
-        print("NO")
-            
-        
-    
+        s = k-1
+        mx = mi = pre[s]
+        for i in range(s+k,n,k):
+            cur = pre[i]-pre[i-k]
+            mx = max(mx,cur)
+            mi = min(mi,cur)
+        res = max(res,mx-mi)
+    print(res)
+
+
 
 # ================== SOLUTION END ==================
 
