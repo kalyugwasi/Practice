@@ -26,30 +26,21 @@ def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
 
-def check(mid, heights, x):
-	units = 0
-	n = len(heights)  
-	for i in range(n):  
-		if heights[i] < mid:
-			units += (mid - heights[i])
-	return units <= x
 t = int1()
 for _ in range(t):
-    n,x = inp()
-    a = ints()
-    si, ei, ans = 1, int(1e12), -1
-    while si <= ei:
-        mid = si + (ei - si) // 2
-        if check(mid, a, x):
-            ans = mid   
-            si = mid + 1  
-        else:
-            ei = mid - 1
-    print(ans)
-        
-    
-        
-    
+    n,k,a,b = inp()
+    x = [0]*(n+1)
+    y = [0]*(n+1)
+    ma = mb = float("inf")
+    for i in range(1,n+1):
+        x[i],y[i] = inp()
+    res = abs(x[a]-x[b])+abs(y[a]-y[b])
+    for i in range(1,k+1):
+        ma = min(ma,abs(x[a]-x[i])+abs(y[a]-y[i]))
+        mb = min(mb,abs(x[b]-x[i])+abs(y[b]-y[i]))
+    print(min(res,ma+mb))
+
+
 # ================== SOLUTION END ==================
 
 if LOCAL:

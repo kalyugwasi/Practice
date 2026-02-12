@@ -21,7 +21,7 @@ int main() {
     cin.tie(nullptr);
     freopen("output.txt", "w", stdout);
     pq s;
-    s.push(3); print(s);
+    s.push(4); print(s);
     s.push(2); print(s);
     s.push(5); print(s);
     s.push(7); print(s);
