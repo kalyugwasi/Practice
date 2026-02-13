@@ -28,12 +28,27 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    a = ints()
-    b = ints()
+    n,a,b = int1(),ints(),ints()
+    l,r = 0,n-1
+    o,t = 0,0
+    i = 0
+    while l<=r or i<n:
+        print(o,t)
+        if a[i] == b[i] and not o:
+            l += 1
+        else:
+            o = i+1
+            break
+    while l<=r or i<n:
+        print(o,t)
+        if a[n-i-1] == b[n-i-1] and not t:
+            r -= 1
+        else:
+            t = i+1
+            break
+    print(o,t)   
+        
     
-
-
 
 # ================== SOLUTION END ==================
 
