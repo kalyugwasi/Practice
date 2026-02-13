@@ -28,8 +28,19 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    s = int1()
-    print(s)
+    n,a,b = int1(),ints(),ints()
+    l=0
+    while l<n and a[l] == b[l]:
+        l += 1
+    r = n-1
+    while r>=0 and a[r] == b[r]:
+        r -= 1
+    while l>0 and b[l-1] <= b[l]:
+        l -= 1
+    while r<n-1 and b[r+1] >= b[r]:
+        r += 1
+    print(l+1,r+1) 
+        
     
 
 # ================== SOLUTION END ==================
