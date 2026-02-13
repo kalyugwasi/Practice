@@ -28,12 +28,19 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    a = ints()
-    b = ints()
+    n,x = inp()
+    stacks = [list(map(int, input().split())) for _ in range(3)]
+    k = 0
+    for arr in stacks:
+        for val in arr:
+            if (val | x) != x:
+                break
+            k |= val
+    print("Yes" if k == x else "No")
+        
+        
+        
     
-
-
 
 # ================== SOLUTION END ==================
 

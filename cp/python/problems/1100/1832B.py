@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,heapq
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -28,12 +28,23 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n = int1()
+    n,k = inp()
     a = ints()
-    b = ints()
+    a.sort()
+    pre = [0]*n
+    pre[0] = a[0]
+    for i in range(1,n):
+        pre[i] += pre[i-1] + a[i]
+    mx = 0
+    for i in range(k+1):
+        s = k-i
+        l = 2*i
+        r = n-s-1
+        sm = pre[r]-(0 if l==0 else pre[l-1])
+        mx = max(mx,sm)
+    print(mx)
+        
     
-
-
 
 # ================== SOLUTION END ==================
 
