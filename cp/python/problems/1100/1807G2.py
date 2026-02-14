@@ -30,7 +30,18 @@ t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    
+    a.sort()
+    if a[0] != 1:
+        print("NO")
+        continue
+    sum = 1
+    for i in range(1, n):
+        if a[i] > sum:
+            print("NO")
+            break
+        sum += a[i]
+    else:
+        print("YES")
 
 # ================== SOLUTION END ==================
 
