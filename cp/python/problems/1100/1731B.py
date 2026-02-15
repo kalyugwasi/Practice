@@ -28,8 +28,8 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n,l,r = inp()
-    
+    n = int1()
+    print((n*((4*n)-1)*(n+1)*(337))%1000000007)
 
 # ================== SOLUTION END ==================
 
