@@ -29,7 +29,21 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
+    a = [0]+ints()
+    s,visit = [0]+sorted(a[1:]),[False]*(n+1)
+    f = True
+    for i in range(1,n+1):
+        if not visit[i]:
+            ind = []
+            j = i
+            while j<=n and not visit[j]:
+                visit[j] = True
+                ind.append(j)
+                j *= 2
+            if sorted(a[i] for i in ind) != sorted(s[i] for i in ind):
+                f = False
+                break
+    print("YES" if f else "NO")
     
 
 # ================== SOLUTION END ==================

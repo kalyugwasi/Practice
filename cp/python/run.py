@@ -14,7 +14,7 @@ INPUT_TXT = os.path.join(JUDGE_DIR, "input.txt")
 OUTPUT_TXT = os.path.join(JUDGE_DIR, "output.txt")
 # ----------------------------------------------------
 
-TIME_LIMIT_SECONDS = 2
+TIME_LIMIT_SECONDS = 1
 OUTPUT_SIZE_LIMIT_BYTES = 512 * 1024 * 1024  # 512 MB
 MONITOR_INTERVAL_SECONDS = 5
 

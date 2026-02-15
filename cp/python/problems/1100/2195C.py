@@ -25,12 +25,25 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
-
+def box(prev,nex):
+    for i in range(1,7):
+        if i!=prev and i!= m[prev]:
+            if nex is None or (i!=nex and i!=m[nex]):
+                return i
 t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    
+    c = 0
+    m = {i:7-i for i in range(1,7)}
+    prev = a[0]
+    for i in range(1,n):
+        if prev == a[i] or a[i] == m[prev]:
+            c += 1
+            nex = a[i+1] if i+1<n else None
+            a[i] = box(prev,nex)
+        prev = a[i]
+    print(c)
 
 # ================== SOLUTION END ==================
 
