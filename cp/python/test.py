@@ -1,5 +1,4 @@
 import sys,os
-from collections import deque
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -28,17 +27,30 @@ def sgrid(n): return [input() for _ in range(n)]
 # ================= SOLUTION START =================
 
 t = int1()
-for _ in range(t):
-    n,c = inp()
-    a = ints()
-    res = [a[i]+(i+1) for i in range(n)]
-    res.sort()
-    i = ans = 0
-    while i<n and res[i] <=c:
-        c -= res[i]
-        ans += 1
-        i += 1
-    print(ans)
+n = t*(t+1)//2
+if n%2!=0:
+    print("NO")
+else:
+    print("YES")
+    set1,set2=[],[]
+    if t%4==0:
+        for i in range(1,t+1,4):
+            set1.append(i)
+            set1.append(i+3)
+            set2.append(i+1)
+            set2.append(i+2)
+    else:
+        set1.extend([1,2])
+        set2.append(3)
+        for i in range(4,t+1,4):
+            set1.append(i)
+            set1.append(i+3)
+            set2.append(i+1)
+            set2.append(i+2)
+    print(len(set1))
+    print(*set1)
+    print(len(set2))
+    print(*set2)
 
 # ================== SOLUTION END ==================
 
