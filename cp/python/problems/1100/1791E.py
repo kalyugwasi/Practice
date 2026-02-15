@@ -29,7 +29,21 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
+    a,b = [0],[]
+    for i in sorted(ints()):
+        if i<1:
+            b.append(-i)
+        else:
+            a.append(i+a[-1])
+    res = a[-1]+sum(b)
+    p = len(b)
+    if p%2!=0:
+        h = b[-1]
+        if len(a)>1:
+            res -= h*2 if a[1]>h else a[1]*2
+        else:
+            res -= h*2
+    print(res)
     
 
 # ================== SOLUTION END ==================

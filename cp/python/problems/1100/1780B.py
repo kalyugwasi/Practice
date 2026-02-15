@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -30,7 +30,13 @@ t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    
+    s = sum(a)
+    cur = 0
+    res = 0
+    for i in range(n-1):
+        cur += a[i]
+        res = max(res,math.gcd(cur,s-cur))
+    print(res)
 
 # ================== SOLUTION END ==================
 
