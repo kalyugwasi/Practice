@@ -17,10 +17,10 @@ input = sys.stdin.readline
 int1 = lambda: int(input())
 str1 = lambda: input().strip()
 ints1 = lambda: list(map(int,str1()))
-def inp(): return map(int,input().split())
-def ints(): return list(map(int,input().split()))
+def inp(): return map(int, input().split())
+def ints(): return list(map(int, input().split()))
 def strs(): return list(map(str,str1()))
-def mint(): return map(int,input().split())
+def mint(): return map(int, input().split())
 def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
@@ -28,9 +28,13 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    s = strs()
-    print(s)
-    
+    n = int1()
+    a = ints()
+    res = (1<<30)-1
+    for i in range(n):
+        if (i!=a[i]):
+            res &= a[i]
+    print(res)
     
 
 # ================== SOLUTION END ==================
