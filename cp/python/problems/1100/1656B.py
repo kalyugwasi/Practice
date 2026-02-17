@@ -28,29 +28,18 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n = int1()
+    n,k = inp()
     a = ints()
-    B = int(n**0.5)+1
-    res = 0
+    flag = "NO"
+    mp = {}
+    for i in a:
+        mp[i] = True
     for i in range(n):
-        if a[i] >= B:
-            j = 1
-            while i+a[i]*j<n:
-                if a[i+a[i]*j]== j:
-                    res += 1
-                j += 1
-            j = 1
-            while i-a[i]*j>= 0:
-                if a[i-a[i]*j]==j:
-                    res += 1
-                j += 1
-        else:
-            for j in range(1,B):
-                if i+a[i]*j>=n:
-                    break
-                if a[i+a[i]*j] ==j:
-                    res += 1
-    print(res)
+        if a[i]-k in mp:
+            flag = "YES"
+            break
+    print(flag)
+    
 
 # ================== SOLUTION END ==================
 

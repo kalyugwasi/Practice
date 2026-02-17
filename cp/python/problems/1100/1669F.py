@@ -30,27 +30,23 @@ t = int1()
 for _ in range(t):
     n = int1()
     a = ints()
-    B = int(n**0.5)+1
-    res = 0
+    suf = [0]*n
+    im = {}
+    s = 0
+    for i in range(n-1,-1,-1):
+        s += a[i]
+        im[s] = i
+        suf[i] = s
+    pre = 0
+    res = 0 
     for i in range(n):
-        if a[i] >= B:
-            j = 1
-            while i+a[i]*j<n:
-                if a[i+a[i]*j]== j:
-                    res += 1
-                j += 1
-            j = 1
-            while i-a[i]*j>= 0:
-                if a[i-a[i]*j]==j:
-                    res += 1
-                j += 1
-        else:
-            for j in range(1,B):
-                if i+a[i]*j>=n:
-                    break
-                if a[i+a[i]*j] ==j:
-                    res += 1
-    print(res)
+        if suf[i] in im:
+            del im[suf[i]]
+        pre += a[i]
+        if pre in im:
+            res = max(res,(i+1)+(n-im[pre]))
+    print(res)    
+    
 
 # ================== SOLUTION END ==================
 
