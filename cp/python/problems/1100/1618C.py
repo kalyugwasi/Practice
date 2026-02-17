@@ -33,7 +33,7 @@ for _ in range(t):
     gcd1,gcd2=0,0
     for i in range(n):
         if i%2==1:
-            gcd2 = math.gcd(gcd2,a[i])
+	        gcd2 = math.gcd(gcd2,a[i])
         else:
             gcd1 = math.gcd(gcd1,a[i])
     flag = True

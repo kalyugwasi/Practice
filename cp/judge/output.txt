@@ -1,10 +1,15 @@
-Testing 2196B with 1 test case(s)
+Testing 1618C with 1 test case(s)
 ============================================================
 
 Test 1:
-⏱️ TIME LIMIT EXCEEDED (>1s)
-❌ FAILED
+2
+0
+100
+0
+3
+
+✅ PASSED
 ------------------------------------------------------------
 
 ============================================================
-💥 SOME TESTS FAILED
+🎉 ALL TESTS PASSED!

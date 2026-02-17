@@ -4,7 +4,7 @@ import shutil
 import sys
 import threading
 import time
-
+sys.stdout.reconfigure(encoding='utf-8')
 # ----------------------- PATHS -----------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 JUDGE_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "judge"))
@@ -17,7 +17,6 @@ OUTPUT_TXT = os.path.join(JUDGE_DIR, "output.txt")
 TIME_LIMIT_SECONDS = 1
 OUTPUT_SIZE_LIMIT_BYTES = 512 * 1024 * 1024  # 512 MB
 MONITOR_INTERVAL_SECONDS = 5
-
 
 def normalize(s):
     """Normalize whitespace for comparison"""
