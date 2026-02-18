@@ -25,20 +25,25 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
-
+def check(a,x):
+	b = []
+	for num in a:
+		if num != x:
+			b.append(num)
+	return b == b[::-1]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = sorted([(v,i) for i,v in enumerate(ints())],reverse=True)[:3]
-    b = sorted([(v,i) for i,v in enumerate(ints())],reverse=True)[:3]
-    c = sorted([(v,i) for i,v in enumerate(ints())],reverse=True)[:3]
-    res = 0
-    for va,ia in a:
-        for vb,ib in b:
-            for vc ,ic in c:
-                if ia != ib and ib!=ic and ia!=ic:
-                    res = max(res,va+vb+vc)
-    print(res)
+    a = ints()
+    for i in range(n):
+        if a[i] != a[n-i-1]:
+            if check(a,a[i]) or check(a,a[n-i-1]):
+                print("YES")    
+            else:
+                print("NO")
+            break
+    else:
+        print("YES") 
 
 # ================== SOLUTION END ==================
 
