@@ -29,16 +29,8 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = sorted([(v,i) for i,v in enumerate(ints())],reverse=True)[:3]
-    b = sorted([(v,i) for i,v in enumerate(ints())],reverse=True)[:3]
-    c = sorted([(v,i) for i,v in enumerate(ints())],reverse=True)[:3]
-    res = 0
-    for va,ia in a:
-        for vb,ib in b:
-            for vc ,ic in c:
-                if ia != ib and ib!=ic and ia!=ic:
-                    res = max(res,va+vb+vc)
-    print(res)
+    a = ints()
+    
 
 # ================== SOLUTION END ==================
 
