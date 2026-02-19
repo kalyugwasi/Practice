@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,18 +25,16 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
-
+def cs(s,e):
+    return ((s+e)*(e-s+1))//2
 t = int1()
 for _ in range(t):
-    n = int1()
-    b = ints()
-    b.sort()
-    x,i = n-1,0
-    while x > 0:
-        print(b[i],end=" ")
-        i += x
-        x -= 1
-    print(1000000000)
+    n,x,y = inp()
+    h = n//((x*y)//math.gcd(x,y))
+    c1,c2 = (n//x)-h,(n//y)-h
+    res = cs(n-c1+1,n)-cs(1,c2)
+    print(res)        
+    
 
 # ================== SOLUTION END ==================
 
