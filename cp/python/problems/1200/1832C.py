@@ -1,5 +1,5 @@
 import sys,os
-from itertools import combinations
+from typing import List
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -29,18 +29,19 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n,m = inp()
-    c = grid(n)
-    res = 0
-    for col in range(m):
-        arr =[]
-        for r in range(n):
-            arr.append(c[r][col])
-        arr.sort()
-        pref = 0
-        for i in range(n):
-            res += arr[i]*i-pref
-            pref+= arr[i]
+    n = int1()
+    a = ints()
+    b = [a[0]]
+    for i in range(1,n):
+        if a[i]!=a[i-1]:
+            b.append(a[i])
+    if len(b)<=2:
+        print(len(b))
+        continue
+    res = 2
+    for i in range(1,len(b)-1):
+        if (b[i-1]<b[i]>b[i+1]) or (b[i-1]>b[i]<b[i+1]):
+                res += 1
     print(res)
 
 # ================== SOLUTION END ==================
