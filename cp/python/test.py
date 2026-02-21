@@ -1,5 +1,4 @@
 import sys,os
-from itertools import combinations
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -29,19 +28,9 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n,m = inp()
-    c = grid(n)
-    res = 0
-    for col in range(m):
-        arr =[]
-        for r in range(n):
-            arr.append(c[r][col])
-        arr.sort()
-        pref = 0
-        for i in range(n):
-            res += arr[i]*i-pref
-            pref+= arr[i]
-    print(res)
+    n = int1()
+    a = ints()
+    
 
 # ================== SOLUTION END ==================
 
