@@ -26,32 +26,24 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
-def solve(n,x):
-    @lru_cache(maxsize=None)
-    def dfs(l, r):
-        if l > r:
-            return False
-        i = l + (n - 1 - r)
-        if i == n:
-            return True
-        lc = "a" if l % 2 == 0 else "b"
-        rc = "a" if r % 2 == 0 else "b"
-        c = x[i]
-        if c == "?":
-            return dfs(l + 1, r) or dfs(l, r - 1)
-        if c == lc and dfs(l + 1, r):
-            return True
-        if c == rc and dfs(l, r - 1):
-            return True
-        return False
-    print("YES" if dfs(0, n - 1) else "NO")
-
+def dfs(l,r,i):
+    if i==n:return True
+    if l>r:return False
+    lc,rc = "a" if l%2==0 else "b","a" if r%2==0 else "b"
+    c = x[i]
+    if c =="?":
+        return dfs(l+1,r,i+1) or dfs(l,r-1,i+1)
+    res = False
+    if c == lc:
+        res |= dfs(l+1,r,i+1)
+    if c == rc:
+        res |= dfs(l,r-1,i+1)
+    return res
 t = int1()
 for _ in range(t):
     n = int1()
     x = str1()
-    solve(n,x)
-    
+    print("YES" if dfs(0,n-1,0) else "NO")   
 
 # ================== SOLUTION END ==================
 

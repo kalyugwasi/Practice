@@ -1,5 +1,4 @@
 import sys,os
-from functools import lru_cache
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -26,31 +25,18 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
-def solve(n,x):
-    @lru_cache(maxsize=None)
-    def dfs(l, r):
-        if l > r:
-            return False
-        i = l + (n - 1 - r)
-        if i == n:
-            return True
-        lc = "a" if l % 2 == 0 else "b"
-        rc = "a" if r % 2 == 0 else "b"
-        c = x[i]
-        if c == "?":
-            return dfs(l + 1, r) or dfs(l, r - 1)
-        if c == lc and dfs(l + 1, r):
-            return True
-        if c == rc and dfs(l, r - 1):
-            return True
-        return False
-    print("YES" if dfs(0, n - 1) else "NO")
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    x = str1()
-    solve(n,x)
+    x,y = inp()
+    if (x-2*y)%3!=0:
+        print("NO")
+        continue
+    if ((y>=0) and x>=2*y) or (y<0 and x>=(-4*y)):
+        print("YES")
+    else:
+        print("NO")
+            
     
 
 # ================== SOLUTION END ==================

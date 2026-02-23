@@ -1,14 +1,20 @@
-Testing 1793C with 1 test case(s)
+Testing 2202B with 1 test case(s)
 ============================================================
 
 Test 1:
--1
-1 4
-2 6
--1
+NO
+NO
+NO
+NO
 
-✅ PASSED
+❌ FAILED
+Expected:
+YES
+NO
+YES
+NO
+
 ------------------------------------------------------------
 
 ============================================================
-🎉 ALL TESTS PASSED!
+💥 SOME TESTS FAILED
