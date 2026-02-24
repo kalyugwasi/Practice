@@ -29,21 +29,36 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = ints()
-    a.sort()
-    res = 0
-    prev,prun = None,0
-    run = 0
-    for x in a:
-        if prev is not None and x!=prev:
-            prun = run if (prev is not None and x == prev + 1) else 0
-            run = 0
-        run += 1
-        if run > prun:
-            res += 1
-        prev = x
-    print(res)
-    
+    a = grid(n)
+    cities = {i:[] for i in range(n)}
+    for i in range(n):
+        for j in range(n):
+            if a[i][j] == 1:
+                cities[i].append(j)
+    def dfs(u,r,seen):
+        seen[u] = True
+        for v in cities[u]:
+            if v == r:
+                continue
+            if not seen[v]:
+                dfs(v,r,seen)
+    res = []
+    for r in range(n):
+        seen = [False] * n
+        start = -1
+        for i in range(n):
+            if i!=r:
+                start = i
+                break
+        if start == -1:
+            continue
+        dfs(start,r,seen)
+        cnt = 0
+        for i in range(n):
+            if i!=r and seen[i]:
+                cnt += 1
+        if cnt != n-1:res.append(r)
+    print(*res if res else -1)
 
 # ================== SOLUTION END ==================
 
