@@ -28,20 +28,10 @@ def sgrid(n): return [input() for _ in range(n)]
 
 t = int1()
 for _ in range(t):
-    n = strs()
-    res = 0
-    s = sum(int(i) for i in n)
-    if s<=9:
-        print(0)
-        continue
-    n.sort(reverse=True)
-    for i in n:
-        if s<=9:
-            break
-        s -= int(i)
-        res += 1
-    print(res)
-        
+    n,m,d = inp()
+    mh = d//m+1
+    print((n+mh-1)//mh)
+
 # ================== SOLUTION END ==================
 
 if LOCAL:

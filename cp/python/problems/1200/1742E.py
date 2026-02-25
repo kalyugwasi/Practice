@@ -1,4 +1,5 @@
 import sys,os
+from itertools import accumulate
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,23 +26,32 @@ def grid(n): return [ints() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
+def bs(i,n):
+    p = pmax
+    l,h = 0,n-1
+    res = -1
+    while l<=h:
+        mid = (l+h)//2
+        if p[mid] <= i:
+            res = mid
+            l = mid + 1
+        else:
+            h = mid-1
+    return res
 
 t = int1()
 for _ in range(t):
-    n = strs()
-    res = 0
-    s = sum(int(i) for i in n)
-    if s<=9:
-        print(0)
-        continue
-    n.sort(reverse=True)
-    for i in n:
-        if s<=9:
-            break
-        s -= int(i)
-        res += 1
-    print(res)
-        
+    n,q = inp()
+    a = ints()
+    k = ints()
+    res = []
+    psum = list(accumulate(a))
+    pmax = list(accumulate(a,max))
+    for i in k:
+        idx = bs(i,n)
+        res.append(0 if idx == -1 else psum[idx])
+    print(*res)
+
 # ================== SOLUTION END ==================
 
 if LOCAL:
