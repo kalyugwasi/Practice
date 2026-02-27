@@ -1,10 +1,328 @@
 {
-    "aws.telemetry": false,
-    "python.analysis.typeCheckingMode": "strict",
-    "java.debug.settings.onBuildFailureProceed": true,
-    "files.associations": {
-        "cmath": "c"
+    "extensionsGallery": {
+        "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+        "cacheUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+        "itemUrl": "https://marketplace.visualstudio.com/items"
     },
+    "editor.largeFileOptimizations": false,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    // LeetCode
+    "leetcode.allowReportData": false,
+    "leetcode.defaultLanguage": "python3",
+    "leetcode.filePath": {
+        "python3": {},
+        "default": {
+            "folder": "",
+            "filename": "${id}.${kebab-case-name}.${ext}"
+        }
+    },
+    "leetcode.nodePath": "C:\\Program Files\\nodejs\\node.exe",
+    "leetcode.workspaceFolder": "c:\\Users\\himan\\Documents\\GitHub\\Practice\\leetcode",
+    "leetcode.hint.configWebviewMarkdown": false,
+    "leetcode.hint.commentDescription": false,
+    "leetcode.hideSolved": true,
+    // Java
+    "jdk.jdkhome": "c:\\Users\\himan\\Downloads\\OpenJDK-24",
+    // Python
+    "debugpy.showPythonInlineValues": true,
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": true
+    },
+    "python.analysis.typeCheckingMode": "strict",
+    "workbench.activityBar.iconClickBehavior": "focus",
+    "window.menuBarVisibility": "compact",
+    "window.newWindowProfile": "Default",
+    "workbench.editorAssociations": {
+        "*.otf": "default"
+    },
+    "workbench.iconTheme": "helium-icon-theme",
+    "workbench.editor.empty.hint": "hidden",
+    // TELEMETRY OFF
+    "telemetry.telemetryLevel": "off",
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "workbench.enableExperiments": false,
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+    "update.mode": "none",
+    "update.enableWindowsBackgroundUpdates": false,
+    // Third-party telemetry OFF
+    "redhat.telemetry.enabled": false,
+    "code-runner.enableAppInsights": false,
+    "aws.telemetry": false,
+    "aws.cloudformation.telemetry.enabled": false,
+    "amazonQ.telemetry": false,
+    // Code Runner
+    "code-runner.executorMap": {
+        "javascript": "node",
+        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+        "zig": "zig run",
+        "c": "cd $dir && gcc $fileName -o C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe && C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe",
+        "cpp": "cd $dir && g++ $fileName -o C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe && C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe",
+        "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "php": "php",
+        "python": "python -u",
+        "perl": "perl",
+        "perl6": "perl6",
+        "ruby": "ruby",
+        "go": "go run",
+        "lua": "lua",
+        "groovy": "groovy",
+        "powershell": "powershell -ExecutionPolicy ByPass -File",
+        "bat": "cmd /c",
+        "shellscript": "bash",
+        "fsharp": "fsi",
+        "csharp": "scriptcs",
+        "vbscript": "cscript //Nologo",
+        "typescript": "ts-node",
+        "coffeescript": "coffee",
+        "scala": "scala",
+        "swift": "swift",
+        "julia": "julia",
+        "crystal": "crystal",
+        "ocaml": "ocaml",
+        "r": "Rscript",
+        "applescript": "osascript",
+        "clojure": "lein exec",
+        "haxe": "haxe --cwd $dirWithoutTrailingSlash --run $fileNameWithoutExt",
+        "rust": "cd $dir && rustc $fileName && $dir$fileNameWithoutExt",
+        "racket": "racket",
+        "scheme": "csi -script",
+        "ahk": "autohotkey",
+        "autoit": "autoit3",
+        "dart": "dart",
+        "pascal": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+        "d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
+        "haskell": "runghc",
+        "nim": "nim compile --verbosity:0 --hints:off --run",
+        "lisp": "sbcl --script",
+        "kit": "kitc --run",
+        "v": "v run",
+        "sass": "sass --style expanded",
+        "scss": "scss --style expanded",
+        "less": "cd $dir && lessc $fileName $fileNameWithoutExt.css",
+        "FortranFreeForm": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "fortran-modern": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "fortran_fixed-form": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "fortran": "cd $dir && gfortran $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
+        "sml": "cd $dir && sml $fileName",
+        "mojo": "mojo run",
+        "erlang": "escript",
+        "spwn": "spwn build",
+        "pkl": "cd $dir && pkl eval -f yaml $fileName -o $fileNameWithoutExt.yaml",
+        "gleam": "gleam run -m $fileNameWithoutExt"
+    },
+    "code-runner.showExecutionMessage": false,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.ignoreSelection": true,
+    "code-runner.respectShebang": true,
+    "code-runner.runInTerminal": false,
+    // Misc
+    "launch": {
+        "configurations": [],
+        "compounds": []
+    },
+    "[snippets]": {
+        "editor.quickSuggestions": {
+            "strings": true
+        },
+        "editor.suggest.insertMode": "replace"
+    },
+    "remote.portsAttributes": {
+        "8080": {
+            "protocol": "https"
+        }
+    },
+    "powermode.enabled": true,
+    "powermode.presets": "exploding-rift",
+    "java.debug.settings.console": "internalConsole",
+    "git.ignoreRebaseWarning": true,
+    // Disable AI chat features
+    "chat.sendElementsToChat.attachCSS": false,
+    "chat.sendElementsToChat.attachImages": false,
+    "chat.sendElementsToChat.enabled": false,
+    "debug.onTaskErrors": "debugAnyway",
+    "search.followSymlinks": false,
+    "liveshare.allowGuestDebugControl": true,
+    "workbench.colorTheme": "AMOLED Github Theme",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {},
+    "leetnotion.hint.configWebviewMarkdown": false,
+    "leetnotion.workspaceFolder": "c:\\Users\\himan\\Documents\\GitHub\\Practice\\leetcode",
+    "git.autofetch": true,
+    "leetnotion.allowReportData": false,
+    "leetnotion.defaultLanguage": "python3",
+    "[html]": {
+        "editor.suggest.insertMode": "replace"
+    },
+    "bootstrapIntelliSense": {
+        "enable": true,
+        "bsVersion": "5.3.7",
+        "useLocalFile": false,
+        "cssFilePath": "",
+        "languageSupport": []
+    },
+    "files.associations": {
+        "*.html": "html"
+    },
+    "conventionalCommits.lineBreak": "\\n",
+    "gitlens.ai.model": "gitkraken",
+    "gitlens.ai.gitkraken.model": "gemini:gemini-2.0-flash",
+    "leetnotion.hint.commentDescription": false,
+    "workbench.sideBar.location": "right",
+    "editor.dropIntoEditor.preferences": [],
+    "explorer.confirmDragAndDrop": false,
+    "editor.minimap.showSlider": "always",
+    "editor.minimap.autohide": "scroll",
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.sectionHeaderFontSize": 4,
+    "files.autoSave": "afterDelay",
+    // INSERT mode bindings
+    "vim.insertModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "j",
+                "k"
+            ],
+            "after": [
+                "<Esc>"
+            ]
+        },
+        {
+            "before": [
+                "<A-j>"
+            ],
+            "after": [
+                "J"
+            ]
+        },
+        {
+            "before": [
+                "<A-h>"
+            ],
+            "after": [
+                "<C-w>",
+                "h"
+            ]
+        },
+        {
+            "before": [
+                "<A-j>"
+            ],
+            "after": [
+                "<C-w>",
+                "j"
+            ]
+        },
+        {
+            "before": [
+                "<A-k>"
+            ],
+            "after": [
+                "<C-w>",
+                "k"
+            ]
+        },
+        {
+            "before": [
+                "<A-l>"
+            ],
+            "after": [
+                "<C-w>",
+                "l"
+            ]
+        },
+        {
+            "before": [
+                "<C-t>",
+                "t"
+            ],
+            "commands": [
+                ":tabnew"
+            ]
+        },
+        {
+            "before": [
+                "<C-t>",
+                "n"
+            ],
+            "commands": [
+                ":tabnext"
+            ]
+        },
+        {
+            "before": [
+                "<C-t>",
+                "p"
+            ],
+            "commands": [
+                ":tabprev"
+            ]
+        },
+        {
+            "before": [
+                "<C-t>",
+                "o"
+            ],
+            "commands": [
+                ":tabo"
+            ]
+        }
+    ],
+    // NORMAL mode bindings — split navigation
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "<C-h>"
+            ],
+            "after": [
+                "<C-w>",
+                "h"
+            ]
+        },
+        {
+            "before": [
+                "<C-j>"
+            ],
+            "after": [
+                "<C-w>",
+                "j"
+            ]
+        },
+        {
+            "before": [
+                "<C-k>"
+            ],
+            "after": [
+                "<C-w>",
+                "k"
+            ]
+        },
+        {
+            "before": [
+                "<C-l>"
+            ],
+            "after": [
+                "<C-w>",
+                "l"
+            ]
+        }
+    ],
+    "vim.leader": "<Space>",
+    "vim.easymotion": true,
+    "vim.camelCaseMotion.enable": true,
+    "vim.changeWordIncludesWhitespace": true,
+    "vim.enableNeovim": true,
+    "vim.neovimPath": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
+    "vim.neovimUseConfigFile": true,
+    "vim.replaceWithRegister": true,
+    "vim.sneak": true,
+    "vim.startInInsertMode": false,
+    "vim.targets.enable": true,
+    "vim.sneakReplacesF": true,
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "c:\\mysql-enterprise-9.6.0_winx64_bundle\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-commercial-9.6.0\\mysql-connector-j-9.6.0.jar",
