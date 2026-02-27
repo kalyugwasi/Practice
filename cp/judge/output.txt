@@ -12,7 +12,6 @@ Test 1:
 Expected:
 1
 0
-9
 7
 6
 

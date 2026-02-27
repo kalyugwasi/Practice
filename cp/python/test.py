@@ -32,7 +32,7 @@ for _ in range(t):
     n = int1()
     a = grids(n)
     print(a)
-    
+   
 
 # ================== SOLUTION END ==================
 
