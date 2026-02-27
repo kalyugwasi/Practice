@@ -22,7 +22,6 @@ def ints(): return list(map(int,input().split()))
 def strs(): return list(map(str,str1()))
 def mint(): return map(int,input().split())
 def grid(n): return [ints() for _ in range(n)]
-def grids(n): return [ints1() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
@@ -30,9 +29,19 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = grids(n)
-    print(a)
-    
+    x = ints()
+    y = ints()
+    grp = 0
+    ratio = sorted([y[i]-x[i] for i in range(n)])
+    l,r = 0,n-1
+    while l<r:
+        if ratio[r] + ratio[l] < 0:
+            l += 1
+        else:
+            l += 1
+            r -= 1
+            grp += 1 
+    print(grp)
 
 # ================== SOLUTION END ==================
 

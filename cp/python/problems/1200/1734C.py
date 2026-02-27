@@ -22,7 +22,6 @@ def ints(): return list(map(int,input().split()))
 def strs(): return list(map(str,str1()))
 def mint(): return map(int,input().split())
 def grid(n): return [ints() for _ in range(n)]
-def grids(n): return [ints1() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
@@ -30,9 +29,19 @@ def sgrid(n): return [input() for _ in range(n)]
 t = int1()
 for _ in range(t):
     n = int1()
-    a = grids(n)
-    print(a)
+    s = " " + str1()
+    res = 0
+    used = [False]*(n+1)
+    for d in range(1,n+1):
+       for j in range(d,n+1,d):
+           if s[j]=="1":
+               break
+           if not used[j]:
+               res += d
+               used[j] = True 
+    print(res)
     
+
 
 # ================== SOLUTION END ==================
 

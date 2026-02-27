@@ -1,4 +1,4 @@
-import sys,os
+import sys,os,itertools
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -22,18 +22,29 @@ def ints(): return list(map(int,input().split()))
 def strs(): return list(map(str,str1()))
 def mint(): return map(int,input().split())
 def grid(n): return [ints() for _ in range(n)]
-def grids(n): return [ints1() for _ in range(n)]
 def sgrid(n): return [input() for _ in range(n)]
 
 # ================= SOLUTION START =================
 
 t = int1()
 for _ in range(t):
-    n = int1()
-    a = grids(n)
-    print(a)
-    
-
+    n,m = inp()
+    a = sorted(ints())
+    gaps = []
+    for i in range(m-1):
+        gaps.append(a[i+1]-a[i]-1)
+    gaps.append(a[0]+n-a[-1]-1)
+    nd,ns = 0,0
+    for i in sorted(gaps,reverse=True):
+        cur = i - nd * 2
+        if cur>0:
+            ns += 1
+            cur -= 2
+            if cur>0 :
+                ns += cur
+            nd += 2
+    print(n-ns)
+        
 # ================== SOLUTION END ==================
 
 if LOCAL:
