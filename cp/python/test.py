@@ -1,40 +1,18 @@
-import sys,os
-def setup_io():
-    try:
-        base = os.path.dirname(os.path.abspath(__file__))
-        judge = os.path.join(base,"..","judge")
-        inpth = os.path.join(judge,"input.txt")
-        outpth = os.path.join(judge,"output.txt")
-        if os.path.exists(inpth):
-            sys.stdin = open(inpth,"r")
-            sys.stdout = open(outpth,"w")
-            return True
-    except:
-        pass
-    return False
-LOCAL = setup_io()
-input = sys.stdin.readline
-int1 = lambda: int(input())
-str1 = lambda: input().strip()
-ints1 = lambda: list(map(int,str1()))
-def inp(): return map(int,input().split())
-def ints(): return list(map(int,input().split()))
-def strs(): return list(map(str,str1()))
-def mint(): return map(int,input().split())
-def grid(n): return [ints() for _ in range(n)]
-def grids(n): return [ints1() for _ in range(n)]
-def sgrid(n): return [input() for _ in range(n)]
-
-# ================= SOLUTION START =================
-
-t = int1()
-for _ in range(t):
-    n = int1()
-    a = grids(n)
-    print(a)
-   
-
-# ================== SOLUTION END ==================
-
-if LOCAL:
-    sys.stdout.flush()
+def printer(m,table):
+    for i in range(m):
+        print(*table[i],sep="   ")
+def grid(m,n):
+    table = [[0 for _ in range(n+1)] for _ in range(m+1)]
+    table[1][1] = 1
+    for i in range(m+1):
+        for j in range(n+1):
+            cur = table[i][j]
+            if j+1<=n:table[i][j+1] += cur
+            if i+1<=m:table[i+1][j] += cur
+    return printer(m,table)
+    
+print(grid(1,1))
+print(grid(3,3))
+print(grid(6,6))
+print(grid(18,18))
+print(grid(20,20))
