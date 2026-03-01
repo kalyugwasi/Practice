@@ -1,10 +1,81 @@
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+from collections import deque
+def build_tree(arr):
+    if not arr:
+        return None
+    
+    root = TreeNode(arr[0])
+    queue = deque([root])
+    i = 1
+    
+    while queue and i < len(arr):
+        node = queue.popleft()
+        
+        if arr[i] is not None:
+            node.left = TreeNode(arr[i])
+            queue.append(node.left)
+        i += 1
+        
+        if i < len(arr) and arr[i] is not None:
+            node.right = TreeNode(arr[i])
+            queue.append(node.right)
+        i += 1
+    
+    return root
+class Solution:
+    def adjmat(self,root):
+        if not root: return {}
+        res = {}
+        q = deque([root])
+        while q:
+            cur = q.popleft()
+            res[cur] = []
+            if cur.left:
+                q.append(cur.left)
+                res[cur].append(cur.left)
+            if cur.right:
+                q.append(cur.right)
+                res[cur].append(cur.right) 
+        return res
+
+    def rob(self, root: Optional[TreeNode]) -> int:
+        adj = self.adjmat(root)
+        memo ={}
+        def dp(node,poss):
+            if not node:return 0
+            if (node,poss) in memo:return memo[(node,poss)]
+            if not poss:
+                total = 0
+                for c in adj.get(node,[]):
+                    total += dp(c,True)
+            else:
+                rob = node.val
+                for c in adj.get(node,[]):
+                    rob += dp(c,False)
+                skip = 0
+                for c in adj.get(node,[]):
+                    skip += dp(c,True)
+                total = max(rob,skip)
+            memo[(node,poss)] = total
+            return total
+        return dp(root,True)
+        
+sol = Solution()
+print(sol.rob(build_tree([3,2,3,None,3,None,1])))
+print(sol.rob(build_tree([3,4,5,1,3,None,1])))
+"""
 def canConstruct():
 
 print(canConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"]))
 print(canConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"]))
 print(canConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"]))
 print(canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e","ee","eee","eeee","eeeee","eeeeee"]))
-
+"""
 
 
 
