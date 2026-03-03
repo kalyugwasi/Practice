@@ -1,3 +1,11 @@
+import string
+letters = string.ascii_lowercase
+for i in letters:
+    print(ord(i)-96,end=" ")
+s = "010120"
+print(s[:1])
+print(s[:2])
+"""
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -69,14 +77,14 @@ sol = Solution()
 print(sol.rob(build_tree([3,2,3,None,3,None,1])))
 print(sol.rob(build_tree([3,4,5,1,3,None,1])))
 """
+'''
 def canConstruct():
 
 print(canConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"]))
 print(canConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"]))
 print(canConstruct("enterapotentpot", ["a", "p", "ent", "enter", "ot", "o", "t"]))
 print(canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", ["e","ee","eee","eeee","eeeee","eeeeee"]))
-"""
-
+'''
 
 
 
