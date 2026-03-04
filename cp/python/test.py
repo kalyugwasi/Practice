@@ -1,3 +1,16 @@
+
+
+
+
+
+print(int(False))
+print(int(True))
+
+
+
+
+
+"""
 import string
 letters = string.ascii_lowercase
 for i in letters:
@@ -5,7 +18,6 @@ for i in letters:
 s = "010120"
 print(s[:1])
 print(s[:2])
-"""
 # Definition for a binary tree node.
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
