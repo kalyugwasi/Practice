@@ -22,12 +22,12 @@ int|float|double {
     printf("Identifier: %s\n", yytext);
 }
 
-"<="|"=="|"++"|"+"|"*"|"-" {
+"<="|"=="|"++"|"+"|"*"|"-"|"<"|">"|"=" {
     n++;
     printf("Operator: %s\n", yytext);
 }
 
-[(){};,<>=/.] {
+[(){};,/.] {
     n++;
     printf("Separator: %s\n", yytext);
 }
