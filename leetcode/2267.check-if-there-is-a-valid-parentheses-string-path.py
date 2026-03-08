@@ -24,6 +24,6 @@ class Solution:
             if i==0 and j ==0:
                 return s==0
             return dfs(i,j-1,s) or dfs(i-1,j,s)
-        return dfs(n-1,m-1,0) 
+        return dfs(n-1,m-1,0)
 @lc code=end
 
