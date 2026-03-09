@@ -1,9 +1,18 @@
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.net.*;
 
+public class Server {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket ds = new DatagramSocket(7000);
+        byte[] recieve = new byte[1024];
+        DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
+        ds.receive(dp);
+        String msg = new String(dp.getData());
+        System.out.println("Client wants to say " + msg);
+        ds.close();
+    }
+}
 
+/*
 public class Server {
     public static void main(String[] args) throws Exception {
         ServerSocket ss = new ServerSocket(6000);
@@ -17,7 +26,7 @@ public class Server {
         ss.close();
     }
 }
-/*
+*//*
 public class Server {
     public static void main(String[] args) throws Exception {
         ServerSocket ss = new ServerSocket(5000);
