@@ -61,7 +61,7 @@ class Mysql{
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                "jdbc:mysql//localhost:3306/testdb",
+                "jdbc:mysql://localhost:3306/testdb",
                 "root", 
                 "passowrd");
                 System.out.println("COnnected Successfully");
@@ -76,7 +76,7 @@ class Oracle{
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
             Connection con=DriverManager.getConnection(
-                "jdbc:oracle:thin@localhost:1512:xe",
+                "jdbc:oracle:thin:@localhost:1512:xe",
                 "System",
                 "password"
             );
