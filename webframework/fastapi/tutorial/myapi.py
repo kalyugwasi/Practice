@@ -1,9 +1,11 @@
 from pydantic import BaseModel
 from typing import Optional
 from fastapi import FastAPI,Path
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
+DATABASE_URL = "postgresql://postgres:password@localhost:5432/studentdb"
+
 app = FastAPI()
-
-
 students = {
     1:{
         "name":"john",
