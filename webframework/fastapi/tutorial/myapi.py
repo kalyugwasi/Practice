@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
-from fastapi import FastAPI,Path
+from fastapi import FastAPI,Path,Depends,HTTPException,status
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 DATABASE_URL = "postgresql://postgres:password@localhost:5432/studentdb"
@@ -72,3 +73,6 @@ def delete_student(student_id:int):
     del students[student_id]
     return {"message":"student deleted successfully"}
 
+@app.get("/test/{item_id}/")
+async def test(item_id: str,query: Optional[int] = None):
+    return {"hello":item_id}
