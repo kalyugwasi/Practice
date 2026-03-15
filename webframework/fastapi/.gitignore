@@ -1,5 +1,0 @@
-# Python cache
-tutorial/__pycache__/
-*.pyc
-venv/
-.env/
