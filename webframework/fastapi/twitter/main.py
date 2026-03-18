@@ -1,15 +1,13 @@
-from fastapi import FastAPI, Depends
-import schemas,models
+from fastapi import FastAPI
 from database import engine
-from sqlalchemy.orm import Session
+import models
+from routers import blog,user,authentication
+
 app = FastAPI()
+
+#models.Base.metadata.drop_all(bind=engine)
 models.Base.metadata.create_all(bind=engine)
-def get_db():
-    db = Session()
-    try:
-        yield db
-    finally:
-        db.close()
-@app.post("/")
-def create(request: schemas.Blog, db:Session = Depends(get_db)):
-    return request
+
+app.include_router(authentication.router)
+app.include_router(blog.router)
+app.include_router(user.router)
