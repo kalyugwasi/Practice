@@ -4,7 +4,7 @@ public class Client {
     public static void main(String[] args) throws Exception{
         try {
             DatagramSocket ds = new DatagramSocket();
-            String msg = "Hello! teri mummi";
+            String msg = "Hello! teri mummi ";
             byte[] send = msg.getBytes();
             InetAddress ip = InetAddress.getByName("localhost");
             DatagramPacket dp = new DatagramPacket(send, send.length, ip, 7000);

@@ -6,3 +6,5 @@ api_dev/api_env/
 .vscode/
 .bin/
 .boots/
+*.jar
+.idea

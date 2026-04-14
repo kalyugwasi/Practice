@@ -4,6 +4,7 @@ public class Server {
     public static void main(String[] args) throws Exception {
         DatagramSocket ds = new DatagramSocket(7000);
         byte[] recieve = new byte[1024];
+        System.out.println("Server Started");
         DatagramPacket dp = new DatagramPacket(recieve, recieve.length);
         ds.receive(dp);
         String msg = new String(dp.getData());
