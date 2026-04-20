@@ -1,40 +1,42 @@
+import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class Client {
-    public static void main(String[] args) throws Exception{
+    private static final String SERVER_ADDRESS = "localhost";
+    private static final int SERVER_PORT = 12346;
+
+    public static void main(String[] args) {
         try {
-            DatagramSocket ds = new DatagramSocket();
-            String msg = "Hello! teri mummi ";
-            byte[] send = msg.getBytes();
-            InetAddress ip = InetAddress.getByName("localhost");
-            DatagramPacket dp = new DatagramPacket(send, send.length, ip, 7000);
-            ds.send(dp);
-            ds.close();
-        } catch (Exception e) {
+            Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+            System.out.println("Connected to the chat server!");
+
+            // Setting up input and output streams
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // Start a thread to handle incoming messages
+            new Thread(() -> {
+                try {
+                    String serverResponse;
+                    while ((serverResponse = in.readLine()) != null) {
+                        System.out.println(serverResponse);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+            // Read messages from the console and send to the server
+            Scanner scanner = new Scanner(System.in);
+            String userInput;
+            while (true) {
+                userInput = scanner.nextLine();
+                out.println(userInput);
+            }
+           
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
-/*
-public class Client {
-    public static void main(String[] args) throws Exception{
-        Socket s = new Socket("localhost", 6000);
-        DataInputStream dis = new DataInputStream(s.getInputStream());
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-        dos.writeUTF("Hello Server");
-        String reply = dis.readUTF();
-        System.out.println("Server says: " + reply);
-        s.close();
-    }
-}
-*//*
-public class Client {
-    public static void main(String[] args) throws Exception {
-        Socket s = new Socket("localhost", 5000);
-        DataOutputStream dos = new DataOutputStream(s.getOutputStream());
-        dos.writeUTF("Teri mummi");
-        dos.flush();
-        dos.close();
-        s.close();
-    }
-}
-*/
