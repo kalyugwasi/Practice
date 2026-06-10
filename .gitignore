@@ -8,3 +8,4 @@ api_dev/api_env/
 .boots/
 *.jar
 .idea
+*.class

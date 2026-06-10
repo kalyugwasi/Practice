@@ -36,7 +36,7 @@
     "workbench.editorAssociations": {
         "*.otf": "default"
     },
-    "workbench.iconTheme": "helium-icon-theme",
+    "workbench.iconTheme": "material-icon-theme",
     "workbench.editor.empty.hint": "hidden",
     // TELEMETRY OFF
     "telemetry.telemetryLevel": "off",
@@ -58,6 +58,7 @@
         "javascript": "node",
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
         "zig": "zig run",
+        "kotlin": "cd $dir && kotlinc $fileName -d $fileNameWithoutExt.jar && kotlin $fileNameWithoutExt.jar",
         "c": "cd $dir && gcc $fileName -o C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe && C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe",
         "cpp": "cd $dir && g++ $fileName -o C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe && C:\\mingw64\\share\\bin\\$fileNameWithoutExt.exe",
         "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
@@ -114,10 +115,11 @@
         "gleam": "gleam run -m $fileNameWithoutExt"
     },
     "code-runner.showExecutionMessage": false,
-    "code-runner.clearPreviousOutput": true,
     "code-runner.ignoreSelection": true,
     "code-runner.respectShebang": true,
     "code-runner.runInTerminal": true,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.preserveFocus": false
     // Misc
     "launch": {
         "configurations": [],
@@ -145,7 +147,7 @@
     "debug.onTaskErrors": "debugAnyway",
     "search.followSymlinks": false,
     "liveshare.allowGuestDebugControl": true,
-    "workbench.colorTheme": "AMOLED Github Theme",
+    "workbench.colorTheme": "Bearded Theme OLED (Experimental)",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
