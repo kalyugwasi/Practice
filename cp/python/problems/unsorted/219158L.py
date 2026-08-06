@@ -24,16 +24,9 @@ def strs(): return list(map(str,str1())) #for string list
 
 # ================= SOLUTION START =================
 
-a,o,b,e,c = stp()
-if o == "-": 
-    res = int(a)-int(b)
-    print("Yes" if res == int(c) else res)
-elif o == "+":
-    res = int(a)+int(b)
-    print("Yes" if res == int(c) else res)
-else: 
-    res = int(a)*int(b)
-    print("Yes" if res == int(c) else res)
+f1,s1 = stp()
+f2,s2 = stp()
+print("ARE Brothers" if s1==s2 else "NOT")
 
 # ================== SOLUTION END ==================
 

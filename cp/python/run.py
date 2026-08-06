@@ -1,163 +1,148 @@
-import os
-import subprocess
+#!/usr/bin/env python3
+"""Run the legacy setup_io() scratch file against saved Codeforces samples."""
+
+from __future__ import annotations
+
+import argparse
+import json
 import shutil
+import subprocess
 import sys
-import threading
-import time
-sys.stdout.reconfigure(encoding='utf-8')
-# ----------------------- PATHS -----------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-JUDGE_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "judge"))
-
-SOLUTION_FILE = os.path.join(BASE_DIR, "test.py")
-INPUT_TXT = os.path.join(JUDGE_DIR, "input.txt")
-OUTPUT_TXT = os.path.join(JUDGE_DIR, "output.txt")
-# ----------------------------------------------------
-
-TIME_LIMIT_SECONDS = 1
-OUTPUT_SIZE_LIMIT_BYTES = 512 * 1024 * 1024  # 512 MB
-MONITOR_INTERVAL_SECONDS = 5
-
-def normalize(s):
-    """Normalize whitespace for comparison"""
-    return s.split()
+from pathlib import Path
 
 
-def monitor_output(proc, output_path, size_limit, stop_event, kill_reason):
-    """
-    Background thread: checks output file size every MONITOR_INTERVAL_SECONDS.
-    Uses stop_event.wait() instead of time.sleep() so it wakes up instantly
-    when the process finishes, with no delay on the main thread.
-    """
-    while not stop_event.wait(timeout=MONITOR_INTERVAL_SECONDS):
-        if os.path.exists(output_path):
-            size = os.path.getsize(output_path)
-            if size > size_limit:
-                kill_reason.append("output_limit")
-                proc.kill()
-                break
+PYTHON_DIR = Path(__file__).resolve().parent
+JUDGE_DIR = PYTHON_DIR.parent / "judge"
+DEFAULT_SOLUTION = PYTHON_DIR / "test.py"
+INPUT_TXT = JUDGE_DIR / "input.txt"
+OUTPUT_TXT = JUDGE_DIR / "output.txt"
+LOCAL_INPUT = PYTHON_DIR / "input.txt"
+LOCAL_EXPECTED = PYTHON_DIR / "expected.txt"
+LOCAL_OUTPUT = PYTHON_DIR / "output.txt"
 
 
-# Find the most recent problem folder
-problem_folders = []
-for folder_name in os.listdir(JUDGE_DIR):
-    folder_path = os.path.join(JUDGE_DIR, folder_name)
-    if os.path.isdir(folder_path) and folder_name not in ["__pycache__"]:
-        if os.path.exists(os.path.join(folder_path, "input1.txt")):
-            problem_folders.append((folder_name, folder_path))
+def normalize(value: str) -> list[str]:
+    return value.split()
 
-if not problem_folders:
-    exit(1)
 
-problem_folders.sort(key=lambda x: os.path.getmtime(x[1]), reverse=True)
-problem_name, problem_folder = problem_folders[0]
+def choose_problem(requested: str | None) -> Path:
+    if requested:
+        folder = JUDGE_DIR / requested.upper()
+        if not (folder / "input1.txt").exists():
+            raise ValueError(f"No saved samples for {requested}. Run cpjudge {requested} first.")
+        return folder
+    candidates = [path for path in JUDGE_DIR.iterdir() if path.is_dir() and (path / "input1.txt").exists()]
+    if not candidates:
+        raise ValueError("No saved problems. Run cpjudge 1904A first.")
+    return max(candidates, key=lambda path: path.stat().st_mtime)
 
-if not os.path.exists(SOLUTION_FILE):
-    exit(1)
 
-test_count = 0
-while os.path.exists(os.path.join(problem_folder, f"input{test_count + 1}.txt")):
-    test_count += 1
+def find_test_count(folder: Path) -> int:
+    index = 1
+    while (folder / f"input{index}.txt").exists() and (folder / f"expected{index}.txt").exists():
+        index += 1
+    return index - 1
 
-results_log = []
-results_log.append(f"Testing {problem_name} with {test_count} test case(s)")
-results_log.append("=" * 60 + "\n")
 
-all_passed = True
-
-for i in range(1, test_count + 1):
-    input_file = os.path.join(problem_folder, f"input{i}.txt")
-    expected_file = os.path.join(problem_folder, f"expected{i}.txt")
-
-    shutil.copyfile(input_file, INPUT_TXT)
-
-    # Clear output file before running
-    if os.path.exists(OUTPUT_TXT):
-        os.remove(OUTPUT_TXT)
-
-    # Launch solution as a subprocess
-    proc = subprocess.Popen(
-        [sys.executable, SOLUTION_FILE],
-        cwd=BASE_DIR,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
-    )
-
-    # Start live monitor thread
-    stop_event = threading.Event()
-    kill_reason = []
-    monitor_thread = threading.Thread(
-        target=monitor_output,
-        args=(proc, OUTPUT_TXT, OUTPUT_SIZE_LIMIT_BYTES, stop_event, kill_reason),
-        daemon=True
-    )
-    monitor_thread.start()
-
-    # Wait for process — returns immediately when done, only blocks up to 2s
-    tle = False
+def run_solution(solution: Path, sample_input: str, timeout: float) -> tuple[str, str, bool]:
+    """Use the original template's judge/input.txt and judge/output.txt paths."""
+    INPUT_TXT.write_text(sample_input, encoding="utf-8")
+    OUTPUT_TXT.unlink(missing_ok=True)
     try:
-        proc.wait(timeout=TIME_LIMIT_SECONDS)
+        result = subprocess.run(
+            [sys.executable, str(solution)], text=True, capture_output=True,
+            timeout=timeout, cwd=solution.parent,
+        )
     except subprocess.TimeoutExpired:
-        proc.kill()
-        proc.wait()
-        tle = True
+        return "", f"TIME LIMIT EXCEEDED (>{timeout:g}s)", True
+    actual = OUTPUT_TXT.read_text(encoding="utf-8") if OUTPUT_TXT.exists() else result.stdout
+    details = ""
+    if result.returncode:
+        details = f"Exit code: {result.returncode}"
+    if result.stderr.strip():
+        details = f"{details}\nstderr:\n{result.stderr.rstrip()}".strip()
+    return actual, details, False
 
-    # Signal monitor to stop — stop_event.wait() wakes up instantly, no 5s delay
-    stop_event.set()
-    monitor_thread.join()
 
-    results_log.append(f"Test {i}:")
+def archive(solution: Path, folder: Path) -> str:
+    rating = "unsorted"
+    metadata = folder / "meta.json"
+    if metadata.exists():
+        try:
+            rating = str(json.loads(metadata.read_text(encoding="utf-8")).get("rating") or rating)
+        except json.JSONDecodeError:
+            pass
+    destination = PYTHON_DIR / "problems" / rating / f"{folder.name}.py"
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(solution, destination)
+    return f"Saved solution (replaced existing file if present): {destination}"
 
-    if tle:
-        results_log.append(f"⏱️ TIME LIMIT EXCEEDED (>{TIME_LIMIT_SECONDS}s)")
-        results_log.append(f"❌ FAILED")
-        all_passed = False
-        results_log.append("-" * 60 + "\n")
-        continue
 
-    if kill_reason and kill_reason[0] == "output_limit":
-        results_log.append(f"💾 OUTPUT LIMIT EXCEEDED (>{OUTPUT_SIZE_LIMIT_BYTES // (1024 * 1024)}MB) — killed by live monitor")
-        results_log.append(f"❌ FAILED")
-        all_passed = False
-        results_log.append("-" * 60 + "\n")
-        continue
+def local_test(solution: Path, timeout: float) -> int:
+    if not LOCAL_INPUT.exists() or not LOCAL_EXPECTED.exists():
+        raise ValueError("Run cpjudge first; cp/python/input.txt and expected.txt are required.")
+    actual, details, timed_out = run_solution(solution, LOCAL_INPUT.read_text(encoding="utf-8"), timeout)
+    LOCAL_OUTPUT.write_text(actual, encoding="utf-8")
+    expected = LOCAL_EXPECTED.read_text(encoding="utf-8")
+    passed = not timed_out and not details and normalize(actual) == normalize(expected)
+    print("Local editable test: " + ("PASSED" if passed else "FAILED"))
+    if details:
+        print(details)
+    if not passed and not details:
+        print(f"Expected:\n{expected.rstrip()}\nActual:\n{actual.rstrip()}")
+    print(f"Actual output saved to {LOCAL_OUTPUT}")
+    return 0 if passed else 1
 
-    # Safe to read output now
-    actual = ""
-    if os.path.exists(OUTPUT_TXT):
-        with open(OUTPUT_TXT, "r", encoding="utf-8") as f:
-            actual = f.read()
 
-    results_log.append(actual)
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Test the CP scratch solution against saved samples.")
+    parser.add_argument("problem", nargs="?", help="Saved problem key, e.g. 1904A (defaults to newest)")
+    parser.add_argument("--solution", type=Path, default=DEFAULT_SOLUTION, help="Solution file to execute")
+    parser.add_argument("--timeout", type=float, default=2.0, help="Seconds allowed per sample")
+    parser.add_argument("--local", action="store_true", help="Test editable cp/python/input.txt against expected.txt")
+    parser.add_argument("--no-archive", action="store_true", help="Do not archive after all samples pass")
+    args = parser.parse_args()
+    solution = args.solution.resolve()
+    if not solution.is_file():
+        parser.error(f"Solution file does not exist: {solution}")
+    if args.timeout <= 0:
+        parser.error("--timeout must be greater than zero")
 
-    with open(expected_file, "r", encoding="utf-8") as f:
-        expected = f.read()
+    if args.local:
+        try:
+            return local_test(solution, args.timeout)
+        except ValueError as error:
+            parser.error(str(error))
 
-    if normalize(actual) == normalize(expected):
-        results_log.append(f"✅ PASSED")
-    else:
-        results_log.append(f"❌ FAILED")
-        results_log.append(f"Expected:\n{expected}")
-        all_passed = False
-        #all_passed = True
+    try:
+        folder = choose_problem(args.problem)
+    except ValueError as error:
+        parser.error(str(error))
+    count = find_test_count(folder)
+    summary = [f"Testing {folder.name}: {count} sample(s)", "=" * 60]
+    all_passed = True
+    for index in range(1, count + 1):
+        sample_input = (folder / f"input{index}.txt").read_text(encoding="utf-8")
+        expected = (folder / f"expected{index}.txt").read_text(encoding="utf-8")
+        actual, details, timed_out = run_solution(solution, sample_input, args.timeout)
+        passed = not timed_out and not details and normalize(actual) == normalize(expected)
+        summary.append(f"Sample {index}: {'PASSED' if passed else 'FAILED'}")
+        if not passed:
+            all_passed = False
+            if details:
+                summary.append(details)
+            else:
+                summary.append(f"Expected:\n{expected.rstrip()}\nActual:\n{actual.rstrip()}")
+        summary.append("-" * 60)
 
-    results_log.append("-" * 60 + "\n")
+    summary.append("ALL SAMPLES PASSED" if all_passed else "SOME SAMPLES FAILED")
+    report = "\n".join(summary) + "\n"
+    OUTPUT_TXT.write_text(report, encoding="utf-8")
+    print(report, end="")
+    if all_passed and not args.no_archive:
+        print(archive(solution, folder))
+    return 0 if all_passed else 1
 
-results_log.append("=" * 60)
-if all_passed:
-    results_log.append("🎉 ALL TESTS PASSED!")
-else:
-    results_log.append("💥 SOME TESTS FAILED")
 
-final_output = "\n".join(results_log)
-
-with open(OUTPUT_TXT, "w", encoding="utf-8") as f:
-    f.write(final_output)
-
-# Archive the code if all tests passed
-if all_passed:
-    dest_dir = os.path.join(BASE_DIR, "problems", "1200")
-    os.makedirs(dest_dir, exist_ok=True)
-    dest_file = os.path.join(dest_dir, f"{problem_name}.py")
-    shutil.copyfile(SOLUTION_FILE, dest_file)
-    print(f"✅ Solution archived to {dest_file}")
+if __name__ == "__main__":
+    raise SystemExit(main())

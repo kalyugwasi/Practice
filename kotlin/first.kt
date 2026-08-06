@@ -37,6 +37,49 @@ import java.util.*
 //         println(i)
 //     }
 // }
+//fun main(){
+//    var fn: (Double,Double)->Double = ::addition
+//    println(fn(1.0,4.0));
+//    var fni: (Int,Int)-> Int = ::addition
+//    println(fni(1,2));
+//}
+
+//fun addition(a: Int, b:Int): Int{
+//    return a+b
+//}
+
+//fun addition(a:Double,b:Double): Double{
+//    return a+b
+//}
+//fun main(){
+//    var arr = arrayOf("one","two","three")
+//    var arr1 = arrayOf(1,2,3)
+//    var arr2 = arrayOf<Int>(3,4,5)
+//    for ((i,e) in arr.withIndex()) println("$i - $e")
+//    println(arr[0])
+//    println(arr.get(2))
+//    arr.set(0,"Hello")
+//    println(arr[0])
+//    println(arr.size)
+//    for ((i,e) in arr.withIndex()) println("$i - $e")
+//}
 fun main(){
-    
+    val mustang = Car(name:"mustang",type:"petrol",kmRan: 100)
+    val bettle = Car(name: "bettle",type:"diesel",kmRan:200)
+    println(mustang.name)
+    println(mustang.type)
+    println(bettle.name)
+    println(bettle.type)
+
+    mustang.driveCar()
+
+}   
+
+class Car(val name: String, val type:String, var kmRan: Int){
+    fn driveCar(){
+        println("dirving car")
+    }
+    fn applyBreakes(){
+        println("Car jjust applied brakes")
+    }
 }

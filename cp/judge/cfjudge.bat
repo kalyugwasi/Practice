@@ -1,2 +1,2 @@
 @echo off
-python "%~dp0cfjudge.py"
+python "%~dp0cfjudge.py" %*

@@ -18,22 +18,15 @@ int1 = lambda: int(input()) #for reading a single number
 str1 = lambda: input().strip() #for spliting a char in parts
 ints1 = lambda: list(map(int,str1())) #mostly for 0,1
 def inp(): return map(int, input().split()) #mainly for multiple known variables
-def stp(): return map(str, input().split())
 def ints(): return list(map(int, input().split())) #for numerical lists
 def strs(): return list(map(str,str1())) #for string list
 
 # ================= SOLUTION START =================
 
-a,o,b,e,c = stp()
-if o == "-": 
-    res = int(a)-int(b)
-    print("Yes" if res == int(c) else res)
-elif o == "+":
-    res = int(a)+int(b)
-    print("Yes" if res == int(c) else res)
-else: 
-    res = int(a)*int(b)
-    print("Yes" if res == int(c) else res)
+for _ in range(int1()):
+    l,r = inp()
+    print(sum(i for i in range(l,r+1)))
+
 
 # ================== SOLUTION END ==================
 

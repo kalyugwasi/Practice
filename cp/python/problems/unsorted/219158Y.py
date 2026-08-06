@@ -24,16 +24,9 @@ def strs(): return list(map(str,str1())) #for string list
 
 # ================= SOLUTION START =================
 
-a,o,b,e,c = stp()
-if o == "-": 
-    res = int(a)-int(b)
-    print("Yes" if res == int(c) else res)
-elif o == "+":
-    res = int(a)+int(b)
-    print("Yes" if res == int(c) else res)
-else: 
-    res = int(a)*int(b)
-    print("Yes" if res == int(c) else res)
+a,b,c,d = inp()
+res = (a*b*c*d)%100
+print(f'{res:02d}')
 
 # ================== SOLUTION END ==================
 
