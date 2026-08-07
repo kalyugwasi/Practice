@@ -25,6 +25,14 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
+k,s = inp()
+cnt = 0
+for x in range(k):
+    for y in range(k):
+        for z in range(k):
+            if x+y+z == s:
+                cnt += 1
+print(cnt)
 
 
 

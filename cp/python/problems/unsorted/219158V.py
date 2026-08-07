@@ -1,4 +1,4 @@
-import sys, os,math
+import sys, os
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,7 +25,10 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+a,o,b = stp()
+if o == '>': print("Right" if int(a)>int(b) else "Wrong")
+elif o == '<': print("Right" if int(a)<int(b) else "Wrong")
+else: print("Right" if int(a)==int(b) else "Wrong")
 
 
 # ================== SOLUTION END ==================

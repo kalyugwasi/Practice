@@ -25,7 +25,22 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+for _ in range(int1()):
+    n = int1()
+    a = list(inp())
+    odd,even = 0,0
+    for i in a:
+        if i%2==0:
+            even += 1
+        else:
+            odd += 1
+    if even == odd:
+        print(0)
+    else:
+        if (even-odd)%2==0:
+            print(abs(even-odd)//2)
+        else:
+            print(-1)
 
 
 # ================== SOLUTION END ==================

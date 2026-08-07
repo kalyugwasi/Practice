@@ -25,8 +25,11 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
-
+n = int1()
+for i in range(1,n+1):
+    if n%i==0:
+        print(i)
+    continue
 
 # ================== SOLUTION END ==================
 

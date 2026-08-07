@@ -25,7 +25,10 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+n,m,a = inp()
+r = math.ceil(n/a)
+c = math.ceil(m/a)
+print(r*c)
 
 
 # ================== SOLUTION END ==================

@@ -25,6 +25,15 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
+def febo(n):
+    l,r = 0,1
+    for i in range(n-1):
+        temp = l
+        l = r
+        r = temp+r
+    return l
+n = int1()
+print(febo(n))
 
 
 

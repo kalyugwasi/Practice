@@ -25,7 +25,7 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+print(f'{(5%100):02d}' if int1()<2 else f'{25}')
 
 
 # ================== SOLUTION END ==================

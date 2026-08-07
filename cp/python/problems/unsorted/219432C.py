@@ -25,6 +25,23 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
+n = int1()
+N = list(inp())
+even = odd = pos = neg = 0
+for i in N:
+    if i<0:
+        neg += 1
+    elif i>0:
+        pos += 1
+    if i%2==0:
+        even += 1
+    else:
+        odd += 1
+print(f'Even: {even}')
+print(f'Odd: {odd}')
+print(f'Positive: {pos}')
+print(f'Negative: {neg}')
+
 
 
 

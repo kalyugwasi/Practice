@@ -25,8 +25,8 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
-
+a,b,c,d = inp()
+print("YES" if b*math.log(a) > d*math.log(c) else "NO")
 
 # ================== SOLUTION END ==================
 

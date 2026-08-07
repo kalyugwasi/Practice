@@ -1,4 +1,4 @@
-import sys, os,math
+import sys, os
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,8 +25,14 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
-
+n = str1()
+if "." in n:
+    inte,deci = n.split(".")
+    decival = deci.rstrip('0')
+    if decival == "":
+        print("int",inte)
+    else:
+        print(f'float {inte} 0.{decival}')
 
 # ================== SOLUTION END ==================
 
