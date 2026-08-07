@@ -25,7 +25,6 @@ def ints(): return list(map(int, input().split()))  # list of ints
 def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
-
 mod = (10**9)+7
 for _ in range(int1()):
     n = int1()

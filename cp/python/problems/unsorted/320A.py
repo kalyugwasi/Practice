@@ -26,10 +26,16 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-mod = (10**9)+7
-for _ in range(int1()):
-    n = int1()
-    print((n*n)%mod)
+def solve(s,l):
+    if l == 1 or s=="":
+        return True
+    ans1 = ans2 = ans3 = False
+    if s[:1] == "1": ans1 = solve(s[1:],l-1)
+    if s[:2] == "14": ans2 = solve(s[2:],l-2)
+    if s[:3] == "144": ans3 = solve(s[3:],l-3)
+    return ans1 or ans2 or ans3
+n = str1()+" "
+print("YES" if solve(n,len(n)) else "NO")
 
 
 

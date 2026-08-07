@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Fetch competitive-programming samples (Codeforces, AtCoder, CodeChef) and
-prepare the local CP scratch file."""
+"""Fetch competitive-programming samples (Codeforces, AtCoder, CodeChef,
+HackerRank) and prepare the local CP scratch file."""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ USER_AGENT = "Mozilla/5.0 (CP local judge)"
 
 @dataclass(frozen=True)
 class ProblemRef:
-    judge: str  # "codeforces" | "atcoder" | "codechef"
+    judge: str  # "codeforces" | "atcoder" | "codechef" | "hackerrank"
     contest: str
     letter: str
     url: str
@@ -41,7 +41,7 @@ class ProblemRef:
     def key(self) -> str:
         if self.judge == "codeforces":
             return f"{self.contest}{self.letter}"
-        prefix = "AT" if self.judge == "atcoder" else "CC"
+        prefix = {"atcoder": "AT", "codechef": "CC", "hackerrank": "HR"}[self.judge]
         return f"{prefix}_{self.contest}_{self.letter}"
 
 
@@ -126,7 +126,7 @@ def extract_atcoder_samples(html_text: str) -> tuple[list[str], list[str]]:
     inputs: dict[int, str] = {}
     outputs: dict[int, str] = {}
     pattern = re.compile(
-        r"Sample\s+(Input|Output)(?:\s|<[^>]+>)*(\d+)\b.{0,600}?<pre[^>]*>(.*?)</pre>",
+        r"Sample\s+(Input|Output)(?:\s|<(?!pre\b)[^>]+>)*(\d+)\b.{0,600}?<pre[^>]*>(.*?)</pre>",
         re.DOTALL | re.IGNORECASE,
     )
     for kind, number, content in pattern.findall(html_text):
@@ -187,6 +187,48 @@ def extract_codechef_samples(body_html: str) -> tuple[list[str], list[str]]:
 
 
 # ---------------------------------------------------------------------------
+# HackerRank sample parsing
+# ---------------------------------------------------------------------------
+
+
+def extract_hackerrank_samples(body_html: str) -> tuple[list[str], list[str]]:
+    """Extract Sample Input/Output blocks from a HackerRank challenge's
+    body_html (as returned by the /rest/contests/.../challenges/... API).
+
+    HackerRank labels samples "Sample Input 0" / "Sample Output 0" (0-indexed)
+    when there are several, or just "Sample Input" / "Sample Output" with no
+    number when there's only one. As with AtCoder, we anchor on the literal
+    heading text and grab the next <pre> block rather than depending on the
+    exact wrapper markup (<h5>, <p>, nested <span>, etc. all show up in the
+    wild across different challenges).
+    """
+    inputs = {}
+    outputs = {}
+
+    for kind in ("Input", "Output"):
+        for m in re.finditer(rf"Sample\s+{kind}\s*(\d*)", body_html, re.I):
+            number = int(m.group(1) or 0)
+
+            pre = re.search(
+                r"<pre[^>]*>(.*?)</pre>",
+                body_html[m.end():],
+                re.S | re.I,
+            )
+
+            if not pre:
+                continue
+
+            value = _strip_tags(pre.group(1)).strip("\r\n") + "\n"
+
+            if kind == "Input":
+                inputs[number] = value
+            else:
+                outputs[number] = value
+
+    ordered = sorted(inputs.keys() & outputs.keys())
+    return [inputs[i] for i in ordered], [outputs[i] for i in ordered]
+
+# ---------------------------------------------------------------------------
 # Problem parsing (turns user input into a ProblemRef)
 # ---------------------------------------------------------------------------
 
@@ -218,11 +260,28 @@ def _codechef_from_code(raw: str) -> ProblemRef:
     return ProblemRef(judge="codechef", contest=contest, letter=code, url=url)
 
 
+def _hackerrank_from_slug(raw: str) -> ProblemRef:
+    raw = raw.strip().strip("/")
+    if "/" in raw:
+        contest, slug = raw.split("/", 1)
+        contest = contest.strip().lower()
+        slug = slug.strip().lower()
+        url = f"https://www.hackerrank.com/contests/{contest}/challenges/{slug}"
+    else:
+        contest = "master"
+        slug = raw.lower()
+        url = f"https://www.hackerrank.com/challenges/{slug}/problem"
+    return ProblemRef(judge="hackerrank", contest=contest, letter=slug, url=url)
+
+
 def parse_problem(parts: list[str]) -> ProblemRef:
     raw = "".join(parts).strip()
 
-    # Explicit judge prefixes: cf:1904A, at:abc300_a, cc:START123/FLOW001
-    prefix_match = re.match(r"(?i)^(cf|codeforces|at|atcoder|cc|codechef):\s*(.+)$", raw)
+    # Explicit judge prefixes: cf:1904A, at:abc300_a, cc:START123/FLOW001,
+    # hr:solve-me-first, hr:contestslug/challenge-slug
+    prefix_match = re.match(
+        r"(?i)^(cf|codeforces|at|atcoder|cc|codechef|hr|hackerrank):\s*(.+)$", raw
+    )
     if prefix_match:
         prefix, rest = prefix_match.groups()
         prefix = prefix.lower()
@@ -230,7 +289,9 @@ def parse_problem(parts: list[str]) -> ProblemRef:
             return _parse_codeforces([rest])
         if prefix in ("at", "atcoder"):
             return _atcoder_from_task_id(rest)
-        return _codechef_from_code(rest)
+        if prefix in ("cc", "codechef"):
+            return _codechef_from_code(rest)
+        return _hackerrank_from_slug(rest)
 
     # AtCoder URL: https://atcoder.jp/contests/abc300/tasks/abc300_a
     atcoder_match = re.fullmatch(
@@ -258,6 +319,27 @@ def parse_problem(parts: list[str]) -> ProblemRef:
         contest = (contest or "PRACTICE").upper()
         code = code.upper()
         return ProblemRef(judge="codechef", contest=contest, letter=code, url=raw)
+
+    # HackerRank URL: https://www.hackerrank.com/challenges/SLUG(/problem)
+    #              or https://www.hackerrank.com/contests/CONTEST/challenges/SLUG(/problem)
+    hackerrank_contest_match = re.fullmatch(
+        r"https?://(?:www\.)?hackerrank\.com/contests/([^/]+)/challenges/([^/?#]+)/?(?:problem/?)?",
+        raw,
+        re.IGNORECASE,
+    )
+    if hackerrank_contest_match:
+        contest, slug = hackerrank_contest_match.groups()
+        return ProblemRef(
+            judge="hackerrank", contest=contest.lower(), letter=slug.lower(), url=raw
+        )
+    hackerrank_match = re.fullmatch(
+        r"https?://(?:www\.)?hackerrank\.com/challenges/([^/?#]+)/?(?:problem/?)?",
+        raw,
+        re.IGNORECASE,
+    )
+    if hackerrank_match:
+        (slug,) = hackerrank_match.groups()
+        return ProblemRef(judge="hackerrank", contest="master", letter=slug.lower(), url=raw)
 
     # Everything else is assumed to be Codeforces (URL or bare id), matching
     # this script's original behaviour.
@@ -292,8 +374,8 @@ def _parse_codeforces(parts: list[str]) -> ProblemRef:
     match = re.fullmatch(r"(\d+)([A-Z]\d?)", raw.upper())
     if not match:
         raise ValueError(
-            "Use 1904A, atcoder:abc300_a, codechef:FLOW001, or paste a "
-            "Codeforces/AtCoder/CodeChef problem URL."
+            "Use 1904A, atcoder:abc300_a, codechef:FLOW001, hr:solve-me-first, "
+            "or paste a Codeforces/AtCoder/CodeChef/HackerRank problem URL."
         )
     contest, letter = match.groups()
     return ProblemRef(
@@ -368,16 +450,33 @@ def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str
     return inputs, outputs, (str(rating) if rating else None)
 
 
+def get_hackerrank_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+    api_url = (
+        f"https://www.hackerrank.com/rest/contests/{problem.contest}"
+        f"/challenges/{problem.letter}"
+    )
+    data = fetch_json(api_url)
+    model = data.get("model") or data
+    body = model.get("body_html") or model.get("preview") or ""
+    if not body:
+        raise RuntimeError("HackerRank response did not include a problem body.")
+    inputs, outputs = extract_hackerrank_samples(body)
+    rating = model.get("difficulty_name") or model.get("difficulty")
+    return inputs, outputs, (str(rating) if rating else None)
+
+
 JUDGE_FETCHERS = {
     "codeforces": get_codeforces_samples,
     "atcoder": get_atcoder_samples,
     "codechef": get_codechef_samples,
+    "hackerrank": get_hackerrank_samples,
 }
 
 JUDGE_LABELS = {
     "codeforces": "Codeforces",
     "atcoder": "AtCoder",
     "codechef": "CodeChef",
+    "hackerrank": "HackerRank",
 }
 
 
@@ -423,14 +522,15 @@ def open_in_editor(paths: list[Path]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Fetch Codeforces, AtCoder, or CodeChef samples into cp/judge."
+        description="Fetch Codeforces, AtCoder, CodeChef, or HackerRank samples into cp/judge."
     )
     parser.add_argument(
         "problem",
         nargs="*",
         help=(
             "Problem id or URL, e.g. 1904A, atcoder:abc300_a, codechef:FLOW001, "
-            "codechef:START123/FLOW001, or a full problem URL from any of the three."
+            "codechef:START123/FLOW001, hr:solve-me-first, or a full problem URL "
+            "from any of the four."
         ),
     )
     parser.add_argument("--refresh", action="store_true", help="Replace existing saved samples")
@@ -445,7 +545,7 @@ def main() -> int:
             parser.error(str(error))
     else:
         entered = input(
-            "Problem id or URL (e.g. 1904A, atcoder:abc300_a, codechef:FLOW001): "
+            "Problem id or URL (e.g. 1904A, atcoder:abc300_a, codechef:FLOW001, hr:solve-me-first): "
         ).strip()
         try:
             problem = parse_problem([entered])
