@@ -26,8 +26,10 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
-    
+n = Counter(list(inp()))
+if sorted(n.values()) == [2,3]:
+    print("Yes")
+else: print("No")
 
 # ================== SOLUTION END ==================
 

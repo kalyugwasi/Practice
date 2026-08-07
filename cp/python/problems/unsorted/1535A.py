@@ -26,7 +26,13 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+for _ in range(int1()):
+    n = list(inp())
+    final = []
+    final.append(n[0] if n[0]>n[1] else n[1])
+    final.append(n[2] if n[2]>n[3] else n[3])
+    if sorted(n)[2:] == sorted(final): print("YES")
+    else: print("NO")
     
 
 # ================== SOLUTION END ==================

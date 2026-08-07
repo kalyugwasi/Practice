@@ -1,5 +1,4 @@
 import sys, os,math
-from collections import Counter
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -26,8 +25,13 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
+n = int1()
+N = set(list(inp()))
+if 1 in N:
+    print("HARD")
+else:
+    print('EASY')
 
-    
 
 # ================== SOLUTION END ==================
 

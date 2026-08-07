@@ -1,5 +1,4 @@
 import sys, os,math
-from collections import Counter
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -26,8 +25,14 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
-    
+y = str1()
+i = int(y) + 1
+while True:
+    s = set(str(i).strip())
+    if len(s) == 4:
+        print(i)
+        break
+    i += 1
 
 # ================== SOLUTION END ==================
 

@@ -1,5 +1,4 @@
 import sys, os,math
-from collections import Counter
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -26,8 +25,16 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
+n = int1()
+res = [21]
+if n>=60:
+    res[0] += 1
+    res.append(f'{(n-60):02d}')
+else:
+    res.append(f'{n:02d}')
+print(f'{res[0]}:{res[1]}')
 
-    
+
 
 # ================== SOLUTION END ==================
 

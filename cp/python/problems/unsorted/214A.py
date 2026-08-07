@@ -26,7 +26,13 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+cnt = 0
+n,m = inp()
+for a in range(n+1):
+    for b in range(m+1):
+        if a*a + b == n and a + b*b == m:
+            cnt += 1
+print(cnt)
     
 
 # ================== SOLUTION END ==================

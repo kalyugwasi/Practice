@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Fetch Codeforces samples and prepare the local CP scratch file."""
+"""Fetch competitive-programming samples (Codeforces, AtCoder, CodeChef) and
+prepare the local CP scratch file."""
 
 from __future__ import annotations
 
 import argparse
+import gzip
+import html
 import json
 import re
 import shutil
 import subprocess
 import sys
+import zlib
 from dataclasses import dataclass
 from html.parser import HTMLParser
 from pathlib import Path
@@ -22,9 +26,12 @@ PYTHON_DIR = ROOT / "cp" / "python"
 SOLUTION_FILE = PYTHON_DIR / "test.py"
 TEMPLATE_FILE = PYTHON_DIR / "template.py"
 
+USER_AGENT = "Mozilla/5.0 (CP local judge)"
+
 
 @dataclass(frozen=True)
 class ProblemRef:
+    judge: str  # "codeforces" | "atcoder" | "codechef"
     contest: str
     letter: str
     url: str
@@ -32,10 +39,18 @@ class ProblemRef:
 
     @property
     def key(self) -> str:
-        return f"{self.contest}{self.letter}"
+        if self.judge == "codeforces":
+            return f"{self.contest}{self.letter}"
+        prefix = "AT" if self.judge == "atcoder" else "CC"
+        return f"{prefix}_{self.contest}_{self.letter}"
 
 
-class SampleParser(HTMLParser):
+# ---------------------------------------------------------------------------
+# Codeforces sample parsing
+# ---------------------------------------------------------------------------
+
+
+class CodeforcesSampleParser(HTMLParser):
     """Extract the contents of Codeforces' sample input/output <pre> blocks."""
 
     def __init__(self) -> None:
@@ -86,7 +101,170 @@ class SampleParser(HTMLParser):
             self.buffer.append(data)
 
 
+def extract_cf_rating(html_text: str) -> str | None:
+    match = re.search(r'class="tag-box[^"\n]*"[^>]*>\s*(\d{3,4})\s*<', html_text)
+    return match.group(1) if match else None
+
+
+# ---------------------------------------------------------------------------
+# AtCoder sample parsing
+# ---------------------------------------------------------------------------
+
+
+def extract_atcoder_samples(html_text: str) -> tuple[list[str], list[str]]:
+    """Extract Sample Input/Output blocks from an AtCoder task page.
+
+    AtCoder embeds both the Japanese and English versions of the statement
+    in the same HTML (toggled client-side), and the exact wrapper markup
+    around each sample has changed over the years. Rather than depend on a
+    specific DOM shape (div/span nesting, particular class names, etc.),
+    this anchors on the literal English heading text ("Sample Input 1",
+    "Sample Output 2", ...) and grabs the next <pre>...</pre> after it. That
+    is robust to markup changes and naturally skips the Japanese copies,
+    which are headed "入力例"/"出力例" instead.
+    """
+    inputs: dict[int, str] = {}
+    outputs: dict[int, str] = {}
+    pattern = re.compile(
+        r"Sample\s+(Input|Output)(?:\s|<[^>]+>)*(\d+)\b.{0,600}?<pre[^>]*>(.*?)</pre>",
+        re.DOTALL | re.IGNORECASE,
+    )
+    for kind, number, content in pattern.findall(html_text):
+        value = _strip_tags(content).strip("\r\n") + "\n"
+        target = inputs if kind.lower() == "input" else outputs
+        target.setdefault(int(number), value)
+
+    ordered = sorted(set(inputs) & set(outputs))
+    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
+
+
+# ---------------------------------------------------------------------------
+# CodeChef sample parsing
+# ---------------------------------------------------------------------------
+
+
+def _strip_tags(text: str) -> str:
+    return html.unescape(re.sub(r"<[^>]+>", "", text))
+
+
+def extract_codechef_samples(body_html: str) -> tuple[list[str], list[str]]:
+    inputs: list[str] = []
+    outputs: list[str] = []
+
+    # Classic style: a single <pre> block containing both "Input:" and
+    # "Output:" sections.
+    for match in re.finditer(r"<pre[^>]*>(.*?)</pre>", body_html, re.DOTALL | re.IGNORECASE):
+        block = _strip_tags(match.group(1))
+        io_match = re.search(
+            r"Input:?\s*\n(.*?)\n\s*Output:?\s*\n(.*)", block, re.DOTALL | re.IGNORECASE
+        )
+        if io_match:
+            inputs.append(io_match.group(1).strip("\r\n") + "\n")
+            outputs.append(io_match.group(2).strip("\r\n") + "\n")
+
+    if inputs:
+        return inputs, outputs
+
+    # Newer style: separate "Input"/"Output" headings each followed by their
+    # own <pre> block.
+    pairs = re.findall(
+        r"<h[1-4][^>]*>([^<]*)</h[1-4]>\s*<pre[^>]*>(.*?)</pre>",
+        body_html,
+        re.DOTALL | re.IGNORECASE,
+    )
+    pending_input: str | None = None
+    for heading, content in pairs:
+        value = _strip_tags(content).strip("\r\n") + "\n"
+        heading_lower = heading.lower()
+        if "input" in heading_lower:
+            pending_input = value
+        elif "output" in heading_lower and pending_input is not None:
+            inputs.append(pending_input)
+            outputs.append(value)
+            pending_input = None
+
+    return inputs, outputs
+
+
+# ---------------------------------------------------------------------------
+# Problem parsing (turns user input into a ProblemRef)
+# ---------------------------------------------------------------------------
+
+
+def _atcoder_from_task_id(task_id: str) -> ProblemRef:
+    task_id = task_id.strip().lower().replace("/", "_")
+    if "_" not in task_id:
+        raise ValueError("AtCoder tasks look like abc300_a (or abc300/a).")
+    contest, letter = task_id.rsplit("_", 1)
+    return ProblemRef(
+        judge="atcoder",
+        contest=contest,
+        letter=letter.upper(),
+        url=f"https://atcoder.jp/contests/{contest}/tasks/{task_id}",
+    )
+
+
+def _codechef_from_code(raw: str) -> ProblemRef:
+    raw = raw.strip()
+    if "/" in raw:
+        contest, code = raw.split("/", 1)
+        contest = contest.strip().upper()
+        code = code.strip().upper()
+        url = f"https://www.codechef.com/{contest}/problems/{code}"
+    else:
+        contest = "PRACTICE"
+        code = raw.upper()
+        url = f"https://www.codechef.com/problems/{code}"
+    return ProblemRef(judge="codechef", contest=contest, letter=code, url=url)
+
+
 def parse_problem(parts: list[str]) -> ProblemRef:
+    raw = "".join(parts).strip()
+
+    # Explicit judge prefixes: cf:1904A, at:abc300_a, cc:START123/FLOW001
+    prefix_match = re.match(r"(?i)^(cf|codeforces|at|atcoder|cc|codechef):\s*(.+)$", raw)
+    if prefix_match:
+        prefix, rest = prefix_match.groups()
+        prefix = prefix.lower()
+        if prefix in ("cf", "codeforces"):
+            return _parse_codeforces([rest])
+        if prefix in ("at", "atcoder"):
+            return _atcoder_from_task_id(rest)
+        return _codechef_from_code(rest)
+
+    # AtCoder URL: https://atcoder.jp/contests/abc300/tasks/abc300_a
+    atcoder_match = re.fullmatch(
+        r"https?://atcoder\.jp/contests/([^/]+)/tasks/([^/?#]+)/?", raw, re.IGNORECASE
+    )
+    if atcoder_match:
+        contest, task_id = atcoder_match.groups()
+        letter = task_id.rsplit("_", 1)[-1].upper()
+        return ProblemRef(
+            judge="atcoder",
+            contest=contest,
+            letter=letter,
+            url=f"https://atcoder.jp/contests/{contest}/tasks/{task_id}",
+        )
+
+    # CodeChef URL: https://www.codechef.com/problems/CODE
+    #            or https://www.codechef.com/CONTEST/problems/CODE
+    codechef_match = re.fullmatch(
+        r"https?://(?:www\.)?codechef\.com/(?:([A-Za-z0-9]+)/)?problems/([A-Za-z0-9_]+)/?",
+        raw,
+        re.IGNORECASE,
+    )
+    if codechef_match:
+        contest, code = codechef_match.groups()
+        contest = (contest or "PRACTICE").upper()
+        code = code.upper()
+        return ProblemRef(judge="codechef", contest=contest, letter=code, url=raw)
+
+    # Everything else is assumed to be Codeforces (URL or bare id), matching
+    # this script's original behaviour.
+    return _parse_codeforces([raw])
+
+
+def _parse_codeforces(parts: list[str]) -> ProblemRef:
     raw = "".join(parts).strip()
     group_match = re.fullmatch(
         r"https?://codeforces\.com/group/([^/]+)/contest/(\d+)/problem/([a-z]\d?)/?", raw, re.IGNORECASE,
@@ -94,6 +272,7 @@ def parse_problem(parts: list[str]) -> ProblemRef:
     if group_match:
         group, contest, letter = group_match.groups()
         return ProblemRef(
+            judge="codeforces",
             contest=contest,
             letter=letter.upper(),
             group=group,
@@ -105,35 +284,106 @@ def parse_problem(parts: list[str]) -> ProblemRef:
     if problemset_match:
         contest, letter = problemset_match.groups()
         return ProblemRef(
+            judge="codeforces",
             contest=contest,
             letter=letter.upper(),
             url=f"https://codeforces.com/problemset/problem/{contest}/{letter.upper()}",
         )
     match = re.fullmatch(r"(\d+)([A-Z]\d?)", raw.upper())
     if not match:
-        raise ValueError("Use 1904A, or paste a Codeforces problem/group URL.")
+        raise ValueError(
+            "Use 1904A, atcoder:abc300_a, codechef:FLOW001, or paste a "
+            "Codeforces/AtCoder/CodeChef problem URL."
+        )
     contest, letter = match.groups()
     return ProblemRef(
+        judge="codeforces",
         contest=contest,
         letter=letter,
         url=f"https://codeforces.com/problemset/problem/{contest}/{letter}",
     )
 
 
-def fetch_page(problem: ProblemRef) -> str:
-    request = Request(problem.url, headers={"User-Agent": "Mozilla/5.0 (CP local judge)"})
+# ---------------------------------------------------------------------------
+# Fetching
+# ---------------------------------------------------------------------------
+
+
+def fetch_url(url: str) -> str:
+    request = Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            # Explicitly accept only encodings we know how to decompress below;
+            # some CDNs (e.g. the ones fronting AtCoder) compress responses
+            # even when the client didn't ask for it.
+            "Accept-Encoding": "gzip, deflate",
+        },
+    )
     try:
         with urlopen(request, timeout=30) as response:
-            return response.read().decode("utf-8", errors="replace")
+            raw = response.read()
+            encoding = (response.headers.get("Content-Encoding") or "").lower()
+            if encoding == "gzip":
+                raw = gzip.decompress(raw)
+            elif encoding == "deflate":
+                raw = zlib.decompress(raw)
+            charset = response.headers.get_content_charset() or "utf-8"
+            return raw.decode(charset, errors="replace")
     except HTTPError as error:
-        raise RuntimeError(f"Codeforces returned HTTP {error.code} for {problem.url}") from error
+        raise RuntimeError(f"HTTP {error.code} for {url}") from error
     except URLError as error:
-        raise RuntimeError(f"Could not reach Codeforces: {error.reason}") from error
+        raise RuntimeError(f"Could not reach {url}: {error.reason}") from error
 
 
-def extract_rating(html: str) -> str | None:
-    match = re.search(r'class="tag-box[^"\n]*"[^>]*>\s*(\d{3,4})\s*<', html)
-    return match.group(1) if match else None
+def fetch_json(url: str) -> dict:
+    text = fetch_url(url)
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"Could not parse JSON from {url}: {error}") from error
+
+
+def get_codeforces_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+    page = fetch_url(problem.url)
+    parser = CodeforcesSampleParser()
+    parser.feed(page)
+    return parser.inputs, parser.outputs, extract_cf_rating(page)
+
+
+def get_atcoder_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+    page = fetch_url(problem.url)
+    inputs, outputs = extract_atcoder_samples(page)
+    return inputs, outputs, None
+
+
+def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+    api_url = f"https://www.codechef.com/api/contests/{problem.contest}/problems/{problem.letter}"
+    data = fetch_json(api_url)
+    body = data.get("body") or data.get("problem_statement") or ""
+    if not body:
+        raise RuntimeError("CodeChef response did not include a problem body.")
+    inputs, outputs = extract_codechef_samples(body)
+    rating = data.get("difficulty_rating") or data.get("problem_rating") or data.get("rating")
+    return inputs, outputs, (str(rating) if rating else None)
+
+
+JUDGE_FETCHERS = {
+    "codeforces": get_codeforces_samples,
+    "atcoder": get_atcoder_samples,
+    "codechef": get_codechef_samples,
+}
+
+JUDGE_LABELS = {
+    "codeforces": "Codeforces",
+    "atcoder": "AtCoder",
+    "codechef": "CodeChef",
+}
+
+
+# ---------------------------------------------------------------------------
+# Local file management (judge-agnostic)
+# ---------------------------------------------------------------------------
 
 
 def write_samples(folder: Path, inputs: list[str], outputs: list[str]) -> None:
@@ -172,8 +422,17 @@ def open_in_editor(paths: list[Path]) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Fetch Codeforces samples into cp/judge.")
-    parser.add_argument("problem", nargs="*", help="Problem ID (1904A) or a full Codeforces URL")
+    parser = argparse.ArgumentParser(
+        description="Fetch Codeforces, AtCoder, or CodeChef samples into cp/judge."
+    )
+    parser.add_argument(
+        "problem",
+        nargs="*",
+        help=(
+            "Problem id or URL, e.g. 1904A, atcoder:abc300_a, codechef:FLOW001, "
+            "codechef:START123/FLOW001, or a full problem URL from any of the three."
+        ),
+    )
     parser.add_argument("--refresh", action="store_true", help="Replace existing saved samples")
     parser.add_argument("--reset-solution", action="store_true", help="Replace python/test.py with template.py")
     parser.add_argument("--no-open", action="store_true", help="Do not open files in VSCodium/VS Code")
@@ -185,7 +444,9 @@ def main() -> int:
         except ValueError as error:
             parser.error(str(error))
     else:
-        entered = input("Codeforces problem or URL (for example 1904A): ").strip()
+        entered = input(
+            "Problem id or URL (e.g. 1904A, atcoder:abc300_a, codechef:FLOW001): "
+        ).strip()
         try:
             problem = parse_problem([entered])
         except ValueError as error:
@@ -194,33 +455,34 @@ def main() -> int:
     key = problem.key
     folder = JUDGE_DIR / key
     has_samples = (folder / "input1.txt").exists() and (folder / "expected1.txt").exists()
+    label = JUDGE_LABELS[problem.judge]
 
     if has_samples and not args.refresh:
         print(f"Samples already exist in {folder}. Use --refresh to download them again.")
     else:
-        print(f"Fetching Codeforces {key}…")
+        print(f"Fetching {label} {key}…")
         try:
-            page = fetch_page(problem)
+            fetcher = JUDGE_FETCHERS[problem.judge]
+            inputs, outputs, rating = fetcher(problem)
         except RuntimeError as error:
             print(f"Fetch failed: {error}", file=sys.stderr)
             return 1
-        samples = SampleParser()
-        samples.feed(page)
-        if not samples.inputs or len(samples.inputs) != len(samples.outputs):
-            print("Could not find matching sample input/output blocks on the Codeforces page.", file=sys.stderr)
+        if not inputs or len(inputs) != len(outputs):
+            print("Could not find matching sample input/output blocks on the problem page.", file=sys.stderr)
             return 1
         folder.mkdir(parents=True, exist_ok=True)
-        write_samples(folder, samples.inputs, samples.outputs)
+        write_samples(folder, inputs, outputs)
         metadata = {
             "problem": key,
+            "judge": problem.judge,
             "contest": problem.contest,
             "letter": problem.letter,
             "group": problem.group,
             "source_url": problem.url,
-            "rating": extract_rating(page),
+            "rating": rating,
         }
         (folder / "meta.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
-        print(f"Saved {len(samples.inputs)} sample(s) to {folder}")
+        print(f"Saved {len(inputs)} sample(s) to {folder}")
 
     first_input = folder / "input1.txt"
     if not first_input.exists():
