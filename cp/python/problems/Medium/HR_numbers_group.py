@@ -1,4 +1,4 @@
-import sys, os
+import sys, os,math
 from collections import Counter
 def setup_io():
     try:
@@ -26,22 +26,16 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-for _ in range(int1()):
-    s = strs()
-    n = len(s)
-    f11 = l00 = -1
-    for i in range(n-1):
-        if s[i] == '1' and s[i+1] == '1':
-            f11 = i
-            break
-    for i in range(n-1):
-        if s[i] == '0' and s[i+1] == '0':
-            l00 = i
-    if f11 < l00 and f11 != -1 and l00 != -1:
-        print("NO")
-    else:
-        print("YES")
-
+n = int1()
+start = 1
+for i in range(n):
+    start = start+(2*i)
+res = out = start
+for i in range(n-1):
+    res += out + 2
+    out += 2
+print(res)
+    
 # ================== SOLUTION END ==================
 
 if LOCAL:

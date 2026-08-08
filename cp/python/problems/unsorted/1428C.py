@@ -1,4 +1,4 @@
-import sys, os
+import sys, os,math
 from collections import Counter
 def setup_io():
     try:
@@ -28,19 +28,16 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 for _ in range(int1()):
     s = strs()
-    n = len(s)
-    f11 = l00 = -1
-    for i in range(n-1):
-        if s[i] == '1' and s[i+1] == '1':
-            f11 = i
-            break
-    for i in range(n-1):
-        if s[i] == '0' and s[i+1] == '0':
-            l00 = i
-    if f11 < l00 and f11 != -1 and l00 != -1:
-        print("NO")
-    else:
-        print("YES")
+    stack = []
+    for i in s:
+        if len(stack) == 0:
+            stack.append(i)
+            continue
+        if (stack[-1] == "B" and i =="B") or (stack[-1] == "A" and i== "B"):
+            stack.pop()
+            continue
+        stack.append(i)
+    print(len(stack))
 
 # ================== SOLUTION END ==================
 
@@ -48,4 +45,4 @@ if LOCAL:
     sys.stdout.flush()
 
 # cfjudge
-# python run.py
+# python run.pyhttps://codeforces.com/problemset/problem/199/A

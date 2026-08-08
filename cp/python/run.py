@@ -98,7 +98,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Test the CP scratch solution against saved samples.")
     parser.add_argument("problem", nargs="?", help="Saved problem key, e.g. 1904A (defaults to newest)")
     parser.add_argument("--solution", type=Path, default=DEFAULT_SOLUTION, help="Solution file to execute")
-    parser.add_argument("--timeout", type=float, default=2.0, help="Seconds allowed per sample")
+    parser.add_argument("--timeout", type=float, default=1.0, help="Seconds allowed per sample")
     parser.add_argument("--local", action="store_true", help="Test editable cp/python/input.txt against expected.txt")
     parser.add_argument("--no-archive", action="store_true", help="Do not archive after all samples pass")
     args = parser.parse_args()

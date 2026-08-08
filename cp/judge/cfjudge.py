@@ -191,9 +191,8 @@ def extract_codechef_samples(body_html: str) -> tuple[list[str], list[str]]:
 # ---------------------------------------------------------------------------
 
 
-def extract_hackerrank_samples(body_html: str) -> tuple[list[str], list[str]]:
-    """Extract Sample Input/Output blocks from a HackerRank challenge's
-    body_html (as returned by the /rest/contests/.../challenges/... API).
+def _extract_hackerrank_pre_samples(body_html: str) -> tuple[list[str], list[str]]:
+    """Extract Sample Input/Output blocks from a HackerRank challenge page.
 
     HackerRank labels samples "Sample Input 0" / "Sample Output 0" (0-indexed)
     when there are several, or just "Sample Input" / "Sample Output" with no
@@ -202,31 +201,72 @@ def extract_hackerrank_samples(body_html: str) -> tuple[list[str], list[str]]:
     exact wrapper markup (<h5>, <p>, nested <span>, etc. all show up in the
     wild across different challenges).
     """
-    inputs = {}
-    outputs = {}
+    inputs: dict[int, str] = {}
+    outputs: dict[int, str] = {}
+    pattern = re.compile(
+        r"Sample\s+(Input|Output)(?:\s|<(?!pre\b)[^>]+>)*(\d*)\b.{0,600}?<pre[^>]*>(.*?)</pre>",
+        re.DOTALL | re.IGNORECASE,
+    )
+    for kind, number, content in pattern.findall(body_html):
+        value = _strip_tags(content).strip("\r\n") + "\n"
+        target = inputs if kind.lower() == "input" else outputs
+        n = int(number) if number else 0
+        target.setdefault(n, value)
 
-    for kind in ("Input", "Output"):
-        for m in re.finditer(rf"Sample\s+{kind}\s*(\d*)", body_html, re.I):
-            number = int(m.group(1) or 0)
+    ordered = sorted(set(inputs) & set(outputs))
+    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
 
-            pre = re.search(
-                r"<pre[^>]*>(.*?)</pre>",
-                body_html[m.end():],
-                re.S | re.I,
-            )
 
-            if not pre:
-                continue
+def _clean_latex_value(text: str) -> str:
+    text = html.unescape(text).strip()
+    text = re.sub(r"^\\\(|\\\)$", "", text)
+    text = re.sub(r"^\\\[|\\\]$", "", text)
+    text = re.sub(r"^\${1,2}|\${1,2}$", "", text)
+    return text.strip()
 
-            value = _strip_tags(pre.group(1)).strip("\r\n") + "\n"
 
-            if kind == "Input":
-                inputs[number] = value
-            else:
-                outputs[number] = value
+def _extract_hackerrank_mathjax_samples(body_html: str) -> tuple[list[str], list[str]]:
+    """Best-effort fallback for HackerRank's Mathematics-domain challenges.
 
-    ordered = sorted(inputs.keys() & outputs.keys())
-    return [inputs[i] for i in ordered], [outputs[i] for i in ordered]
+    Some of these render Sample Input/Output as inline MathJax/KaTeX math
+    directly in the statement instead of a <pre> code block, so there's no
+    plain-text sample for _extract_hackerrank_pre_samples to find. MathJax's
+    server-rendered fallback typically embeds the raw LaTeX source in
+    <script type="math/tex">...</script> tags right after the heading, so try
+    to recover the value from there.
+
+    This is unverified against the live site (no sample of this markup was
+    available while writing it) and the LaTeX source may not always be a
+    clean, judge-ready value - treat anything it returns as a starting point
+    to double-check against the actual page, not a guaranteed-correct sample.
+    """
+    inputs: dict[int, str] = {}
+    outputs: dict[int, str] = {}
+    pattern = re.compile(
+        r"Sample\s+(Input|Output)(?:\s|<(?!script\b)[^>]+>)*(\d*)\b.{0,600}?"
+        r"<script[^>]*type=[\"']math/tex[^\"']*[\"'][^>]*>(.*?)</script>",
+        re.DOTALL | re.IGNORECASE,
+    )
+    for kind, number, content in pattern.findall(body_html):
+        value = _clean_latex_value(content) + "\n"
+        target = inputs if kind.lower() == "input" else outputs
+        n = int(number) if number else 0
+        target.setdefault(n, value)
+
+    ordered = sorted(set(inputs) & set(outputs))
+    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
+
+
+def extract_hackerrank_samples(body_html: str) -> tuple[list[str], list[str], bool]:
+    """Returns (inputs, outputs, used_fallback). used_fallback is True when
+    the result came from the unverified MathJax fallback rather than a normal
+    <pre> block, so callers can warn the person to double-check it."""
+    inputs, outputs = _extract_hackerrank_pre_samples(body_html)
+    if inputs and outputs:
+        return inputs, outputs, False
+    inputs, outputs = _extract_hackerrank_mathjax_samples(body_html)
+    return inputs, outputs, bool(inputs and outputs)
+
 
 # ---------------------------------------------------------------------------
 # Problem parsing (turns user input into a ProblemRef)
@@ -266,7 +306,7 @@ def _hackerrank_from_slug(raw: str) -> ProblemRef:
         contest, slug = raw.split("/", 1)
         contest = contest.strip().lower()
         slug = slug.strip().lower()
-        url = f"https://www.hackerrank.com/contests/{contest}/challenges/{slug}"
+        url = f"https://www.hackerrank.com/contests/{contest}/challenges/{slug}/problem"
     else:
         contest = "master"
         slug = raw.lower()
@@ -329,8 +369,12 @@ def parse_problem(parts: list[str]) -> ProblemRef:
     )
     if hackerrank_contest_match:
         contest, slug = hackerrank_contest_match.groups()
+        contest, slug = contest.lower(), slug.lower()
         return ProblemRef(
-            judge="hackerrank", contest=contest.lower(), letter=slug.lower(), url=raw
+            judge="hackerrank",
+            contest=contest,
+            letter=slug,
+            url=f"https://www.hackerrank.com/contests/{contest}/challenges/{slug}/problem",
         )
     hackerrank_match = re.fullmatch(
         r"https?://(?:www\.)?hackerrank\.com/challenges/([^/?#]+)/?(?:problem/?)?",
@@ -339,7 +383,13 @@ def parse_problem(parts: list[str]) -> ProblemRef:
     )
     if hackerrank_match:
         (slug,) = hackerrank_match.groups()
-        return ProblemRef(judge="hackerrank", contest="master", letter=slug.lower(), url=raw)
+        slug = slug.lower()
+        return ProblemRef(
+            judge="hackerrank",
+            contest="master",
+            letter=slug,
+            url=f"https://www.hackerrank.com/challenges/{slug}/problem",
+        )
 
     # Everything else is assumed to be Codeforces (URL or bare id), matching
     # this script's original behaviour.
@@ -426,20 +476,20 @@ def fetch_json(url: str) -> dict:
         raise RuntimeError(f"Could not parse JSON from {url}: {error}") from error
 
 
-def get_codeforces_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+def get_codeforces_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
     page = fetch_url(problem.url)
     parser = CodeforcesSampleParser()
     parser.feed(page)
-    return parser.inputs, parser.outputs, extract_cf_rating(page)
+    return parser.inputs, parser.outputs, extract_cf_rating(page), None
 
 
-def get_atcoder_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+def get_atcoder_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
     page = fetch_url(problem.url)
     inputs, outputs = extract_atcoder_samples(page)
-    return inputs, outputs, None
+    return inputs, outputs, None, None
 
 
-def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
+def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
     api_url = f"https://www.codechef.com/api/contests/{problem.contest}/problems/{problem.letter}"
     data = fetch_json(api_url)
     body = data.get("body") or data.get("problem_statement") or ""
@@ -447,22 +497,29 @@ def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str
         raise RuntimeError("CodeChef response did not include a problem body.")
     inputs, outputs = extract_codechef_samples(body)
     rating = data.get("difficulty_rating") or data.get("problem_rating") or data.get("rating")
-    return inputs, outputs, (str(rating) if rating else None)
+    return inputs, outputs, (str(rating) if rating else None), None
 
 
-def get_hackerrank_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None]:
-    api_url = (
-        f"https://www.hackerrank.com/rest/contests/{problem.contest}"
-        f"/challenges/{problem.letter}"
+def extract_hackerrank_rating(page_html: str) -> str | None:
+    match = re.search(r"Difficulty.{0,150}?\b(Easy|Medium|Hard|Advanced|Expert)\b", page_html, re.DOTALL)
+    return match.group(1) if match else None
+
+
+def get_hackerrank_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+    # The /rest/... JSON API is disallowed for automated clients and often
+    # needs an authenticated session, so scrape the server-rendered problem
+    # page itself instead - the statement HTML (including the sample <pre>
+    # blocks) is embedded directly in that page's markup.
+    page = fetch_url(problem.url)
+    inputs, outputs, used_fallback = extract_hackerrank_samples(page)
+    note = (
+        "Samples pulled from embedded MathJax source (this challenge doesn't use a "
+        "plain <pre> sample block) - this is best-effort and unverified, please "
+        "double-check against the page before trusting it."
+        if used_fallback
+        else None
     )
-    data = fetch_json(api_url)
-    model = data.get("model") or data
-    body = model.get("body_html") or model.get("preview") or ""
-    if not body:
-        raise RuntimeError("HackerRank response did not include a problem body.")
-    inputs, outputs = extract_hackerrank_samples(body)
-    rating = model.get("difficulty_name") or model.get("difficulty")
-    return inputs, outputs, (str(rating) if rating else None)
+    return inputs, outputs, extract_hackerrank_rating(page), note
 
 
 JUDGE_FETCHERS = {
@@ -563,13 +620,15 @@ def main() -> int:
         print(f"Fetching {label} {key}…")
         try:
             fetcher = JUDGE_FETCHERS[problem.judge]
-            inputs, outputs, rating = fetcher(problem)
+            inputs, outputs, rating, note = fetcher(problem)
         except RuntimeError as error:
             print(f"Fetch failed: {error}", file=sys.stderr)
             return 1
         if not inputs or len(inputs) != len(outputs):
             print("Could not find matching sample input/output blocks on the problem page.", file=sys.stderr)
             return 1
+        if note:
+            print(f"Note: {note}")
         folder.mkdir(parents=True, exist_ok=True)
         write_samples(folder, inputs, outputs)
         metadata = {
@@ -580,6 +639,7 @@ def main() -> int:
             "group": problem.group,
             "source_url": problem.url,
             "rating": rating,
+            "note": note,
         }
         (folder / "meta.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
         print(f"Saved {len(inputs)} sample(s) to {folder}")
