@@ -26,7 +26,12 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+for _ in range(int1()):
+    n = int1()
+    a = list(inp())
+    mx = max(Counter(a).values())
+    u = len(set(a))
+    print(max(min(u,mx-1),min(u-1,mx))) 
 
 # ================== SOLUTION END ==================
 

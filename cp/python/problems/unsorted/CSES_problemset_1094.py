@@ -26,7 +26,15 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+n = int1()
+a = list(inp())
+res = 0
+for i in range(n-1):
+    if a[i] > a[i+1]:
+        o = a[i] - a[i+1]
+        a[i+1] += o
+        res += o
+print(res)
 
 # ================== SOLUTION END ==================
 

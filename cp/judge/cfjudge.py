@@ -31,7 +31,7 @@ USER_AGENT = "Mozilla/5.0 (CP local judge)"
 
 @dataclass(frozen=True)
 class ProblemRef:
-    judge: str  # "codeforces" | "atcoder" | "codechef" | "hackerrank"
+    judge: str  # "codeforces" | "atcoder" | "codechef" | "hackerrank" | "cses" | "leetcode"
     contest: str
     letter: str
     url: str
@@ -41,7 +41,13 @@ class ProblemRef:
     def key(self) -> str:
         if self.judge == "codeforces":
             return f"{self.contest}{self.letter}"
-        prefix = {"atcoder": "AT", "codechef": "CC", "hackerrank": "HR"}[self.judge]
+        prefix = {
+            "atcoder": "AT",
+            "codechef": "CC",
+            "hackerrank": "HR",
+            "cses": "CSES",
+            "leetcode": "LC",
+        }[self.judge]
         return f"{prefix}_{self.contest}_{self.letter}"
 
 
@@ -187,6 +193,81 @@ def extract_codechef_samples(body_html: str) -> tuple[list[str], list[str]]:
 
 
 # ---------------------------------------------------------------------------
+# CSES sample parsing
+# ---------------------------------------------------------------------------
+
+
+def extract_cses_samples(html_text: str) -> tuple[list[str], list[str]]:
+    """Extract samples from a CSES task page.
+
+    Unlike CodeChef's classic style, CSES puts "Input:" and "Output:" as
+    separate labels, each immediately followed by its own <pre> block, under
+    an "Example" heading. The page also has generic "Input"/"Output" spec
+    headings earlier in the statement describing the expected format - those
+    are plain headings with no trailing colon, so anchoring on the literal
+    colon ("Input:", not just "Input") is what keeps this from matching them.
+    """
+    inputs: list[str] = []
+    outputs: list[str] = []
+    pattern = re.compile(
+        r"(Input|Output):\s*(?:<[^>]+>\s*)*<pre[^>]*>(.*?)</pre>",
+        re.DOTALL | re.IGNORECASE,
+    )
+    for kind, content in pattern.findall(html_text):
+        value = _strip_tags(content).strip("\r\n") + "\n"
+        (inputs if kind.lower() == "input" else outputs).append(value)
+
+    # Pair sequentially in document order rather than by an explicit number -
+    # CSES doesn't number repeated Example blocks.
+    n = min(len(inputs), len(outputs))
+    return inputs[:n], outputs[:n]
+
+
+# ---------------------------------------------------------------------------
+# LeetCode sample parsing
+# ---------------------------------------------------------------------------
+
+
+def extract_leetcode_samples(content_html: str) -> tuple[list[str], list[str]]:
+    """Extract "Example N:" blocks from a LeetCode problem statement.
+
+    LeetCode examples are function-call based, not stdin/stdout, so what
+    comes back here is the raw "Input: arr1 = [...], d = 2" / "Output: 2"
+    text as written in the statement - useful as a reference, but it won't
+    be directly pipeable into a program reading stdin the way the other
+    judges' samples are. Each example is one <pre> block containing both an
+    "Input:" and "Output:" line (and often an "Explanation:" after that,
+    which this stops before).
+    """
+    inputs: dict[int, str] = {}
+    outputs: dict[int, str] = {}
+    pattern = re.compile(
+        r"Example\s*(\d+)\s*:?.{0,300}?<pre[^>]*>(.*?)</pre>",
+        re.DOTALL | re.IGNORECASE,
+    )
+    for number, pre_content in pattern.findall(content_html):
+        text = _strip_tags(pre_content)
+        io_match = re.search(
+            r"Input:?\s*(.*?)\s*Output:?\s*(.*?)(?:\n\s*Explanation:?|\Z)",
+            text,
+            re.DOTALL | re.IGNORECASE,
+        )
+        if not io_match:
+            continue
+        n = int(number)
+        inputs.setdefault(n, io_match.group(1).strip() + "\n")
+        outputs.setdefault(n, io_match.group(2).strip() + "\n")
+
+    ordered = sorted(set(inputs) & set(outputs))
+    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
+
+
+def extract_leetcode_rating(page_html: str) -> str | None:
+    match = re.search(r"<[^>]+>\s*(Easy|Medium|Hard)\s*</[^>]+>", page_html)
+    return match.group(1) if match else None
+
+
+# ---------------------------------------------------------------------------
 # HackerRank sample parsing
 # ---------------------------------------------------------------------------
 
@@ -314,13 +395,37 @@ def _hackerrank_from_slug(raw: str) -> ProblemRef:
     return ProblemRef(judge="hackerrank", contest=contest, letter=slug, url=url)
 
 
+def _cses_from_id(raw: str) -> ProblemRef:
+    raw = raw.strip()
+    if not re.fullmatch(r"\d+", raw):
+        raise ValueError("CSES tasks are numeric ids, e.g. 1083.")
+    return ProblemRef(
+        judge="cses",
+        contest="problemset",
+        letter=raw,
+        url=f"https://cses.fi/problemset/task/{raw}",
+    )
+
+
+def _leetcode_from_slug(raw: str) -> ProblemRef:
+    slug = raw.strip().strip("/").lower()
+    return ProblemRef(
+        judge="leetcode",
+        contest="problems",
+        letter=slug,
+        url=f"https://leetcode.com/problems/{slug}/",
+    )
+
+
 def parse_problem(parts: list[str]) -> ProblemRef:
     raw = "".join(parts).strip()
 
     # Explicit judge prefixes: cf:1904A, at:abc300_a, cc:START123/FLOW001,
-    # hr:solve-me-first, hr:contestslug/challenge-slug
+    # hr:solve-me-first, hr:contestslug/challenge-slug, cses:1083,
+    # lc:find-the-distance-value-between-two-arrays
     prefix_match = re.match(
-        r"(?i)^(cf|codeforces|at|atcoder|cc|codechef|hr|hackerrank):\s*(.+)$", raw
+        r"(?i)^(cf|codeforces|at|atcoder|cc|codechef|hr|hackerrank|cses|lc|leetcode):\s*(.+)$",
+        raw,
     )
     if prefix_match:
         prefix, rest = prefix_match.groups()
@@ -331,7 +436,11 @@ def parse_problem(parts: list[str]) -> ProblemRef:
             return _atcoder_from_task_id(rest)
         if prefix in ("cc", "codechef"):
             return _codechef_from_code(rest)
-        return _hackerrank_from_slug(rest)
+        if prefix in ("hr", "hackerrank"):
+            return _hackerrank_from_slug(rest)
+        if prefix == "cses":
+            return _cses_from_id(rest)
+        return _leetcode_from_slug(rest)
 
     # AtCoder URL: https://atcoder.jp/contests/abc300/tasks/abc300_a
     atcoder_match = re.fullmatch(
@@ -391,6 +500,33 @@ def parse_problem(parts: list[str]) -> ProblemRef:
             url=f"https://www.hackerrank.com/challenges/{slug}/problem",
         )
 
+    # CSES URL: https://cses.fi/problemset/task/1083(/optional-subpage)
+    cses_match = re.match(
+        r"https?://cses\.fi/problemset/task/(\d+)", raw, re.IGNORECASE
+    )
+    if cses_match:
+        (task_id,) = cses_match.groups()
+        return ProblemRef(
+            judge="cses",
+            contest="problemset",
+            letter=task_id,
+            url=f"https://cses.fi/problemset/task/{task_id}",
+        )
+
+    # LeetCode URL: https://leetcode.com/problems/SLUG(/description/...)
+    leetcode_match = re.match(
+        r"https?://leetcode\.com/problems/([^/?#]+)", raw, re.IGNORECASE
+    )
+    if leetcode_match:
+        (slug,) = leetcode_match.groups()
+        slug = slug.lower()
+        return ProblemRef(
+            judge="leetcode",
+            contest="problems",
+            letter=slug,
+            url=f"https://leetcode.com/problems/{slug}/",
+        )
+
     # Everything else is assumed to be Codeforces (URL or bare id), matching
     # this script's original behaviour.
     return _parse_codeforces([raw])
@@ -425,7 +561,8 @@ def _parse_codeforces(parts: list[str]) -> ProblemRef:
     if not match:
         raise ValueError(
             "Use 1904A, atcoder:abc300_a, codechef:FLOW001, hr:solve-me-first, "
-            "or paste a Codeforces/AtCoder/CodeChef/HackerRank problem URL."
+            "cses:1083, lc:two-sum, or paste a Codeforces/AtCoder/CodeChef/"
+            "HackerRank/CSES/LeetCode problem URL."
         )
     contest, letter = match.groups()
     return ProblemRef(
@@ -522,11 +659,29 @@ def get_hackerrank_samples(problem: ProblemRef) -> tuple[list[str], list[str], s
     return inputs, outputs, extract_hackerrank_rating(page), note
 
 
+def get_cses_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+    page = fetch_url(problem.url)
+    inputs, outputs = extract_cses_samples(page)
+    return inputs, outputs, None, None
+
+
+def get_leetcode_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+    page = fetch_url(problem.url)
+    inputs, outputs = extract_leetcode_samples(page)
+    note = (
+        "LeetCode problems take function arguments, not stdin - these are the raw "
+        "Input/Output text from the statement, not runnable program input."
+    )
+    return inputs, outputs, extract_leetcode_rating(page), note
+
+
 JUDGE_FETCHERS = {
     "codeforces": get_codeforces_samples,
     "atcoder": get_atcoder_samples,
     "codechef": get_codechef_samples,
     "hackerrank": get_hackerrank_samples,
+    "cses": get_cses_samples,
+    "leetcode": get_leetcode_samples,
 }
 
 JUDGE_LABELS = {
@@ -534,6 +689,8 @@ JUDGE_LABELS = {
     "atcoder": "AtCoder",
     "codechef": "CodeChef",
     "hackerrank": "HackerRank",
+    "cses": "CSES",
+    "leetcode": "LeetCode",
 }
 
 
@@ -579,15 +736,15 @@ def open_in_editor(paths: list[Path]) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Fetch Codeforces, AtCoder, CodeChef, or HackerRank samples into cp/judge."
+        description="Fetch Codeforces, AtCoder, CodeChef, HackerRank, CSES, or LeetCode samples into cp/judge."
     )
     parser.add_argument(
         "problem",
         nargs="*",
         help=(
             "Problem id or URL, e.g. 1904A, atcoder:abc300_a, codechef:FLOW001, "
-            "codechef:START123/FLOW001, hr:solve-me-first, or a full problem URL "
-            "from any of the four."
+            "codechef:START123/FLOW001, hr:solve-me-first, cses:1083, lc:two-sum, "
+            "or a full problem URL from any of the six."
         ),
     )
     parser.add_argument("--refresh", action="store_true", help="Replace existing saved samples")
@@ -602,7 +759,8 @@ def main() -> int:
             parser.error(str(error))
     else:
         entered = input(
-            "Problem id or URL (e.g. 1904A, atcoder:abc300_a, codechef:FLOW001, hr:solve-me-first): "
+            "Problem id or URL (e.g. 1904A, atcoder:abc300_a, codechef:FLOW001, "
+            "hr:solve-me-first, cses:1083, lc:two-sum): "
         ).strip()
         try:
             problem = parse_problem([entered])

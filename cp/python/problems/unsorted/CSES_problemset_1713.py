@@ -1,5 +1,4 @@
 import sys, os
-from collections import Counter
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +25,26 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+p = int(1e6)+1
+spf = [1]*(p)
+spf[0] = 0
+for i in range(2,p):
+    if spf[i] == 1:
+        for j in range(i,p,i):
+            if spf[j] == 1:
+                spf[j] = i
+        
+for _ in range(int1()):
+    n = int1()
+    res = 1
+    while n>1:
+        prime = spf[n]
+        cnt = 0
+        while n%prime==0:
+            cnt += 1
+            n //= prime
+        res *= cnt+1
+    print(res)
 
 # ================== SOLUTION END ==================
 

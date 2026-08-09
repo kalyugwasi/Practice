@@ -1,5 +1,11 @@
-Testing 1499B: 1 sample(s)
+Testing CSES_problemset_1071: 1 sample(s)
 ============================================================
-Sample 1: PASSED
+Sample 1: FAILED
+Expected:
+8
+1
+15
+Actual:
+
 ------------------------------------------------------------
-ALL SAMPLES PASSED
+SOME SAMPLES FAILED

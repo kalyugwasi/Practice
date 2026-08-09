@@ -26,7 +26,12 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-
+n = int1()
+a = set(list(inp()))
+res = 1
+while res in a:
+    res += 1
+print(res)
 
 # ================== SOLUTION END ==================
 
