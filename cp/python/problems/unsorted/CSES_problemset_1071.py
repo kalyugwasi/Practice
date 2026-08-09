@@ -25,23 +25,11 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-a = strs()
-possible = 0
-mid = ""
-letters = list(set(a))
-for i in letters:
-    if a.count(i)%2 != 0:
-        mid = i
-        possible += 1
-if possible > 1:
-    print("NO SOLUTION")
-    exit()
-res = []
-for l in letters:
-    if l != mid: res += [l] * (a.count(l)//2)
-if a.count(mid) > 1:
-    res += [mid] * (a.count(mid)//2)
-print("".join(res)+mid+"".join(res[::-1]))
+for _ in range(int1()):
+    y,x = inp()
+    mx = max(x,y)
+    add = (2*y-x if y%2==0 else x) if y>x else (y if x%2==0 else 2*x-y)
+    print((mx-1)*(mx-1)+add)
 
 # ================== SOLUTION END ==================
 

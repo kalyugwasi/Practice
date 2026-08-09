@@ -1,11 +1,5 @@
-Testing CSES_problemset_1071: 1 sample(s)
+Testing CSES_problemset_1755: 1 sample(s)
 ============================================================
-Sample 1: FAILED
-Expected:
-8
-1
-15
-Actual:
-
+Sample 1: PASSED
 ------------------------------------------------------------
-SOME SAMPLES FAILED
+ALL SAMPLES PASSED
