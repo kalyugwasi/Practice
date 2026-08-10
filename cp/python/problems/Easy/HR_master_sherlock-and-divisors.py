@@ -25,30 +25,22 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-P = int(5e4)+1
-def sieve(p):
-    prime = [True]*p
-    prime[0] = prime[1] = False
-    for i in range(2,math.isqrt(p)+1):
-        if prime[i]:
-            for j in range(i*i,p,i):
-                prime[j] = False
-    return [i for i in range(2,p) if prime[i]]
-primes = sieve(P)
-         
 for _ in range(int1()):
     n = int1()
-    p = q = 0
-    for i in primes:
-        if p == 0 and i >= n + 1:
-            p = i
-            continue
-        if p != 0 and q == 0 and i >= p + n:
-            q = i
-            break
-    print(p*q)
-
-
+    if n%2!=0:
+        print(0)
+        continue
+    i = 1
+    res = 0
+    while i*i <= n:
+        if n%i== 0:
+            if i%2 == 0:
+                res += 1
+            p = n//i
+            if p != i and p%2 == 0:
+                res += 1
+        i += 1
+    print(res)
 
 # ================== SOLUTION END ==================
 

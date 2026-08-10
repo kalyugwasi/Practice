@@ -25,29 +25,24 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-P = int(5e4)+1
-def sieve(p):
-    prime = [True]*p
-    prime[0] = prime[1] = False
-    for i in range(2,math.isqrt(p)+1):
-        if prime[i]:
-            for j in range(i*i,p,i):
-                prime[j] = False
-    return [i for i in range(2,p) if prime[i]]
-primes = sieve(P)
-         
-for _ in range(int1()):
-    n = int1()
-    p = q = 0
-    for i in primes:
-        if p == 0 and i >= n + 1:
-            p = i
-            continue
-        if p != 0 and q == 0 and i >= p + n:
-            q = i
-            break
-    print(p*q)
-
+n,k = inp()
+re = [True]*(n+1)
+re[0] = re[1] = False
+for i in range(2,math.isqrt(n)):
+    if re[i]:
+        for j in range(i*i,n+1,i):
+            re[j] = False
+p2p = []
+res = 0
+for idx,val in enumerate(re):
+    if val == True: p2p.append(idx)
+for i in range(len(p2p)-1):
+    if p2p[i] + p2p[i+1] + 1 in p2p:
+        res += 1
+if res >= k:
+    print("YES")
+else:
+    print("NO")
 
 
 # ================== SOLUTION END ==================

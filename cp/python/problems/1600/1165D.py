@@ -1,4 +1,4 @@
-import sys, os, math
+import sys, os
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -25,30 +25,29 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-P = int(5e4)+1
-def sieve(p):
-    prime = [True]*p
-    prime[0] = prime[1] = False
-    for i in range(2,math.isqrt(p)+1):
-        if prime[i]:
-            for j in range(i*i,p,i):
-                prime[j] = False
-    return [i for i in range(2,p) if prime[i]]
-primes = sieve(P)
-         
 for _ in range(int1()):
     n = int1()
-    p = q = 0
-    for i in primes:
-        if p == 0 and i >= n + 1:
-            p = i
-            continue
-        if p != 0 and q == 0 and i >= p + n:
-            q = i
+    d = list(inp())
+    d.sort()
+    x = d[0] * d[-1]
+    res = 0
+    i = 2
+    flag = x
+    while i*i <= x:
+        if x%i ==0:
+            res += 1 if i*i == x else 2
+        i += 1
+    for i in range(n):
+        if x%d[i]!=0:
+            flag = -1
             break
-    print(p*q)
-
-
+    if flag == -1:
+        print(-1)
+    else:
+        if res == n:
+            print(flag)
+        else:
+            print(-1)
 
 # ================== SOLUTION END ==================
 
