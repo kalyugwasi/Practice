@@ -1,5 +1,4 @@
 import sys, os, math
-from itertools import combinations
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -26,35 +25,17 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-def solve(p):
-    val = int(p)
-    if val%8==0:
-        print("YES")
-        print(val)
-        return 1
-        
-def solver():
-    s = str1()
-    n = len(s)
-    #checking 1 digit:
-    for i in range(n):
-        if solve(s[i]) == 1:
-            return
-    #checking 2 digit
-    for i in range(n):
-        for j in range(i+1,n):
-            if solve(s[i]+s[j]) == 1:
-                return
-    #checking 3 digit
-    for i in range(n):
-        for j in range(i+1,n):
-            for k in range(j+1,n):
-                if solve(s[i]+s[j]+s[k]) == 1:
-                    return
-    print("NO")
+x = int1()
+a = b = float('-inf')
+for i in range(1,math.isqrt(x)+1):
+    if x%i==0 and math.lcm(i,x//i) == x:
+        b = max(i,b)
+if b == float('-inf'):
+    print(1,x)
+else:
+    print(b,x//b)
 
-if __name__ == "__main__":
-    solver()
+
 # ================== SOLUTION END ==================
 
 if LOCAL:
