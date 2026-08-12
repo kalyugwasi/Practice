@@ -153,7 +153,80 @@ def _strip_tags(text: str) -> str:
     return html.unescape(re.sub(r"<[^>]+>", "", text))
 
 
-def extract_codechef_samples(body_html: str) -> tuple[list[str], list[str]]:
+def extract_codechef_samples(body: str) -> tuple[list[str], list[str]]:
+    """Extract sample blocks from a CodeChef problem's 'body' field.
+
+    Confirmed against the live API (2026): 'body' can be Markdown OR legacy
+    HTML depending on the problem/era. Tried in order:
+      1. Markdown, fenced: "### Example Input" / "### Example Output"
+         (sometimes "Sample", sometimes numbered) each followed by a
+         triple-backtick code block.
+      2. Markdown, unfenced: same headings but with no code fence - the
+         sample is plain, inconsistently tab-indented text directly under
+         the heading, up to the next "###" heading. Seen on Learn-DSA-track
+         problems.
+      3. Legacy HTML with <pre> blocks (either one combined pre with both
+         "Input:"/"Output:" labels, or separate heading+pre pairs).
+      4. Legacy HTML with no <pre> at all: a bold "Input:"/"Output:" label
+         as its own <p>, followed by one <p> per line of the value. Not all
+         examples on a page like this have their own "Example" heading, so
+         this pairs bare Input:/Output: labels sequentially instead.
+    """
+    inputs, outputs = _extract_codechef_markdown_samples(body)
+    if inputs:
+        return inputs, outputs
+    inputs, outputs = _extract_codechef_plain_markdown_samples(body)
+    if inputs:
+        return inputs, outputs
+    return _extract_codechef_html_samples(body)
+
+
+def _extract_codechef_markdown_samples(body: str) -> tuple[list[str], list[str]]:
+    inputs: dict[int, str] = {}
+    outputs: dict[int, str] = {}
+    pattern = re.compile(
+        r"(?:Example|Sample)\s+(Input|Output)\s*#?\s*(\d*)\s*:?\s*\r?\n+```[^\n]*\r?\n(.*?)\r?\n```",
+        re.IGNORECASE | re.DOTALL,
+    )
+    for kind, number, content in pattern.findall(body):
+        value = html.unescape(content).replace("\r\n", "\n").strip("\n") + "\n"
+        n = int(number) if number else 0
+        target = inputs if kind.lower() == "input" else outputs
+        target.setdefault(n, value)
+
+    ordered = sorted(set(inputs) & set(outputs))
+    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
+
+
+def _extract_codechef_plain_markdown_samples(body: str) -> tuple[list[str], list[str]]:
+    """Fallback for CodeChef problems whose "Sample Input"/"Sample Output"
+    heading isn't followed by a code fence at all - just plain, often
+    inconsistently tab-indented text running up to the next "###" heading."""
+    inputs: dict[int, str] = {}
+    outputs: dict[int, str] = {}
+    pattern = re.compile(
+        r"(?:Example|Sample)\s+(Input|Output)\s*#?\s*(\d*)\s*:?\s*\r?\n"
+        r"(.*?)(?=\r?\n\s*#{1,4}\s*\S|\Z)",
+        re.IGNORECASE | re.DOTALL,
+    )
+    for kind, number, content in pattern.findall(body):
+        lines = [line.lstrip("\t ") for line in html.unescape(content).replace("\r\n", "\n").split("\n")]
+        while lines and lines[0].strip() == "":
+            lines.pop(0)
+        while lines and lines[-1].strip() == "":
+            lines.pop()
+        if not lines:
+            continue
+        value = "\n".join(lines) + "\n"
+        n = int(number) if number else 0
+        target = inputs if kind.lower() == "input" else outputs
+        target.setdefault(n, value)
+
+    ordered = sorted(set(inputs) & set(outputs))
+    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
+
+
+def _extract_codechef_html_samples(body_html: str) -> tuple[list[str], list[str]]:
     inputs: list[str] = []
     outputs: list[str] = []
 
@@ -189,7 +262,42 @@ def extract_codechef_samples(body_html: str) -> tuple[list[str], list[str]]:
             outputs.append(value)
             pending_input = None
 
-    return inputs, outputs
+    if inputs:
+        return inputs, outputs
+
+    return _extract_codechef_html_bold_label_samples(body_html)
+
+
+def _extract_codechef_html_bold_label_samples(body_html: str) -> tuple[list[str], list[str]]:
+    """Fallback for older CodeChef bodies with no <pre> blocks at all: a
+    bold "Input:"/"Output:" label as its own <p>, followed by one or more
+    plain <p> tags (one per stdin line) up to the next bold label
+    (Input/Output/Explanation, or end of the body). Not anchored to an
+    "Example" heading, since some problems just repeat bare Input:/Output:
+    label pairs for additional examples with no heading of their own.
+    """
+    inputs: list[str] = []
+    outputs: list[str] = []
+    label_pattern = re.compile(r"<strong>\s*(Input|Output|Explanation)\s*:?\s*</strong>", re.IGNORECASE)
+    labels = list(label_pattern.finditer(body_html))
+    for i, label_match in enumerate(labels):
+        kind = label_match.group(1).lower()
+        if kind not in ("input", "output"):
+            continue
+        start = label_match.end()
+        end = labels[i + 1].start() if i + 1 < len(labels) else len(body_html)
+        span = body_html[start:end]
+        lines = []
+        for p_match in re.finditer(r"<p[^>]*>(.*?)</p>", span, re.DOTALL | re.IGNORECASE):
+            text = _strip_tags(p_match.group(1)).strip()
+            if text:
+                lines.append(text)
+        if lines:
+            value = "\n".join(lines) + "\n"
+            (inputs if kind == "input" else outputs).append(value)
+
+    n = min(len(inputs), len(outputs))
+    return inputs[:n], outputs[:n]
 
 
 # ---------------------------------------------------------------------------
@@ -632,6 +740,13 @@ def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str
     body = data.get("body") or data.get("problem_statement") or ""
     if not body:
         raise RuntimeError("CodeChef response did not include a problem body.")
+    if re.search(r"\binteractive\s+problem\b", body[:500], re.IGNORECASE):
+        raise RuntimeError(
+            "This is an interactive problem - your program exchanges messages with "
+            "the judge at runtime instead of reading a fixed input, so there's no "
+            "sample input/output file to fetch. Check the problem statement's "
+            "Example section for the interaction protocol instead."
+        )
     inputs, outputs = extract_codechef_samples(body)
     rating = data.get("difficulty_rating") or data.get("problem_rating") or data.get("rating")
     return inputs, outputs, (str(rating) if rating else None), None

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-import sys, os
-from collections import deque, defaultdict
-from bisect import bisect_right as br
+import sys, os, math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -23,47 +21,49 @@ str1 = lambda: input().strip()                # single stripped string
 ints1 = lambda: list(map(int, str1()))        # digits from a string
 def inp():  return map(int, input().split())  # multiple ints, unpack: a, b = inp()
 def stp():  return map(str, input().split())  # multiple strings
-def ints(): return list(map(int, input().split()))  # list of for _ in range(int1()):
+def ints(): return list(map(int, input().split()))  # list offor _ in range(int1()):
 def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 
 # ================= SOLUTION START =================
 
 """for _ in range(int1()):
-    n,k = inp()
-    a = ints()
-    q = deque()
+    n,m,k = inp()
+    grid = [["."]*m for i in range(n)]
+    for i in range(k):
+        r,c = inp()
+        grid[r-1][c-1] = "x"
+    seen  = []
+    def solve(r,c):
+        if (r,c) in seen: return 0
+        if r < 0 or r >= n or c<0 or c>=m or grid[r][c] == ".":
+            return 1
+        res = 0
+        seen.append((r,c))
+        res = solve(r-1,c) + solve(r,c-1) + solve(r+1,c) + solve(r,c+1)
+        return res
     out = 0
     for i in range(n):
-        p = set(q)
-        out = max(out,len(q))
-        if a[i] not in p and len(p)+1 >= k:
-            while (set(q)) == p:
-                q.popleft()
-        q.append(a[i])
-    out = max(out,len(q))
-    print(out)"""
-
-for _ in range(int1()):
-    n, k = inp()
-    a = ints()
-    counts = defaultdict(int)
-    distinct = 0
-    l = 0
-    out = 0
-    for r in range(n):
-        if counts[a[r]] == 0:
-            distinct += 1
-        counts[a[r]] += 1
-        while distinct >= k:
-            counts[a[l]] -= 1
-            if counts[a[l]] == 0:
-                distinct -= 1
-            l += 1
-        out = max(out, r - l + 1)
+        for j in range(m):
+            if grid[i][j] == "x" and (i,j) not in seen: 
+                out += solve(i,j)
     print(out)
-
-
+"""
+for _ in range(int1()):
+    n,m,k = inp()
+    plants = set()
+    for _ in range(k):
+        r,c = inp()
+        plants.add((r,c))
+    res = 0
+    dire = [(-1,0),(0,-1),(1,0),(0,1)]
+    for r,c in plants:
+        f = 4
+        for dr,dc in dire:
+            if (r+dr,c+dc) in plants:
+                f -= 1
+        res += f
+    print(res)
 # ================== SOLUTION END ==================
 
 if LOCAL:

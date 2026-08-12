@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-import sys, os
-from collections import deque, defaultdict
-from bisect import bisect_right as br
+from collections import defaultdict
+import sys, os, math
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -23,46 +22,27 @@ str1 = lambda: input().strip()                # single stripped string
 ints1 = lambda: list(map(int, str1()))        # digits from a string
 def inp():  return map(int, input().split())  # multiple ints, unpack: a, b = inp()
 def stp():  return map(str, input().split())  # multiple strings
-def ints(): return list(map(int, input().split()))  # list of for _ in range(int1()):
+def ints(): return list(map(int, input().split()))  # list offor _ in range(int1()):
 def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 
 # ================= SOLUTION START =================
 
-"""for _ in range(int1()):
-    n,k = inp()
-    a = ints()
-    q = deque()
-    out = 0
-    for i in range(n):
-        p = set(q)
-        out = max(out,len(q))
-        if a[i] not in p and len(p)+1 >= k:
-            while (set(q)) == p:
-                q.popleft()
-        q.append(a[i])
-    out = max(out,len(q))
-    print(out)"""
-
-for _ in range(int1()):
-    n, k = inp()
-    a = ints()
-    counts = defaultdict(int)
-    distinct = 0
-    l = 0
-    out = 0
-    for r in range(n):
-        if counts[a[r]] == 0:
-            distinct += 1
-        counts[a[r]] += 1
-        while distinct >= k:
-            counts[a[l]] -= 1
-            if counts[a[l]] == 0:
-                distinct -= 1
-            l += 1
-        out = max(out, r - l + 1)
-    print(out)
-
+n,m = inp()
+world = defaultdict(list)
+for _ in range(n):
+    name, ctry = stp()
+    world[ctry].append(name)
+sub = defaultdict(int)
+for _ in range(m):
+    name = str1()
+    sub[name] += 1
+country_sub = defaultdict(int)
+for ctry, chefs in world.items():
+    for chef in chefs:
+        country_sub[ctry] += sub[chef]
+print(min(country_sub.keys(), key=lambda c:(-country_sub[c],c)))
+print(min(sub.keys(), key=lambda name:(-sub[name],name)))
 
 # ================== SOLUTION END ==================
 
