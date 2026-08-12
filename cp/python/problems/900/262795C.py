@@ -24,17 +24,13 @@ def inp():  return map(int, input().split())  # multiple ints, unpack: a, b = in
 def stp():  return map(str, input().split())  # multiple strings
 def ints(): return list(map(int, input().split()))  # list of ints
 def strs(): return list(map(str, str1()))     # list of chars from a string
-print = sys.stdout.write
+#print = sys.stdout.write
 
 # ================= SOLUTION START =================
 
-n,m = inp()
+n = int1()
 a = ints()
-for i in range(-m,m+1,1):
-    if i not in a:
-        print(f"{i}")
-        break
-
+print(*sorted(a))
 
 # ================== SOLUTION END ==================
 
