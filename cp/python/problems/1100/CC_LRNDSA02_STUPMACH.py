@@ -29,17 +29,17 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-def fac(n):
-    if n==1:
-        return 1
-    return n*fac(n-1)
-
-def solve():
-    n = 1e2
-    pr
-
-if __name__ == "__main__":
-    solve()    
+for _ in range(int1()):
+    n = int1()
+    s = ints()
+    res = 0
+    m = s[0]
+    for i in range(n):
+        if s[i] < m:m = s[i]
+        res += m
+    print(res)
+    
+    
     
 # ================== SOLUTION END ==================
 

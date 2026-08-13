@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import sys, os, math
 from collections import Counter
-from bisect import bisect_right as br
 def setup_io():
     try:
         base = os.path.dirname(os.path.abspath(__file__))
@@ -29,18 +28,28 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-def fac(n):
-    if n==1:
-        return 1
-    return n*fac(n-1)
 
-def solve():
-    n = 1e2
-    pr
+n = int1()
+a = ints()
+nd = fnd = mlm = fmlm = 0
+stack = []
+chk = 0
+for i in range(n):
+    if a[i] == 1: 
+        if not stack: chk = i
+        stack.append(1)
+    else:
+        stack.pop()
+        if not stack and (i-chk+1) > mlm:
+            fmlm = chk+1
+            mlm = i-chk+1
+    if len(stack) > nd and a[i] == 1:
+        nd = max(len(stack),nd)
+        fnd = i+1
+print(nd,fnd,mlm,fmlm)
 
-if __name__ == "__main__":
-    solve()    
-    
+
+
 # ================== SOLUTION END ==================
 
 if LOCAL:

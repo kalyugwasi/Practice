@@ -29,17 +29,27 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-def fac(n):
-    if n==1:
-        return 1
-    return n*fac(n-1)
+p = []
+h = 1
+while True:
+    cards = (3*h*h+h)//2
+    if cards > 10**9:
+        break
+    p.append(cards)
+    h += 1
 
-def solve():
-    n = 1e2
-    pr
-
-if __name__ == "__main__":
-    solve()    
+for i in range(int1()):
+    n = int1()
+    ans = 0
+    while n >= 2:
+        idx = br(p,n) - 1
+        if idx < 0:
+            break
+        n -= p[idx]
+        ans += 1
+    print(ans)    
+    
+    
     
 # ================== SOLUTION END ==================
 

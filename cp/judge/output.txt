@@ -1,5 +1,9 @@
-Testing CC_LRNDSA02_NOTALLFL: 1 sample(s)
+Testing CC_LRNDSA02_STUPMACH: 1 sample(s)
 ============================================================
-Sample 1: PASSED
+Sample 1: FAILED
+Expected:
+4
+Actual:
+9.33262154439441e+157
 ------------------------------------------------------------
-ALL SAMPLES PASSED
+SOME SAMPLES FAILED
