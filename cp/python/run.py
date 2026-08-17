@@ -65,7 +65,7 @@ def run_solution(solution: Path, sample_input: str, timeout: float) -> tuple[str
 
 
 def archive(solution: Path, folder: Path) -> str:
-    rating = 1100
+    rating = "unsorted"
     metadata = folder / "meta.json"
     if metadata.exists():
         try:

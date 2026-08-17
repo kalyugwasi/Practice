@@ -29,16 +29,29 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-board = [["."]*7 for _ in range(7)]
-n = 7
-for i in range(n):
-    print(board[i])
+board = [str1() for _ in range(8)]
+col = set();hy = set();hx = set()
+res = 0 
+def btrack(r):
+    if r == 8:
+        global res
+        res += 1
+        return
+    for c in range(8):
+        if c in col or (board[r][c] == "*") or (r+c) in hy or (r-c) in hx:
+            continue
 
+        col.add(c)
+        hy.add(r+c)
+        hx.add(r-c)
 
+        btrack(r+1)
 
-
-
-
+        col.remove(c)
+        hy.remove(r+c)
+        hx.remove(r-c)
+btrack(0) 
+print(res)
 
 # ================== SOLUTION END ==================
 

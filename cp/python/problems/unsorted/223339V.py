@@ -29,17 +29,19 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 # ================= SOLUTION START =================
 
-board = [["."]*7 for _ in range(7)]
-n = 7
-for i in range(n):
-    print(board[i])
-
-
-
-
-
-
-
+sys.setrecursionlimit(100)
+n,x = inp()
+a = ints()
+def dfs(i,cur):
+    if cur == x and i == n:
+        return True
+    if i == n: return False
+    adder = cur + a[i]
+    subtr = cur - a[i]
+    return dfs(i+1,adder) or dfs(i+1,subtr)    
+print("YES" if dfs(1,a[0]) else "NO")
+    
+    
 # ================== SOLUTION END ==================
 
 if LOCAL:
