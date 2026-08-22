@@ -26,11 +26,32 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 # ================= SOLUTION START =================
 
+MOD = 998244353
 
+n, k = inp()
 
+ranges = []
+for _ in range(k):
+    l, r = inp()
+    r += 1
+    ranges.append((l, r))
 
+dp = [0] * n
+dp[0] = 1
+dp[1] = -1
 
+for i in range(n):
+    if i > 0:
+        dp[i] = (dp[i] + dp[i - 1]) % MOD
 
+    for l, r in ranges:
+        if i + l < n:
+            dp[i + l] = (dp[i + l] + dp[i]) % MOD
+
+        if i + r < n:
+            dp[i + r] = (dp[i + r] - dp[i]) % MOD
+
+print(dp[n - 1] % MOD)
 
 
 
