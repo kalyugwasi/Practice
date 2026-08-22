@@ -23,14 +23,26 @@ def inp():  return map(int, input().split())  # multiple ints, unpack: a, b = in
 def stp():  return map(str, input().split())  # multiple strings
 def ints(): return list(map(int, input().split()))  # list of ints
 def strs(): return list(map(str, str1()))     # list of chars from a string
-#print = sys.stdout.write
+# print = sys.stdout.write
 # ================= SOLUTION START =================
 
 
-n,k = inp()
-for _ in range(k):
+n,q = inp()
+a = ints()  
+res = 0
+prefix = [0]*(n+1)
+for _ in range(q):
     l,r = inp()
-
+    prefix[l] += 1
+    if (r+1)>n: continue
+    prefix[r+1] -= 1
+for i in range(1,n+1):
+    prefix[i] = prefix[i] + prefix[i-1]
+prefix.sort()
+a.sort()
+for i in range(n-1,-1,-1):
+    res += a[i] * prefix[i+1]
+print(res)
 
 
 

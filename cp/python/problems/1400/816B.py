@@ -23,17 +23,25 @@ def inp():  return map(int, input().split())  # multiple ints, unpack: a, b = in
 def stp():  return map(str, input().split())  # multiple strings
 def ints(): return list(map(int, input().split()))  # list of ints
 def strs(): return list(map(str, str1()))     # list of chars from a string
-#print = sys.stdout.write
+# print = sys.stdout.write
 # ================= SOLUTION START =================
-
-
-n,k = inp()
-for _ in range(k):
-    l,r = inp()
-
-
-
-
+MAX = 200000
+n,k,q = inp()
+count = [0]*(MAX+2)
+for _ in range(n):
+    a,b = inp()
+    count[a] += 1
+    count[b+1] -= 1
+run = 0
+good = [0]*(MAX+1)
+for i in range(1,MAX+1):
+    run += count[i]
+    good[i] += good[i-1]
+    if run >= k:
+        good[i] += 1
+for _ in range(q):
+    c,d = inp()
+    print(good[d]-good[c-1])
 
 
 # ================== SOLUTION END ==================
