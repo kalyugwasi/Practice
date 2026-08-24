@@ -27,7 +27,9 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 # ================= SOLUTION START =================
 
 
-
+n,m,c = inp()
+a = ints()
+b = ints()
 
 
 
