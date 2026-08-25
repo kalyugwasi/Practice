@@ -26,9 +26,18 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 # ================= SOLUTION START =================
 
-for _ in range(int1()):
-    n = int1()
-    p = ints()
+
+n,m,c = inp()
+a = ints()
+b = ints()
+for i in range(1,m):
+    b[i] += b[i-1]
+for i in range(n):
+    l = max(0,i-(n-m))
+    r = min(i,m-1)
+    add = b[r] if l==0 else (b[r]-b[l-1])
+    a[i] = (a[i] + add) % c
+print(*a)
 
 
 
