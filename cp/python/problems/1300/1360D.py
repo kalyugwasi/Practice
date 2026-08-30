@@ -25,9 +25,18 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 # ================= SOLUTION START =================
 
-n = int1()
-a = ints()
-res = 0
+for _ in range(int1()):
+    n,k = inp()
+    ans = 1
+    for i in range(1,math.isqrt(n)+1):
+        if n%i == 0:
+            if i <= k:
+                ans = max(ans,i)
+            if (n/i) <= k:
+                ans = max(ans,n/i)
+    print(int(n//ans))
+
+
 
 
 

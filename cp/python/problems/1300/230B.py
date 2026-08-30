@@ -27,7 +27,20 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 
 n = int1()
 a = ints()
-res = 0
+mex = int(1e6)+1
+is_prime = [True] * (mex)
+is_prime[0] = is_prime[1] = False
+for i in range(2,math.isqrt(mex)+1):
+    if is_prime[i]:
+        for j in range(i*i,mex,i):
+            is_prime[j] = False
+for i in a:
+    r = math.isqrt(i)
+    if i>3 and r*r == i and is_prime[r]:
+        print('YES')
+    else:
+        print("NO")
+
 
 
 

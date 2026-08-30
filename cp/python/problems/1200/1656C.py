@@ -25,9 +25,20 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 # ================= SOLUTION START =================
 
-n = int1()
-a = ints()
-res = 0
+for i in range(int1()):
+    n = int1()
+    a = ints()
+    a.sort()
+    if 1 not in a:
+        print("YES")
+    else:
+        res = "YES"
+        for i in range(1,n):
+            if a[i] == (a[i-1]+1):
+                res = 'NO'
+                break
+        print(res)
+
 
 
 
