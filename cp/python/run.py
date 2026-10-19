@@ -121,10 +121,12 @@ def main() -> int:
     count = find_test_count(folder)
     summary = [f"Testing {folder.name}: {count} sample(s)", "=" * 60]
     all_passed = True
+    last_actual = ""
     for index in range(1, count + 1):
         sample_input = (folder / f"input{index}.txt").read_text(encoding="utf-8")
         expected = (folder / f"expected{index}.txt").read_text(encoding="utf-8")
         actual, details, timed_out = run_solution(solution, sample_input, args.timeout)
+        last_actual = actual
         passed = not timed_out and not details and normalize(actual) == normalize(expected)
         summary.append(f"Sample {index}: {'PASSED' if passed else 'FAILED'}")
         if not passed:
@@ -138,7 +140,9 @@ def main() -> int:
     summary.append("ALL SAMPLES PASSED" if all_passed else "SOME SAMPLES FAILED")
     report = "\n".join(summary) + "\n"
     OUTPUT_TXT.write_text(report, encoding="utf-8")
+    LOCAL_OUTPUT.write_text(last_actual, encoding="utf-8")
     print(report, end="")
+    print(f"Last sample's actual output saved to {LOCAL_OUTPUT}")
     if all_passed and not args.no_archive:
         print(archive(solution, folder))
     return 0 if all_passed else 1

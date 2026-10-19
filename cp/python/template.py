@@ -24,12 +24,12 @@ def strs(): return list(map(str,str1())) #for string list
 # ================= SOLUTION START =================
 
 def solve():
-    
+    pass
 
 # ================== SOLUTION END ==================
 
 if __name__ == "__main__":
-    def solve()
+    solve()
 
 if LOCAL:
     sys.stdout.flush()

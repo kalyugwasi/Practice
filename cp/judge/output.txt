@@ -1,5 +1,10 @@
-Testing 1656C: 1 sample(s)
+Testing delloit: 1 sample(s)
 ============================================================
-Sample 1: PASSED
+Sample 1: FAILED
+Expected:
+2 3
+0 3 6
+Actual:
+
 ------------------------------------------------------------
-ALL SAMPLES PASSED
+SOME SAMPLES FAILED
