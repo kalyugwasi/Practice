@@ -14,7 +14,7 @@ e = 17
 d = pow(e, -1, phi)
 # Step 6: Display keys
 print("Public Key :", (e, n))
-print("Private Key:", (d, n))
+print("Private Key:", (d, n)
 # Step 7: Enter a message smaller than n
 m = int(input(f"Enter message as an integer (0 to {n-1}): "))
 if 0 <= m < n:
@@ -26,6 +26,6 @@ if 0 <= m < n:
     print("Encrypted Message:", c)
     print("Decrypted Message:", decrypted)
     if m == decrypted:
-        print("RSA verification successful.")
+        print("RSA verification successful."
     else:
-        print("Invalid message. Message must be between 0 and n-1.")
+        print("Invalid message. Message must be between 0 and n-1."`
