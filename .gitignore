@@ -9,3 +9,5 @@ System_design/ratelimiter/__pycache__/
 .idea
 *.class
 *.DS_Store
+*__pycache__
+*.pyc
