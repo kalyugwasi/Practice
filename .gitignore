@@ -2,6 +2,7 @@ webframework/fastapi/tutorial/__pycache__/
 webframework/fastapi/venv/
 api_dev/__pycache__/
 api_dev/api_env/
+System_design/ratelimiter/__pycache__/
 .env/
 .boots/
 *.jar

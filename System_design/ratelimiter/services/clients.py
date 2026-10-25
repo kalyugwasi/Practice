@@ -12,9 +12,9 @@ async def hitter(client_name:str,hits:int,delay:int):
     
 async def doer():
     requests = {
-        "A": {100:1},
-        "B": {200:1},
-        "C": {50:1}
+        "A": {10:1},
+        "B": {20:0.6},
+        "C": {5:1}
     }
     print(f"Starting concurrent Simulation for client {list(requests.keys())}")
     results = await asyncio.gather(

@@ -25,9 +25,9 @@ def initialize_db():
     """)
 
     tiers_data = [
-        (1,"Guest",60),
-        (2,"Basic",120),
-        (3,"Pro",180)
+        (1,"Guest",6),
+        (2,"Basic",12),
+        (3,"Pro",18)
     ]
     cursor.executemany("""
         INSERT OR IGNORE INTO tiers (tier_id, tier_name, rpm)
