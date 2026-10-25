@@ -1,5 +1,7 @@
 import asyncio
-from limiter import gateway
+from ..limiter import gateway
+
+
 async def hitter(client_name:str,hits:int,delay:int):
     results = []
     for _ in range(hits):

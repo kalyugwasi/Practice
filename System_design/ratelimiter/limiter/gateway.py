@@ -1,5 +1,5 @@
-from limiter import auth_storage
-from services import returners
+from . import auth_storage
+from ..services import returners
 
 
 def handle_request(client_name):

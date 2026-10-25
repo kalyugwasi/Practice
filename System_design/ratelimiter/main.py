@@ -1,4 +1,6 @@
-from services import clients
+import asyncio
 
-if "__name__" == "__main__":
-    clients()
+from .services.clients import doer
+
+if __name__ == "__main__":
+    asyncio.run(doer())
