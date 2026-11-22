@@ -1,0 +1,10 @@
+{
+  "problem": "LC_problems_group-anagrams",
+  "judge": "leetcode",
+  "contest": "problems",
+  "letter": "group-anagrams",
+  "group": null,
+  "source_url": "https://leetcode.com/problems/group-anagrams/",
+  "rating": "Medium",
+  "note": "LeetCode problems take function arguments, not stdin. Each input file holds one argument per line, exactly as in LeetCode's testcase box (JSON-style values); expected files hold the statement's Output text."
+}

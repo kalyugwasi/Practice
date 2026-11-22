@@ -110,6 +110,9 @@
     "pkl": "cd $dir && pkl eval -f yaml $fileName -o $fileNameWithoutExt.yaml",
     "gleam": "gleam run -m $fileNameWithoutExt"
   },
+  "code-runner.executorMapByGlob": {
+    "test.py": "python3 $workspaceRoot/cp/python/code_runner.py"
+  },
   "code-runner.showExecutionMessage": false,
   "code-runner.ignoreSelection": true,
   "code-runner.respectShebang": true,

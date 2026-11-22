@@ -1,3 +1,4 @@
+from itertools import count
 import sys, os, math
 def setup_io():
     try:
@@ -25,12 +26,52 @@ def strs(): return list(map(str, str1()))     # list of chars from a string
 #print = sys.stdout.write
 # ================= SOLUTION START =================
 
-n = int1()
-a = ints()
-res = 0
+s = str1()
+p = str1()
+n,m = len(s),len(p)
+if n < m:
+    print(0)
+else:
+    # option 4
+    res = 0
+    i = j = 0
+    while i < n - m :
+        print(i)
+        '''
+        if s[i] != p[0]:
+            continue
+        '''
+        i += 1
+    print(res)
 
-
-
+    '''
+    # option 1
+    res = 0
+    for i in range(n-m+1):
+        if s[i] != p[0]:
+            continue
+        if s[i:i+m] == p:
+            res += 1
+    print(res)
+    '''
+    '''
+    # option 2
+    dic = {}
+    for i in range(n-m+1):
+        if s[i:i+m] not in dic:
+            dic[s[i:i+m]] = 1
+            continue
+        dic[s[i:i+m]] += 1
+    print(dic[p] if p in dic else 0)
+    '''
+    '''
+    # optionm 3
+    res = 0
+    for i in range(n-m+1):
+        if s.startswith(p,i):
+            res += 1
+    print(res)
+    '''
 
 # ================== SOLUTION END ==================
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fetch competitive-programming samples (Codeforces, AtCoder, CodeChef,
-HackerRank) and prepare the local CP scratch file."""
+HackerRank, CSES, LeetCode) and prepare the local CP scratch file."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import argparse
 import gzip
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -63,6 +64,11 @@ class CodeforcesSampleParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.section: str | None = None
         self.div_sections: list[str | None] = []
+        # Parallel to div_sections: True for <div class="test-example-line">
+        # opened inside a sample <pre> (newer Codeforces pages wrap every
+        # sample line in its own div with no newline text between them).
+        self.div_line_flags: list[bool] = []
+        self.pre_has_line_divs = False
         self.in_pre = False
         self.buffer: list[str] = []
         self.inputs: list[str] = []
@@ -76,8 +82,13 @@ class CodeforcesSampleParser(HTMLParser):
             elif "output" in classes:
                 self.section = "output"
             self.div_sections.append(self.section)
+            is_line = self.in_pre and "test-example-line" in classes
+            self.div_line_flags.append(is_line)
+            if is_line:
+                self.pre_has_line_divs = True
         elif tag == "pre" and self.section:
             self.in_pre = True
+            self.pre_has_line_divs = False
             self.buffer = []
         elif tag == "br" and self.in_pre:
             self.buffer.append("\n")
@@ -98,12 +109,18 @@ class CodeforcesSampleParser(HTMLParser):
             self.in_pre = False
             self.buffer = []
         elif tag == "div":
+            if self.div_line_flags and self.div_line_flags.pop() and self.in_pre:
+                self.buffer.append("\n")
             if self.div_sections:
                 self.div_sections.pop()
             self.section = self.div_sections[-1] if self.div_sections else None
 
     def handle_data(self, data: str) -> None:
         if self.in_pre:
+            # When samples are one-div-per-line, any stray whitespace between
+            # the divs is just markup formatting - the divs supply the newlines.
+            if self.pre_has_line_divs and not data.strip():
+                return
             self.buffer.append(data)
 
 
@@ -210,7 +227,10 @@ def _extract_codechef_plain_markdown_samples(body: str) -> tuple[list[str], list
         re.IGNORECASE | re.DOTALL,
     )
     for kind, number, content in pattern.findall(body):
-        lines = [line.lstrip("\t ") for line in html.unescape(content).replace("\r\n", "\n").split("\n")]
+        lines = [
+            line.lstrip("\t ")
+            for line in html.unescape(content).replace("\r\n", "\n").split("\n")
+        ]
         while lines and lines[0].strip() == "":
             lines.pop(0)
         while lines and lines[-1].strip() == "":
@@ -232,7 +252,9 @@ def _extract_codechef_html_samples(body_html: str) -> tuple[list[str], list[str]
 
     # Classic style: a single <pre> block containing both "Input:" and
     # "Output:" sections.
-    for match in re.finditer(r"<pre[^>]*>(.*?)</pre>", body_html, re.DOTALL | re.IGNORECASE):
+    for match in re.finditer(
+        r"<pre[^>]*>(.*?)</pre>", body_html, re.DOTALL | re.IGNORECASE
+    ):
         block = _strip_tags(match.group(1))
         io_match = re.search(
             r"Input:?\s*\n(.*?)\n\s*Output:?\s*\n(.*)", block, re.DOTALL | re.IGNORECASE
@@ -268,7 +290,9 @@ def _extract_codechef_html_samples(body_html: str) -> tuple[list[str], list[str]
     return _extract_codechef_html_bold_label_samples(body_html)
 
 
-def _extract_codechef_html_bold_label_samples(body_html: str) -> tuple[list[str], list[str]]:
+def _extract_codechef_html_bold_label_samples(
+    body_html: str,
+) -> tuple[list[str], list[str]]:
     """Fallback for older CodeChef bodies with no <pre> blocks at all: a
     bold "Input:"/"Output:" label as its own <p>, followed by one or more
     plain <p> tags (one per stdin line) up to the next bold label
@@ -278,7 +302,9 @@ def _extract_codechef_html_bold_label_samples(body_html: str) -> tuple[list[str]
     """
     inputs: list[str] = []
     outputs: list[str] = []
-    label_pattern = re.compile(r"<strong>\s*(Input|Output|Explanation)\s*:?\s*</strong>", re.IGNORECASE)
+    label_pattern = re.compile(
+        r"<strong>\s*(Input|Output|Explanation)\s*:?\s*</strong>", re.IGNORECASE
+    )
     labels = list(label_pattern.finditer(body_html))
     for i, label_match in enumerate(labels):
         kind = label_match.group(1).lower()
@@ -288,7 +314,9 @@ def _extract_codechef_html_bold_label_samples(body_html: str) -> tuple[list[str]
         end = labels[i + 1].start() if i + 1 < len(labels) else len(body_html)
         span = body_html[start:end]
         lines = []
-        for p_match in re.finditer(r"<p[^>]*>(.*?)</p>", span, re.DOTALL | re.IGNORECASE):
+        for p_match in re.finditer(
+            r"<p[^>]*>(.*?)</p>", span, re.DOTALL | re.IGNORECASE
+        ):
             text = _strip_tags(p_match.group(1)).strip()
             if text:
                 lines.append(text)
@@ -332,47 +360,217 @@ def extract_cses_samples(html_text: str) -> tuple[list[str], list[str]]:
 
 
 # ---------------------------------------------------------------------------
-# LeetCode sample parsing
+# LeetCode (via GraphQL - the problem HTML page itself returns HTTP 403)
 # ---------------------------------------------------------------------------
 
+LEETCODE_GRAPHQL_URL = "https://leetcode.com/graphql"
 
-def extract_leetcode_samples(content_html: str) -> tuple[list[str], list[str]]:
-    """Extract "Example N:" blocks from a LeetCode problem statement.
+LEETCODE_QUERY = """
+query questionData($titleSlug: String!) {
+  question(titleSlug: $titleSlug) {
+    questionFrontendId
+    title
+    titleSlug
+    difficulty
+    content
+    exampleTestcases
+    metaData
+  }
+}
+"""
 
-    LeetCode examples are function-call based, not stdin/stdout, so what
-    comes back here is the raw "Input: arr1 = [...], d = 2" / "Output: 2"
-    text as written in the statement - useful as a reference, but it won't
-    be directly pipeable into a program reading stdin the way the other
-    judges' samples are. Each example is one <pre> block containing both an
-    "Input:" and "Output:" line (and often an "Explanation:" after that,
-    which this stops before).
-    """
-    inputs: dict[int, str] = {}
-    outputs: dict[int, str] = {}
-    pattern = re.compile(
-        r"Example\s*(\d+)\s*:?.{0,300}?<pre[^>]*>(.*?)</pre>",
-        re.DOTALL | re.IGNORECASE,
+LEETCODE_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
+
+def _leetcode_headers(slug: str) -> dict[str, str]:
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Referer": f"https://leetcode.com/problems/{slug}/",
+        "Origin": "https://leetcode.com",
+        "User-Agent": LEETCODE_USER_AGENT,
+    }
+    # Optional: copy these two cookies from a logged-in browser session if
+    # LeetCode keeps answering 403 (also unlocks premium-only statements your
+    # account can view).
+    session = os.environ.get("LEETCODE_SESSION")
+    csrf = os.environ.get("LEETCODE_CSRF")
+    if session and csrf:
+        headers["Cookie"] = f"LEETCODE_SESSION={session}; csrftoken={csrf}"
+        headers["x-csrftoken"] = csrf
+    return headers
+
+
+def _leetcode_post_urllib(slug: str, payload: dict) -> dict:
+    request = Request(
+        LEETCODE_GRAPHQL_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers=_leetcode_headers(slug),
+        method="POST",
     )
-    for number, pre_content in pattern.findall(content_html):
-        text = _strip_tags(pre_content)
-        io_match = re.search(
-            r"Input:?\s*(.*?)\s*Output:?\s*(.*?)(?:\n\s*Explanation:?|\Z)",
-            text,
-            re.DOTALL | re.IGNORECASE,
+    try:
+        with urlopen(request, timeout=30) as response:
+            raw = response.read()
+            encoding = (response.headers.get("Content-Encoding") or "").lower()
+            if encoding == "gzip":
+                raw = gzip.decompress(raw)
+            elif encoding == "deflate":
+                raw = zlib.decompress(raw)
+            charset = response.headers.get_content_charset() or "utf-8"
+            return json.loads(raw.decode(charset, errors="replace"))
+    except HTTPError as error:
+        raise RuntimeError(f"HTTP {error.code} for {LEETCODE_GRAPHQL_URL}") from error
+    except URLError as error:
+        raise RuntimeError(
+            f"Could not reach {LEETCODE_GRAPHQL_URL}: {error.reason}"
+        ) from error
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"LeetCode returned non-JSON data: {error}") from error
+
+
+def _leetcode_post_curl_cffi(slug: str, payload: dict) -> dict:
+    from curl_cffi import requests as cffi_requests  # optional dependency
+
+    response = cffi_requests.post(
+        LEETCODE_GRAPHQL_URL,
+        json=payload,
+        headers=_leetcode_headers(slug),
+        impersonate="chrome",
+        timeout=30,
+    )
+    if response.status_code != 200:
+        raise RuntimeError(f"HTTP {response.status_code} for {LEETCODE_GRAPHQL_URL}")
+    return response.json()
+
+
+def _leetcode_graphql(slug: str) -> dict:
+    payload = {
+        "operationName": "questionData",
+        "query": LEETCODE_QUERY,
+        "variables": {"titleSlug": slug},
+    }
+    try:
+        return _leetcode_post_urllib(slug, payload)
+    except RuntimeError as error:
+        if "HTTP 403" not in str(error):
+            raise
+    # Cloudflare 403: retry with a browser-like TLS fingerprint if available.
+    try:
+        import curl_cffi  # noqa: F401
+    except ImportError:
+        raise RuntimeError(
+            "LeetCode answered HTTP 403 (Cloudflare bot check). Fix: run "
+            "'pip install curl_cffi' and retry, or export LEETCODE_SESSION and "
+            "LEETCODE_CSRF from your browser's leetcode.com cookies."
+        ) from None
+    return _leetcode_post_curl_cffi(slug, payload)
+
+
+def _leetcode_html_to_text(fragment: str) -> str:
+    text = re.sub(r"(?i)<br\s*/?>", "\n", fragment)
+    text = re.sub(r"(?i)</(?:p|div|li|pre|ul|ol|h[1-6])>", "\n", text)
+    text = re.sub(r"<[^>]+>", "", text)
+    return html.unescape(text).replace("\xa0", " ")
+
+
+_LEETCODE_EXAMPLE_RE = re.compile(
+    r"Input:\s*(.*?)\s*Output:\s*(.*?)\s*"
+    r"(?=Explanation:|Example\s*\d+\s*:|Constraints:|Follow[- ]?up:|Note:|\Z)",
+    re.DOTALL | re.IGNORECASE,
+)
+
+
+def parse_leetcode_statement_examples(content_html: str) -> list[tuple[str, str]]:
+    """(input_text, output_text) pairs from a LeetCode statement.
+
+    Works on both layouts LeetCode has used: the older
+    <pre><strong>Input:</strong> ...</pre> blocks and the newer
+    <div class="example-block"> with <span class="example-io"> values.
+    """
+    text = _leetcode_html_to_text(content_html)
+    pairs = []
+    for match in _LEETCODE_EXAMPLE_RE.finditer(text):
+        inp = re.sub(r"\s*\n\s*", " ", match.group(1)).strip()
+        out = re.sub(r"\s*\n\s*", " ", match.group(2)).strip()
+        if inp and out:
+            pairs.append((inp, out))
+    return pairs
+
+
+def split_leetcode_example_testcases(
+    example_testcases: str, meta: dict
+) -> list[str] | None:
+    """Group LeetCode's raw exampleTestcases into one string per example.
+
+    exampleTestcases has one line per function parameter, examples back to
+    back. Returns None when it can't be split reliably (e.g. class-design
+    problems, whose metaData has no "params" list).
+    """
+    params = meta.get("params")
+    if not isinstance(params, list) or not params:
+        return None
+    n = len(params)
+    lines = [line for line in (example_testcases or "").splitlines() if line.strip()]
+    if not lines or len(lines) % n != 0:
+        return None
+    return ["\n".join(lines[i : i + n]) + "\n" for i in range(0, len(lines), n)]
+
+
+def fetch_leetcode_samples(
+    slug: str,
+) -> tuple[list[str], list[str], str | None, str | None]:
+    slug = slug.strip().strip("/").lower()
+    data = _leetcode_graphql(slug)
+
+    question = (data.get("data") or {}).get("question")
+    if not question:
+        errors = data.get("errors")
+        detail = f" ({errors[0].get('message')})" if errors else ""
+        raise RuntimeError(
+            f"No LeetCode problem found for slug '{slug}'{detail}. "
+            "Check the spelling, e.g. 'group-anagrams'."
         )
-        if not io_match:
-            continue
-        n = int(number)
-        inputs.setdefault(n, io_match.group(1).strip() + "\n")
-        outputs.setdefault(n, io_match.group(2).strip() + "\n")
 
-    ordered = sorted(set(inputs) & set(outputs))
-    return [inputs[n] for n in ordered], [outputs[n] for n in ordered]
+    content = question.get("content")
+    if not content:
+        raise RuntimeError(
+            f"'{slug}' has no public statement (premium-only?). Set LEETCODE_SESSION "
+            "and LEETCODE_CSRF if your account can view it."
+        )
 
+    rating = question.get("difficulty")
+    try:
+        meta = json.loads(question.get("metaData") or "{}")
+    except json.JSONDecodeError:
+        meta = {}
 
-def extract_leetcode_rating(page_html: str) -> str | None:
-    match = re.search(r"<[^>]+>\s*(Easy|Medium|Hard)\s*</[^>]+>", page_html)
-    return match.group(1) if match else None
+    statement = parse_leetcode_statement_examples(content)
+    expected = [out + "\n" for _, out in statement]
+    raw_inputs = split_leetcode_example_testcases(
+        question.get("exampleTestcases") or "", meta
+    )
+
+    if raw_inputs and len(raw_inputs) == len(expected):
+        inputs = raw_inputs
+        note = (
+            "LeetCode problems take function arguments, not stdin. Each input file "
+            "holds one argument per line, exactly as in LeetCode's testcase box "
+            "(JSON-style values); expected files hold the statement's Output text."
+        )
+    else:
+        inputs = [inp + "\n" for inp, _ in statement]
+        note = (
+            "LeetCode problems take function arguments, not stdin. Could not line up "
+            "LeetCode's raw example testcases with the statement, so inputs here are "
+            "the statement's 'Input:' text (e.g. 'nums = [1,2], k = 3') - reference "
+            "only, not runnable stdin. Examples shown only as images are skipped."
+        )
+
+    return inputs, expected, rating, note
 
 
 # ---------------------------------------------------------------------------
@@ -643,7 +841,9 @@ def parse_problem(parts: list[str]) -> ProblemRef:
 def _parse_codeforces(parts: list[str]) -> ProblemRef:
     raw = "".join(parts).strip()
     group_match = re.fullmatch(
-        r"https?://codeforces\.com/group/([^/]+)/contest/(\d+)/problem/([a-z]\d?)/?", raw, re.IGNORECASE,
+        r"https?://codeforces\.com/group/([^/]+)/contest/(\d+)/problem/([a-z]\d?)/?",
+        raw,
+        re.IGNORECASE,
     )
     if group_match:
         group, contest, letter = group_match.groups()
@@ -655,7 +855,9 @@ def _parse_codeforces(parts: list[str]) -> ProblemRef:
             url=f"https://codeforces.com/group/{group}/contest/{contest}/problem/{letter.upper()}",
         )
     problemset_match = re.fullmatch(
-        r"https?://codeforces\.com/(?:problemset/problem|contest)/(\d+)/(?:problem/)?([a-z]\d?)/?", raw, re.IGNORECASE,
+        r"https?://codeforces\.com/(?:problemset/problem|contest)/(\d+)/(?:problem/)?([a-z]\d?)/?",
+        raw,
+        re.IGNORECASE,
     )
     if problemset_match:
         contest, letter = problemset_match.groups()
@@ -721,20 +923,26 @@ def fetch_json(url: str) -> dict:
         raise RuntimeError(f"Could not parse JSON from {url}: {error}") from error
 
 
-def get_codeforces_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+def get_codeforces_samples(
+    problem: ProblemRef,
+) -> tuple[list[str], list[str], str | None, str | None]:
     page = fetch_url(problem.url)
     parser = CodeforcesSampleParser()
     parser.feed(page)
     return parser.inputs, parser.outputs, extract_cf_rating(page), None
 
 
-def get_atcoder_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+def get_atcoder_samples(
+    problem: ProblemRef,
+) -> tuple[list[str], list[str], str | None, str | None]:
     page = fetch_url(problem.url)
     inputs, outputs = extract_atcoder_samples(page)
     return inputs, outputs, None, None
 
 
-def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+def get_codechef_samples(
+    problem: ProblemRef,
+) -> tuple[list[str], list[str], str | None, str | None]:
     api_url = f"https://www.codechef.com/api/contests/{problem.contest}/problems/{problem.letter}"
     data = fetch_json(api_url)
     body = data.get("body") or data.get("problem_statement") or ""
@@ -748,16 +956,26 @@ def get_codechef_samples(problem: ProblemRef) -> tuple[list[str], list[str], str
             "Example section for the interaction protocol instead."
         )
     inputs, outputs = extract_codechef_samples(body)
-    rating = data.get("difficulty_rating") or data.get("problem_rating") or data.get("rating")
+    rating = (
+        data.get("difficulty_rating")
+        or data.get("problem_rating")
+        or data.get("rating")
+    )
     return inputs, outputs, (str(rating) if rating else None), None
 
 
 def extract_hackerrank_rating(page_html: str) -> str | None:
-    match = re.search(r"Difficulty.{0,150}?\b(Easy|Medium|Hard|Advanced|Expert)\b", page_html, re.DOTALL)
+    match = re.search(
+        r"Difficulty.{0,150}?\b(Easy|Medium|Hard|Advanced|Expert)\b",
+        page_html,
+        re.DOTALL,
+    )
     return match.group(1) if match else None
 
 
-def get_hackerrank_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+def get_hackerrank_samples(
+    problem: ProblemRef,
+) -> tuple[list[str], list[str], str | None, str | None]:
     # The /rest/... JSON API is disallowed for automated clients and often
     # needs an authenticated session, so scrape the server-rendered problem
     # page itself instead - the statement HTML (including the sample <pre>
@@ -774,20 +992,18 @@ def get_hackerrank_samples(problem: ProblemRef) -> tuple[list[str], list[str], s
     return inputs, outputs, extract_hackerrank_rating(page), note
 
 
-def get_cses_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
+def get_cses_samples(
+    problem: ProblemRef,
+) -> tuple[list[str], list[str], str | None, str | None]:
     page = fetch_url(problem.url)
     inputs, outputs = extract_cses_samples(page)
     return inputs, outputs, None, None
 
 
-def get_leetcode_samples(problem: ProblemRef) -> tuple[list[str], list[str], str | None, str | None]:
-    page = fetch_url(problem.url)
-    inputs, outputs = extract_leetcode_samples(page)
-    note = (
-        "LeetCode problems take function arguments, not stdin - these are the raw "
-        "Input/Output text from the statement, not runnable program input."
-    )
-    return inputs, outputs, extract_leetcode_rating(page), note
+def get_leetcode_samples(
+    problem: ProblemRef,
+) -> tuple[list[str], list[str], str | None, str | None]:
+    return fetch_leetcode_samples(problem.letter)
 
 
 JUDGE_FETCHERS = {
@@ -846,7 +1062,9 @@ def open_in_editor(paths: list[Path]) -> None:
     if editor:
         subprocess.Popen([editor, "--reuse-window", *(str(path) for path in paths)])
     else:
-        print("No 'codium' or 'code' command found; open the files shown above manually.")
+        print(
+            "No 'codium' or 'code' command found; open the files shown above manually."
+        )
 
 
 def main() -> int:
@@ -862,9 +1080,17 @@ def main() -> int:
             "or a full problem URL from any of the six."
         ),
     )
-    parser.add_argument("--refresh", action="store_true", help="Replace existing saved samples")
-    parser.add_argument("--reset-solution", action="store_true", help="Replace python/test.py with template.py")
-    parser.add_argument("--no-open", action="store_true", help="Do not open files in VSCodium/VS Code")
+    parser.add_argument(
+        "--refresh", action="store_true", help="Replace existing saved samples"
+    )
+    parser.add_argument(
+        "--reset-solution",
+        action="store_true",
+        help="Replace python/test.py with template.py",
+    )
+    parser.add_argument(
+        "--no-open", action="store_true", help="Do not open files in VSCodium/VS Code"
+    )
     args = parser.parse_args()
 
     if args.problem:
@@ -884,11 +1110,15 @@ def main() -> int:
 
     key = problem.key
     folder = JUDGE_DIR / key
-    has_samples = (folder / "input1.txt").exists() and (folder / "expected1.txt").exists()
+    has_samples = (folder / "input1.txt").exists() and (
+        folder / "expected1.txt"
+    ).exists()
     label = JUDGE_LABELS[problem.judge]
 
     if has_samples and not args.refresh:
-        print(f"Samples already exist in {folder}. Use --refresh to download them again.")
+        print(
+            f"Samples already exist in {folder}. Use --refresh to download them again."
+        )
     else:
         print(f"Fetching {label} {key}…")
         try:
@@ -898,7 +1128,10 @@ def main() -> int:
             print(f"Fetch failed: {error}", file=sys.stderr)
             return 1
         if not inputs or len(inputs) != len(outputs):
-            print("Could not find matching sample input/output blocks on the problem page.", file=sys.stderr)
+            print(
+                "Could not find matching sample input/output blocks on the problem page.",
+                file=sys.stderr,
+            )
             return 1
         if note:
             print(f"Note: {note}")
@@ -914,7 +1147,9 @@ def main() -> int:
             "rating": rating,
             "note": note,
         }
-        (folder / "meta.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
+        (folder / "meta.json").write_text(
+            json.dumps(metadata, indent=2) + "\n", encoding="utf-8"
+        )
         print(f"Saved {len(inputs)} sample(s) to {folder}")
 
     first_input = folder / "input1.txt"
@@ -932,12 +1167,14 @@ def main() -> int:
     print(f"Expected output:   {PYTHON_DIR / 'expected.txt'}")
     print(f"Actual output:     {PYTHON_DIR / 'output.txt'}")
     if not args.no_open:
-        open_in_editor([
-            SOLUTION_FILE,
-            PYTHON_DIR / "input.txt",
-            PYTHON_DIR / "expected.txt",
-            PYTHON_DIR / "output.txt",
-        ])
+        open_in_editor(
+            [
+                SOLUTION_FILE,
+                PYTHON_DIR / "input.txt",
+                PYTHON_DIR / "expected.txt",
+                PYTHON_DIR / "output.txt",
+            ]
+        )
     return 0
 
 

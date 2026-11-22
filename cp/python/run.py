@@ -82,15 +82,16 @@ def local_test(solution: Path, timeout: float) -> int:
     if not LOCAL_INPUT.exists() or not LOCAL_EXPECTED.exists():
         raise ValueError("Run cpjudge first; cp/python/input.txt and expected.txt are required.")
     actual, details, timed_out = run_solution(solution, LOCAL_INPUT.read_text(encoding="utf-8"), timeout)
-    LOCAL_OUTPUT.write_text(actual, encoding="utf-8")
     expected = LOCAL_EXPECTED.read_text(encoding="utf-8")
     passed = not timed_out and not details and normalize(actual) == normalize(expected)
-    print("Local editable test: " + ("PASSED" if passed else "FAILED"))
+    report = ["Local editable test: " + ("PASSED" if passed else "FAILED")]
     if details:
-        print(details)
+        report.append(details)
     if not passed and not details:
-        print(f"Expected:\n{expected.rstrip()}\nActual:\n{actual.rstrip()}")
-    print(f"Actual output saved to {LOCAL_OUTPUT}")
+        report.extend([f"Expected:\n{expected.rstrip()}", f"Actual:\n{actual.rstrip()}"])
+    LOCAL_OUTPUT.write_text("\n".join(report) + "\n", encoding="utf-8")
+    if actual:
+        print(actual, end="" if actual.endswith("\n") else "\n")
     return 0 if passed else 1
 
 
