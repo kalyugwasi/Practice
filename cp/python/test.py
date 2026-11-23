@@ -37,10 +37,6 @@ else:
     i = j = 0
     while i < n - m :
         print(i)
-        '''
-        if s[i] != p[0]:
-            continue
-        '''
         i += 1
     print(res)
 
