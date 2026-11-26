@@ -32,7 +32,39 @@ n,m = len(s),len(p)
 if n < m:
     print(0)
 else:
+    # option 4
+    lps = [0] * m
+    prevLPS, i = 0,1
+    while i < m:
+        if p[i] == p[prevLPS]:
+            lps[i] = prevLPS + 1
+            prevLPS += 1
+            i += 1
+        else:
+            if prevLPS == 0:
+                lps[i] = 0
+                i += 1
+            else:
+                prevLPS = lps[prevLPS - 1]
+    res = i = j = 0
+    while i < n:
+        if s[i] == p[j]:
+            if j == m-1:
+                i += 1
+                j = lps[j]
+                res += 1
+            else:
+                i += 1
+                j += 1
+        else:
+            if j > 0:
+                j = lps[j-1]
+            else:
+                i += 1
+    print(res)
+
     '''
+    # option 1
     res = 0
     for i in range(n-m+1):
         if s[i] != p[0]:
@@ -41,15 +73,24 @@ else:
             res += 1
     print(res)
     '''
+    '''
+    # option 2
     dic = {}
     for i in range(n-m+1):
         if s[i:i+m] not in dic:
             dic[s[i:i+m]] = 1
             continue
         dic[s[i:i+m]] += 1
-    print(dic[p])
-
-
+    print(dic[p] if p in dic else 0)
+    '''
+    '''
+    # optionm 3
+    res = 0
+    for i in range(n-m+1):
+        if s.startswith(p,i):
+            res += 1
+    print(res)
+    '''
 
 # ================== SOLUTION END ==================
 

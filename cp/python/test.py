@@ -33,11 +33,34 @@ if n < m:
     print(0)
 else:
     # option 4
-    res = 0
-    i = j = 0
-    while i < n - m :
-        print(i)
-        i += 1
+    lps = [0] * m
+    prevLPS, i = 0,1
+    while i < m:
+        if p[i] == p[prevLPS]:
+            lps[i] = prevLPS + 1
+            prevLPS += 1
+            i += 1
+        else:
+            if prevLPS == 0:
+                lps[i] = 0
+                i += 1
+            else:
+                prevLPS = lps[prevLPS - 1]
+    res = i = j = 0
+    while i < n:
+        if s[i] == p[j]:
+            if j == m-1:
+                i += 1
+                j = lps[j]
+                res += 1
+            else:
+                i += 1
+                j += 1
+        else:
+            if j > 0:
+                j = lps[j-1]
+            else:
+                i += 1
     print(res)
 
     '''
